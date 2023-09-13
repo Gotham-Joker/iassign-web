@@ -1,1 +1,199 @@
-/* You can add global styles to this file, and also import other style files */
+@import "uno";
+
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// 卡片阴影
+.card-shadow {
+  box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+}
+
+// 卡片圆角
+.card-radius {
+  border-radius: 1rem !important;
+}
+
+.text-danger {
+  color: #ea0606;
+}
+
+.text-primary {
+  color: #1890ff;
+}
+
+.text-success {
+  color: #82D616;
+}
+
+// 渐变背景
+.bg-gradient-warning {
+  background-image: linear-gradient(310deg, #f53939, #fbcf33);
+}
+
+.bg-gradient-info {
+  background-image: linear-gradient(310deg, #2152ff, #21d4fd);
+}
+
+.bg-gradient-success {
+  background-image: linear-gradient(310deg, #17ad37, #98ec2d);
+}
+
+.bg-gradient-danger {
+  background-image: linear-gradient(310deg, #ea0606, #ff667c);
+}
+
+.bg-gradient-purple {
+  background-image: linear-gradient(310deg, #7367F0, #CE9FFC);
+}
+
+.bg-gradient-secondary {
+  background-image: linear-gradient(310deg, #627594, #8ca1cb);
+}
+
+.ant-layout-sider-children {
+  overflow-x: hidden;
+}
+
+.text-gradient {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  z-index: 1;
+
+  // 选中文字的时候，变回白色
+  &::selection {
+    -webkit-text-fill-color: #fff;
+  }
+}
+
+// dy-form
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 30ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 30ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// dag
+.node {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-top-color: rgba(255, 255, 255, 0.75);
+  border-left-color: rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.05);
+  transform-style: preserve-3d;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    background-image: linear-gradient(to right bottom, rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.6) 50%, transparent 50%);
+  }
+}
+
+.node .ico {
+  width: 20px;
+  margin-left: 8px;
+  font-size: 18px;
+  filter: drop-shadow(0px 5px 5px rgba(227, 43, 34, 0.4));
+}
+
+.node .status {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-left: 8px;
+
+  img {
+    width: 18px;
+    height: 18px;
+    // 防止图片被挤压
+    flex-shrink: 0;
+    vertical-align: baseline;
+  }
+}
+
+.node .label {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 104px;
+  margin-left: 8px;
+  text-align: center;
+  //color: #565656;
+  color: #e84646;
+  text-shadow: 0 0 25px rgba(239, 76, 76, 0.8), 0 0 45px #ef4c4c;
+  font-size: 12px;
+}
+
+.node.running .status img {
+  animation: spin 1s linear infinite;
+}
+
+.x6-node-selected .node {
+  border-color: #2152ff;
+  border-radius: 2px;
+  box-shadow: 0 0 0 4px #d4e8fe;
+}
+
+.x6-node-selected .node.success {
+  border-color: #17ad37;
+  border-radius: 2px;
+  box-shadow: 0 0 0 4px #ccecc0;
+}
+
+.x6-node-selected .node.failed {
+  border-color: #ea0606;
+  border-radius: 2px;
+  box-shadow: 0 0 0 4px #fedcdc;
+}
+
+.x6-edge:hover path:nth-child(2) {
+  stroke: #2152ff;
+  stroke-width: 1px;
+}
+
+.x6-edge-selected path:nth-child(2) {
+  stroke: #2152ff;
+  stroke-width: 1.5px !important;
+}
+
+@keyframes running-line {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
