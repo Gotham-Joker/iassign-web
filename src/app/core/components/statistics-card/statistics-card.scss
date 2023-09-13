@@ -1,0 +1,29 @@
+// 卡片阴影(鼠标经过)
+.card-hover-shadow {
+  transition: .3s;
+
+  &:hover {
+    box-shadow: 0 .1875rem .75rem rgba(140, 152, 164, .25);
+
+    .text-data {
+      color: #0D6EFDFF;
+    }
+  }
+}
+
+.metrics-card {
+  border: 1px solid rgba(231, 234, 243, 0.7);
+  word-wrap: break-word;
+
+  &-subtitle {
+    color: #8c98a4;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+    font-weight: 400;
+  }
+}
+.text-data {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

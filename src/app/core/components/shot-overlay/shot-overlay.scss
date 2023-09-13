@@ -1,0 +1,59 @@
+$overlay-content-mt: 40px;
+.shot-overlay {
+  position: fixed;
+  z-index: 600;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  background: #fff;
+  pointer-events: none;
+  overflow-y: hidden;
+  background: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+
+  &.overlay-visible {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    pointer-events: auto;
+
+    .overlay-content {
+      transform: translateY(0) scale(1);
+      transition: opacity 0.2s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
+      transition-delay: 0.2s;
+      opacity: 1;
+    }
+  }
+
+  .overlay-content {
+    position: relative;
+    height: calc(100vh - $overlay-content-mt);
+    margin-top: $overlay-content-mt;
+    overflow-y: scroll;
+    transform: translateY(15%) scale(0.98);
+    border-radius: 12px 12px 0 0;
+    opacity: 0;
+    background: #fff;
+    cursor: default;
+  }
+
+  a.close-overlay {
+    color: #dbdbde;
+    display: flex;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: $overlay-content-mt;
+
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}

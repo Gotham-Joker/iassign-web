@@ -1,0 +1,7 @@
+<span class="app-badge"
+      [ngClass]="riseUp?['app-bg-soft-danger','text-danger']:['app-bg-soft-success','text-success']"
+      style="--bs-success-rgb: 0,201,167;--bs-danger-rgb: 237,76,120">
+    <span nz-icon [nzType]="riseUp?'svg:l_rise':'svg:l_fall'"></span>
+    <ng-content></ng-content>
+</span>
+<span *ngIf="desc!=null" class="app-bg-text-body ml-2">{{desc}}</span>

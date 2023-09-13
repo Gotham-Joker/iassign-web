@@ -1,0 +1,46 @@
+<div class="w-full h-full">
+  <div #container></div>
+</div>
+
+<!--这里用来配置连接线的标签、条件等等-->
+<nz-drawer nzCloseIcon="svg:close"
+           (nzOnClose)="visible=false"
+           [nzContent]="content" [nzVisible]="visible">
+  <ng-template #content>
+    <h3 class="text-gradient bg-gradient-info">连线设置</h3>
+    <p class="text-gray-600">"网关"可以有多个出口(连线)，但一定要记得设置一个默认出口，而其他出口必须输入条件</p>
+    <p class="text-gray-600">"普通节点"只有默认出口，不存在多个出口，因此不许加条件</p>
+    <div nz-form nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label>标签</nz-form-label>
+        <nz-form-control>
+          <input nz-input [(ngModel)]="edgeLabel" placeholder="请输入标签">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>条件</nz-form-label>
+        <nz-form-control>
+                    <textarea nz-input [(ngModel)]="edgeCondition"
+                              placeholder="请输入流转条件，不输入则当成是默认出口"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <button nz-button nzType="primary" nzBlock nzShape="round" (click)="saveEdge()">保存</button>
+      </nz-form-item>
+    </div>
+  </ng-template>
+</nz-drawer>
+
+<!--右键菜单-->
+<div #contextMenu class="absolute" [ngClass]="{'hidden':contextMenuHide}">
+  <ul class="appContextMenu">
+    <li style="color:#ea0606;" (click)="removeEdge($event)">
+      <span nz-icon class="me-1" nzType="delete"></span>
+      删除{{isEdge ? '连线' : '节点'}}
+    </li>
+    <li [ngClass]="{'hidden':!isEdge}" style="color: #1890ff" (click)="changeVertices($event)">
+      <span nz-icon class="me-1" nzType="node-index"></span>
+      自由调节
+    </li>
+  </ul>
+</div>

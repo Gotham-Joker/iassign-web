@@ -1,0 +1,70 @@
+<div class="node" [ngClass]="data.status" (dblclick)="interacting?edit():''"
+     (contextmenu)="interacting?onContextMenu.emit({ev:$event,cell}):''">
+  <span nz-icon nzType="svg:user_task" class="ico"></span>
+  <span class="label">{{data?.label}}</span>
+  <span class="status" *ngIf="data.status!=null && data.status!='default'">
+        <img [src]="image[data.status]">
+    </span>
+</div>
+
+<nz-drawer [nzVisible]="visible"
+           nzCloseIcon="svg:close"
+           (nzOnClose)="close()" [nzContent]="content">
+  <ng-template #content>
+    <h3 class="text-gradient bg-gradient-info">节点设置</h3>
+    <nz-tabset>
+      <nz-tab nzTitle="常规">
+        <div nz-form nzLayout="vertical">
+          <nz-form-item>
+            <nz-form-label nzRequired>标签</nz-form-label>
+            <nz-form-control>
+              <input nz-input [(ngModel)]="data.label">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>审批表单ID</nz-form-label>
+            <nz-form-control>
+              <input nz-input [(ngModel)]="data.formId">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>审批人</nz-form-label>
+            <nz-form-control>
+              <nz-select nzMode="multiple" nzAllowClear
+                         [nzOptions]="userOptions"
+                         [(ngModel)]="data.userList"></nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>审批角色</nz-form-label>
+            <nz-form-control>
+              <nz-select nzMode="multiple" nzAllowClear
+                         [nzOptions]="roleOptions"
+                         [(ngModel)]="data.roleList">
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="高级">
+        <div nz-form nzLayout="vertical">
+          <nz-form-item>
+            <nz-form-label>审批人列表(script)</nz-form-label>
+            <nz-form-control>
+                            <textarea [(ngModel)]="data.userScript" nz-input
+                                      placeholder="返回值可以是String或List<String>"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label>审批角色列表(script)</nz-form-label>
+            <nz-form-control>
+                            <textarea [(ngModel)]="data.roleScript" nz-input
+                                      placeholder="返回值可以是String或List<String>"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </nz-tab>
+    </nz-tabset>
+    <button nz-button nzType="primary" nzBlock nzShape="round" (click)="save()">保存</button>
+  </ng-template>
+</nz-drawer>

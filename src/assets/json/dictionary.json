@@ -1,0 +1,54 @@
+{
+  "processInstance": {
+    "NONE": {
+      "status": "无",
+      "color": "default",
+      "timelineColor": "gray"
+    },
+    "PENDING": {
+      "status": "待受理",
+      "color": "processing",
+      "timelineColor": "blue"
+    },
+    "RUNNING": {
+      "status": "运行中",
+      "color": "processing",
+      "timelineColor": "blue"
+    },
+    "CLAIMED": {
+      "status": "已受理",
+      "color": "processing",
+      "timelineColor": "blue"
+    },
+    "ASSIGNED": {
+      "status": "已指派",
+      "color": "processing",
+      "timelineColor": "blue"
+    },
+    "SUCCESS": {
+      "status": "已通过",
+      "color": "success",
+      "timelineColor": "green"
+    },
+    "REJECTED": {
+      "status": "已拒绝",
+      "color": "error",
+      "timelineColor": "red"
+    },
+    "BACK": {
+      "status": "已退回",
+      "color": "warning",
+      "timelineColor": "red"
+    },
+    "FAILED": {
+      "status": "已失败",
+      "color": "error",
+      "timelineColor": "red"
+    },
+    "CANCEL": {
+      "status": "已撤销",
+      "color": "error",
+      "timelineColor": "red"
+    }
+  }
+}

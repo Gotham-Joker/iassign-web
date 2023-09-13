@@ -1,0 +1,60 @@
+<nz-spin [nzSpinning]="loading">
+
+    <nz-card class="card-shadow card-radius">
+        <div class="mb-3">
+            <app-backward></app-backward>
+            <nz-divider [nzType]="'vertical'"></nz-divider>
+            <button nz-button nzShape="round" [nzType]="'primary'" (click)="save()"><i nz-icon nzType="save"></i>保存
+            </button>
+        </div>
+
+        <form nz-form [nzLayout]="'vertical'" [formGroup]="form">
+            <nz-row nzGutter="32">
+                <nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label>ID</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="id">
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label>username</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="username">
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label>email</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="email">
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+                <nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-label>部门ID</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="deptId">
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+
+                <nz-col>
+                    <nz-form-item>
+                        <nz-form-label>角色</nz-form-label>
+                        <nz-form-control>
+                            <app-transfer *ngIf="!fetching" [list]="roles" formControlName="roleIds"
+                                          [nzListStyle]="{width:'250px',minHeight:'300px'}"></app-transfer>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-col>
+            </nz-row>
+
+        </form>
+    </nz-card>
+
+</nz-spin>

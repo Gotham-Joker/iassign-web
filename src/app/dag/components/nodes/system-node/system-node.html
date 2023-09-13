@@ -1,0 +1,71 @@
+<div class="node" [ngClass]="data.status" (dblclick)="interacting?edit():''"
+     (contextmenu)="interacting?onContextMenu.emit({ev:$event,cell}):''">
+    <span nz-icon nzType="svg:system" class="ico"></span>
+    <span class="label">{{data?.label}}</span>
+    <span class="status" *ngIf="data.status!=null && data.status!='default'">
+        <img [src]="image[data.status]">
+    </span>
+</div>
+
+<nz-drawer [nzVisible]="visible"
+           nzCloseIcon="svg:close"
+           (nzOnClose)="close()" [nzContent]="content">
+    <ng-template #content>
+        <nz-tabset>
+            <nz-tab nzTitle="常规设置">
+                <div nz-form nzLayout="vertical">
+                    <nz-form-item>
+                        <nz-form-label nzRequired>标签</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input [(ngModel)]="data.label">
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>脚本</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input [(ngModel)]="data.script"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="HTTP">
+                <p class="text-gray-600">POST请求，json格式，常用于对接外部系统</p>
+                <div nz-form nzLayout="vertical">
+                    <nz-form-item>
+                        <nz-form-label>url</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input [(ngModel)]="data.url">
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>成功条件</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input placeholder='"code":0' [(ngModel)]="data.condition">
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>重试次数</nz-form-label>
+                        <nz-form-control>
+                            <nz-input-number [(ngModel)]="data.retry" [nzMin]="0" [nzMax]="5"></nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>连接超时(ms)</nz-form-label>
+                        <nz-form-control>
+                            <nz-input-number [nzMin]="0" [nzMax]="600000"
+                                             [(ngModel)]="data.connectTimeout"></nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>socket超时(ms)</nz-form-label>
+                        <nz-form-control>
+                            <nz-input-number [nzMin]="0" [nzMax]="600000"
+                                             [(ngModel)]="data.socketTimeout"></nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </nz-tab>
+        </nz-tabset>
+        <button nz-button nzType="primary" nzBlock nzShape="round" (click)="save()">保存</button>
+    </ng-template>
+</nz-drawer>

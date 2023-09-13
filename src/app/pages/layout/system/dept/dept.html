@@ -1,0 +1,98 @@
+<nz-spin [nzSpinning]="loading">
+    <nz-card class="card-shadow search-card">
+        <div nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <nz-form-label>ID</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.id">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>部门ID</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.deptId">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>部门代码</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.deptCode_like">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>部门名称</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.deptTw_like">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button [nzType]="'primary'" (click)="query(1)">
+                    <span nz-icon [nzType]="'search'"></span>查询
+                </button>
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button nzType="primary" (click)="openAdd()">
+                    <span nz-icon [nzType]="'plus'"></span>添加
+                </button>
+            </nz-form-item>
+        </div>
+    </nz-card>
+    <br>
+    <nz-card class="card-shadow">
+        <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
+                  [nzTotal]="total"
+                  [(nzPageIndex)]="queryParams.page"
+                  [(nzPageSize)]="queryParams.size"
+                  (nzPageIndexChange)="query($event)">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>部门id</th>
+                <th>部门代码</th>
+                <th>部门名称</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of basicTable.data">
+                <td>{{item.id}}</td>
+                <td>{{item.deptId}}</td>
+                <td>{{item.deptCode}}</td>
+                <td>{{item.deptTw}}</td>
+                <td>
+                    <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 编辑</a>
+                    <nz-divider [nzType]="'vertical'"></nz-divider>
+                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
+                       (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+</nz-spin>
+
+<nz-modal nzCloseIcon="svg:close" [(nzVisible)]="visible" (nzOnCancel)="visible=false" (nzOnOk)="saveOrUpdate()"
+          [nzContent]="content" nzTitle="部门信息">
+    <ng-template #content>
+        <div nz-form [formGroup]="form" nzLayout="vertical">
+            <nz-form-item *ngIf="isEdit">
+                <nz-form-label>ID</nz-form-label>
+                <nz-form-control nzErrorTip="必填项">
+                    <input nz-input formControlName="id" readonly>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzRequired>部门CODE</nz-form-label>
+                <nz-form-control nzErrorTip="必填项">
+                    <input nz-input formControlName="deptCode">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzRequired>部门名称</nz-form-label>
+                <nz-form-control nzErrorTip="必填项">
+                    <input nz-input formControlName="deptTw">
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </ng-template>
+</nz-modal>

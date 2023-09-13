@@ -1,0 +1,321 @@
+<app-backward></app-backward>
+<nz-card class="card-radius card-shadow important-mt-3" nzBorderless>
+    <div class="flex justify-between">
+        <div class="flex items-center">
+            <div class="avatar-wrap">
+                <div>
+                    <img [src]="starterInfo.avatar">
+                </div>
+            </div>
+            <div class="ml-4">
+                <div class="text-base font-bold">{{starterInfo.username}}</div>
+                <div>{{starterInfo.staffId}}</div>
+            </div>
+        </div>
+        <div class="text-end py-2 px-3 flex items-center flex-wrap">
+            <label class="text-base fw-bold mr-2">流程申请单号:</label>
+            <span class="text-base fw-bold mr-1 id-fc">{{instanceId}}</span>
+            <button *acl="'pi_log'" nz-button nzType="primary" class="ml-2" (click)="downloadLog()">下载日志</button>
+            <button nz-button nzType="primary" class="ml-2" (click)="viewGraph()">查看流程图</button>
+            <ng-container *ngIf="canAudit">
+                <button nz-button class="ml-2" (click)="claim()" *ngIf="currentTask.status=='PENDING'">确认受理</button>
+                <ng-container *ngIf="currentTask.status=='CLAIMED'||currentTask.status=='ASSIGNED'">
+                    <button nz-button class="ml-2" (click)="openAudit()">审批</button>
+                </ng-container>
+                <ng-container *ngIf="currentTask.status=='CLAIMED'">
+                    <button nz-button class="ml-2" (click)="openAssign()" *acl="'assign'">指派</button>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="p-3 pb-0">
+        <div nz-row nzGutter="24">
+            <p nz-col [nzXs]="12" [nzSm]="12" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+                <span nz-icon nzType="idcard"></span>
+                统一认证：{{starterInfo.id ?? '无'}}
+            </p>
+            <p nz-col [nzXs]="12" [nzSm]="12" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+                <span nz-icon nzType="idcard"></span>
+                姓名：{{starterInfo.username ?? '无'}}
+            </p>
+            <p nz-col [nzXs]="12" [nzSm]="12" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+                <span nz-icon nzType="mail"></span>
+                电邮：{{starterInfo.email}}
+            </p>
+            <p nz-col [nzXs]="12" [nzSm]="12" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+                <span nz-icon nzType="svg:professional"></span>
+                部门/分行：{{starterInfo.deptName ?? '无'}}
+            </p>
+            <p nz-col [nzXs]="12" [nzSm]="12" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+                <span nz-icon nzType="svg:professional"></span>
+                部门编号：{{starterInfo.deptId ?? '无'}}
+            </p>
+            <p nz-col [nzXs]="12" [nzSm]="12" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
+                <span nz-icon nzType="svg:professional"></span>
+                部门代码：{{starterInfo.deptCode ?? '无'}}
+            </p>
+        </div>
+    </div>
+</nz-card>
+<div nz-row nzGutter="16">
+
+    <div nz-col [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="15" [nzXXl]="15" class="mt-3">
+        <nz-card nzBorderless class="card-shadow card-radius" [nzLoading]="loading">
+            <div style="max-width: 950px;margin: 0 auto">
+                <div class="my-4">
+                    <span class="text-base fw-bold text-gradient bg-gradient-info">申请人提交的申请表</span>
+                </div>
+                <div>
+                    <h1 class="text-center">{{form.name}}</h1>
+                    <div class="text-center">
+                        <p>{{form.description}}</p>
+                    </div>
+                    <dy-form [form]="form" [readonly]="true"></dy-form>
+                </div>
+            </div>
+        </nz-card>
+    </div>
+
+    <div nz-col [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="9" [nzXXl]="9" class="process-timeline mt-3">
+        <nz-card nzBorderless class="card-shadow card-radius" [nzLoading]="loading">
+            <div class="mt-4 mb-5">
+                <span class="text-base fw-bold text-gradient bg-gradient-purple">审批时间轴</span>
+            </div>
+
+            <!--自带的loading不好看，替换成自定义的loading-->
+            <ng-template #loadingTpl>
+                <span nz-icon nzType="svg:loading" [nzSpin]="true"></span>
+            </ng-template>
+            <nz-timeline [nzPendingDot]="loadingTpl" [nzReverse]="true">
+                <nz-timeline-item *ngFor="let task of taskList;let idx = index"
+                                  [nzColor]="task.status|dict:'processInstance':'timelineColor'"
+                                  [nzDot]="idx==taskList.length-1&&pending?loadingTpl:''">
+                    <!-- 标题区 -->
+                    <div class="time-line-title">
+                        <!-- 审批环节名称 -->
+                        <div class="flex items-center">
+                            <span class="text-base fw-bold mr-1">{{task.name}}</span>
+                            <nz-tag [nzColor]="task.status|dict:'processInstance':'color'">
+                                {{task.status|dict:'processInstance':'status'}}
+                            </nz-tag>
+                        </div>
+                        <span class="text-indigo-800">{{task.createTime}}</span>
+                    </div>
+                    <ng-container *ngIf="task.formInstanceId!=null&&task.formInstanceId!=''">
+                        <span (click)="viewTaskHistoryForm(task.formInstanceId)"
+                              class="text-violet-600 cursor-pointer">
+                            <span nz-icon nzType="form"></span>
+                            查看审批表
+                        </span>
+                    </ng-container>
+                    <!-- 处理人内容区 -->
+                    <div *ngIf="task.userNode && task.handlerId" class="time-line-card bg-gray-50">
+                        <div class="px-2 py-1 flex justify-between items-center">
+                            <span class="flex items-center">
+                                <nz-avatar nzSize="small" [nzSrc]="task.handlerAvatar"
+                                           class="flex-shrink-0"></nz-avatar>
+                                <span class="text-base fw-bold px-2">{{task.handlerName}}</span>
+                                <span>{{task.handlerEmail ?? '邮件地址未知'}}</span>
+                            </span>
+                            <span>{{task.updateTime|diffTime}}</span>
+                        </div>
+                        <p class="remark-p" [innerHTML]="task.remark">
+                        </p>
+                    </div>
+                    <!-- 指派区 -->
+                    <div class="flex items-center px-3"
+                         *ngIf="task.userNode && task.assignId">
+                        <div>
+                            <p class="mb-0 text-danger px-3 flex flex-wrap items-center">
+                                <span nz-icon nzType="svg:link"></span>指派给:
+                                <strong class="px-2">@{{task.assignName}}</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- 指派人内容区 -->
+                    <div *ngIf="task.userNode && task.assignId" class="time-line-card bg-purple-50">
+                        <div class="px-2 py-1 flex justify-between items-center">
+                            <span class="flex items-center">
+                                <nz-avatar nzSize="small" [nzSrc]="task.assignAvatar" class="flex-shrink-0"></nz-avatar>
+                                <span class="fw-bold px-2 text-gray-800">{{task.assignName}}</span>
+                                <span>{{task.assignEmail ?? '邮件地址未知'}}</span>
+                            </span>
+                            <span>{{task.assignTime|diffTime}}</span>
+                        </div>
+                        <p class="remark-p" [innerHTML]="task.assignRemark">
+                        </p>
+                    </div>
+                    <!-- 附件区 -->
+                    <ul class="px-4 py-1" *ngIf="task.attachments!=null&&task.attachments.length>0">
+                        <li><span class="fw-bold">附件区：</span></li>
+                        <li *ngFor="let attach of task.attachments">
+                            <a [href]="attach.url" target="_blank">
+                                <span nz-icon nzType="paper-clip" class="mr-2"></span>
+                                {{attach.name}}
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- 可审批人员和角色清单 -->
+                    <ng-container *ngIf="task.userNode && task.status=='PENDING'">
+                        <ng-container *ngIf="task.users&&task.users.length>0">
+                            <div class="fw-bold text-danger">可审批人员</div>
+                            <div class="px-3 flex flex-wrap">
+                                <div *ngFor="let item of task.users" class="flex items-center mt-2">
+                                    <nz-avatar [nzSrc]="item.avatar"></nz-avatar>
+                                    <div class="truncate mx-2" style="width:62px">
+                                        {{item.name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="task.roles&&task.roles.length>0">
+                            <div class="fw-bold text-danger my-2">可审批角色</div>
+                            <div class="px-3">
+                                <span *ngFor="let item of task.roles" class="mt-2 mx-2">
+                                    <span nz-icon nzType="team" class="text-lg"></span>
+                                    {{item.name}}
+                                </span>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </nz-timeline-item>
+            </nz-timeline>
+        </nz-card>
+    </div>
+</div>
+
+<!-- DAG流程图 -->
+<nz-modal [nzCloseIcon]="closeTpl" [(nzVisible)]="visible" [nzContent]="content"
+          [nzOkLoading]="modalLoading" [nzFooter]="null" [nzCentered]="true"
+          (nzOnCancel)="visible=false" nzWidth="100%" (nzOnOk)="visible=false" [nzBodyStyle]="{'padding':'24px'}">
+    <ng-template #content>
+        <div class="relative h-90vh">
+            <div class="absolute z-10 left-0 ml-2 mt-2">
+                <button nz-button (click)="zoom(-0.1)"><span nz-icon nzType="zoom-out"></span></button>
+                <button nz-button (click)="zoom(0.1)"><span nz-icon nzType="zoom-in"></span></button>
+            </div>
+            <dag-container #dagContainer [interacting]="false"></dag-container>
+        </div>
+    </ng-template>
+    <ng-template #closeTpl>
+        <span nz-icon nzType="svg:close" class="mr-6 mt-8"></span>
+    </ng-template>
+</nz-modal>
+
+<!-- 指派弹窗 -->
+<app-process-assign [(visible)]="assignVisible" (onAssign)="assign($event)"></app-process-assign>
+
+<app-shot-overlay [(ngModel)]="drawer.visible">
+    <nz-spin [nzSpinning]="drawer.loading">
+        <div class="px-5 pt-5 pb-3 mt-4">
+            <div style="max-width: 768px;margin: auto">
+                <ng-container *ngIf="canAudit && needAuditForm">
+                    <div class="pt-3">
+                        <div>
+                            <span class="text-base fw-bold text-gradient bg-gradient-success">当前审批人需要填写的审批表</span>
+                        </div>
+                        <div>
+                            <h1 class="text-center">{{auditForm.name}}</h1>
+                            <div class="text-center">
+                                <p>{{auditForm.description}}</p>
+                            </div>
+                            <dy-form [form]="auditForm" #auditFormContainer></dy-form>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <div nz-form nzLayout="vertical">
+                    <nz-form-item>
+                        <nz-form-label><span class="fw-bold">邮件抄送</span></nz-form-label>
+                        <nz-form-control>
+                            <app-mail-select [list]="userList" [(emails)]="emails"></app-mail-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>审批意见</nz-form-label>
+                        <nz-form-control>
+                            <!-- 如果觉得富文本不安全，审批意见输入框也可以改成 <textarea [(ngMogal)]="" nz-input></textarea> -->
+                            <app-rich-text #richText [(ngModel)]="drawer.data.remark"></app-rich-text>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>上传附件</nz-form-label>
+                        <nz-form-control>
+                            <nz-upload [nzBeforeUpload]="upload" [(nzFileList)]="drawer.attachments">
+                                <button nz-button><i nz-icon [nzType]="'upload'"></i>点击上传</button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <ng-container *ngIf="!isBack;else backTpl">
+                        <nz-form-item>
+                            <nz-row nzGutter="24" nzJustify="space-between">
+                                <nz-col nzSpan="8">
+                                    <button nzBlock nz-button nzType="primary" (click)="approve()">
+                                        <span nz-icon nzType="check"></span>
+                                        同意
+                                    </button>
+                                </nz-col>
+                                <nz-col nzSpan="8">
+                                    <button class="ant-btn ant-btn-warning w-full" (click)="openBack()">
+                                        <span nz-icon nzType="undo"></span>
+                                        退回
+                                    </button>
+                                </nz-col>
+                                <nz-col nzSpan="8">
+                                    <button nzBlock nz-button nzType="primary" nzDanger (click)="reject()">
+                                        <span nz-icon nzType="svg:close2"></span>
+                                        拒绝
+                                    </button>
+                                </nz-col>
+                            </nz-row>
+                        </nz-form-item>
+                    </ng-container>
+                    <ng-template #backTpl>
+                        <nz-form-item>
+                            <nz-form-label nzRequired>回退环节</nz-form-label>
+                            <nz-form-control>
+                                <nz-select style="width: 100%" [(ngModel)]="drawer.data.backwardTaskId">
+                                    <nz-option *ngFor="let item of backList"
+                                               [nzLabel]="'【'+item.createTime+'】 '+item.name"
+                                               [nzValue]="item.id"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-row nzGutter="24">
+                                <nz-col nzSpan="12">
+                                    <button class="ant-btn ant-btn-warning ant-btn-round w-full" (click)="back()">
+                                        <span nz-icon nzType="undo"></span>
+                                        确认退回
+                                    </button>
+                                </nz-col>
+                                <nz-col nzSpan="12">
+                                    <button nz-button nzGhost nzType="primary" class="ant-btn ant-btn-round w-full"
+                                            (click)="cancelBack()">
+                                        <span nz-icon nzType="svg:close2"></span>
+                                        取消退回
+                                    </button>
+                                </nz-col>
+                            </nz-row>
+                        </nz-form-item>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </nz-spin>
+</app-shot-overlay>
+
+<nz-modal [(nzVisible)]="taskHistoryForm.visible" nzCloseIcon="svg:close" [nzContent]="taskFormContent"
+          [nzOkLoading]="taskHistoryForm.loading" [nzFooter]="null"
+          (nzOnCancel)="taskHistoryForm.visible=false" nzWidth="950px" (nzOnOk)="taskHistoryForm.visible=false">
+    <ng-template #taskFormContent>
+        <div>
+            <h1 class="text-center">{{taskHistoryForm.form.name}}</h1>
+            <div class="text-center">
+                <p>{{taskHistoryForm.form.description}}</p>
+            </div>
+            <dy-form [form]="taskHistoryForm.form" [readonly]="true"></dy-form>
+        </div>
+    </ng-template>
+</nz-modal>

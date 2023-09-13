@@ -1,0 +1,84 @@
+// Custom Theming for NG-ZORRO
+// For more information: https://ng.ant.design/docs/customize-theme/en
+@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
+
+// Override less variables to here
+// View all variables: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less
+
+// @primary-color: #1890ff;
+
+@border-radius-base: .25rem;
+@layout-header-height: 48px;
+@menu-inline-submenu-bg: white; // 菜单展开背景色
+@table-header-bg: rgb(236, 238, 244); // 表格头背景色
+@table-header-color: rgb(57, 65, 97); // 表格头字体色
+@disabled-color: fade(#000, 70%); // 禁用色
+.ant-table-thead > tr > th {
+  padding: 8px 16px;
+}
+
+@card-head-color: #344767;
+.ant-card {
+  border-radius: 0.428rem;
+}
+
+.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+  border-right: none;
+}
+
+.ant-card-head {
+  border-bottom: 0;
+}
+
+.search-card .ant-card-body {
+  padding-bottom: 14px;
+}
+
+.search-card .ant-form-inline .ant-form-item {
+  margin-bottom: 10px;
+}
+
+.ant-tooltip-arrow {
+  width: 18px;
+  height: 16px;
+}
+
+.cdk-overlay-container {
+  top: 8px;
+}
+
+.ant-segmented {
+  background-color: rgba(248, 250, 253, 1);
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.ant-segmented:not(.ant-segmented-disabled):hover, .ant-segmented:not(.ant-segmented-disabled):focus {
+  background-color: rgba(248, 250, 253, 0.98);
+}
+
+.ant-segmented-item:not(.ant-segmented-item-selected) .ant-segmented-item-label:hover {
+  color: #1366ff;
+}
+
+.ant-segmented-item-selected {
+  color: #1e2022;
+  background-color: #ffffff;
+  box-shadow: 0 0.1875rem 0.375rem 0 rgb(140 152 164 /25%);
+  border-radius: 0.5rem
+}
+
+.ant-select-single .ant-select-selector .ant-select-selection-item {
+  user-select: text;
+}
+
+.ant-btn-warning {
+  .button-variant-primary(@btn-primary-color; @warning-color; @warning-color-hover; @warning-color-active);
+}
+
+.ant-btn-success {
+  .button-variant-primary(@btn-primary-color; @success-color; @success-color-hover; @success-color-active);
+}
+.ant-notification-notice{
+  border-radius: .5rem;
+}

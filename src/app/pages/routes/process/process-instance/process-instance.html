@@ -1,0 +1,94 @@
+<nz-spin [nzSpinning]="loading">
+    <nz-card class="card-shadow search-card card-radius" nzBorderless>
+        <div nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <nz-form-label>申请编号</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.id"/>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>流程名称</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.name_like"/>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>申请日期</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker [(ngModel)]="createTime_ge"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzNoColon]="true" class="pr-1">~</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker [(ngModel)]="createTime_le"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+            <!-- <nz-form-item>
+                 <nz-form-label>关键字
+                     <a nz-tooltip
+                        nzTooltipTitle="可根据关键字搜索您曾经填写过的内容或上传过的附件名，例如'身体不舒服'或者'医生证明'">
+                         <span class="ml-1" nz-icon nzType="question-circle"></span>
+                     </a>
+                 </nz-form-label>
+                 <nz-form-control>
+                     <input nz-input [(ngModel)]="queryParams.content">
+                 </nz-form-control>
+             </nz-form-item>-->
+            <nz-form-item>
+                <button nz-button [nzType]="'primary'" (click)="query(1)">
+                    <i nz-icon [nzType]="'search'"></i>查询
+                </button>
+            </nz-form-item>
+        </div>
+    </nz-card>
+
+    <nz-card class="card-shadow card-radius important-mt-3" nzBorderless>
+        <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
+                  [nzTotal]="total"
+                  [(nzPageIndex)]="queryParams.page"
+                  [(nzPageSize)]="queryParams.size"
+                  (nzPageIndexChange)="query($event)">
+            <thead>
+            <tr>
+                <th>申请编号(用于追踪)</th>
+                <th>流程名称</th>
+                <th>流程状态</th>
+                <th>当前处理人</th>
+                <th>申请时间</th>
+                <th>结束时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of basicTable.data">
+                <td><span class="text-gradient bg-gradient-danger fw-bold">{{item.id}}</span></td>
+                <td>{{item.name}}</td>
+                <td>
+                    <nz-tag [nzColor]="item.status|dict:'processInstance':'color'">
+                        {{item.status|dict:'processInstance':'status'}}
+                    </nz-tag>
+                </td>
+                <td>{{item.handlerName}}</td>
+                <td>{{item.createTime}}</td>
+                <td>{{item.updateTime}}</td>
+                <td>
+                    <a routerLink="../process-detail" [queryParams]="{id:item.id}">
+                        <span nz-icon nzType="edit"></span>
+                        详情
+                    </a>
+                    <ng-container *ngIf="item.status=='RUNNING'">
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-popconfirm nzPopconfirmTitle="确定撤销吗？" nzOkDanger
+                           (nzOnConfirm)="cancel(item.id)" class="text-red-500  hover:text-red-400">
+                            <span nz-icon nzType="rollback"></span>
+                            撤销
+                        </a>
+                    </ng-container>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+</nz-spin>

@@ -1,0 +1,120 @@
+$expand-width: 200px;
+$nav-width: 110px;
+
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 501;
+}
+
+.nav-btn {
+  width: 42px;
+  height: 10px;
+  display: flex;
+  justify-content: space-around;
+  margin-left: 11px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.nav-btn-item {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  &:nth-child(1) {
+    background-color: #eb5a56;
+  }
+
+  &:nth-child(2) {
+    background-color: #f8bc33;
+  }
+
+  &:nth-child(3) {
+    background-color: #62cb44;
+  }
+
+}
+
+.nav-user {
+  width: $expand-width;
+  height: 60px;
+  margin-top: 32px;
+  display: flex;
+  padding-left: 16px;
+  align-items: center;
+}
+
+.nav-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.nav-user-info {
+  width: 128px;
+  height: 45px;
+  padding-left: 8px;
+  overflow: hidden;
+  transition: width 0.3s;
+}
+
+.nav-line {
+  width: 178px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.12);
+  margin: 20px 11px;
+  transition: 0.3s;
+}
+
+// 菜单收缩时，使用另一种样式
+.ant-layout-sider-collapsed {
+  .nav-user {
+    width: 64px;
+    padding-left: 14px;
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .nav-user-info {
+    //display: none;
+    width: 0px;
+    padding-left: 0px;
+    transition: none;
+  }
+
+  .nav-line {
+    width: 42px;
+  }
+}
+
+// 菜单收缩时分组标签居中
+::ng-deep.ant-menu.ant-menu-inline-collapsed .ant-menu-item-group-title {
+  text-align: center;
+}
+
+// 菜单收缩时图标变大
+/*::ng-deep.ant-sidebar.ant-sidebar-inline-collapsed > .ant-sidebar-item,::ng-deep.ant-sidebar.ant-sidebar-inline-collapsed > .ant-sidebar-submenu > .ant-sidebar-submenu-title {
+  padding: 0 calc(50% - 26px / 2);
+}
+::ng-deep.ant-sidebar.ant-sidebar-inline-collapsed > .ant-sidebar-item .anticon,::ng-deep.ant-sidebar.ant-sidebar-inline-collapsed > .ant-sidebar-submenu > .ant-sidebar-submenu-title .anticon {
+  font-size: 26px;
+}*/
+
+::ng-deep.ant-layout-header {
+  padding: 0;
+  background-color: transparent;
+}

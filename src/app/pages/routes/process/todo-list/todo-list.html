@@ -1,0 +1,74 @@
+<nz-card class="card-shadow card-radius search-card" [nzBorderless]="true" [nzLoading]="loading">
+    <div nz-form nzLayout="inline">
+        <nz-form-item>
+            <nz-form-label>申请编号</nz-form-label>
+            <nz-form-control>
+                <input nz-input [(ngModel)]="queryParams.instanceId">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>申请人ID</nz-form-label>
+            <nz-form-control>
+                <input nz-input [(ngModel)]="queryParams.starter">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>流程名称</nz-form-label>
+            <nz-form-control>
+                <input nz-input [(ngModel)]="queryParams.definitionName">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>申请日期</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker [(ngModel)]="createTime_ge"></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzNoColon]="true" class="pr-1">~</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker [(ngModel)]="createTime_le"></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <button nzType="primary" nz-button (click)="query()"><span nz-icon nzType="search"></span>查询</button>
+        </nz-form-item>
+    </div>
+</nz-card>
+
+
+<div nz-row nzGutter="16">
+    <div *ngFor="let item of list;let idx=index" nz-col [nzXs]="24" [nzSm]="24" [nzMd]="12" [nzLg]="8" [nzXl]="6">
+        <div class="audit-card">
+            <div class="flex items-center">
+                <div class="flex">
+                    <nz-tag class="b-0 rounded-5" [nzColor]="nzColors[idx%13]">
+                        申请人: {{item.starterName}}</nz-tag>
+                </div>
+                <div class="audit-prefix flex flex-grow-1 justify-end">
+                    <div class="audit-badge"></div>
+                    <div class="audit-badge"></div>
+                    <div class="audit-badge"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="mt-2 fw-bold text-base ellipsis text-gradient bg-gradient-danger">{{item.instanceId}}</div>
+                <div class="my-2 text-base fw-bold">{{item.definitionName}}</div>
+                <p class="ellipsis text-gray-600">审批环节: {{item.taskName}}</p>
+                <div class="text-center text-white bg-indigo shadow-md
+                     shadow-indigo-100 b-rd-md cursor-pointer py-1
+                     hover:bg-indigo-300 hover:shadow-indigo-50"
+                     [routerLink]="'../process-detail'" [queryParams]="{id:item.instanceId}">
+                    {{(item.status|dict:'processInstance').status}}
+                </div>
+                <div class="audit-card-bottom mt-3">
+                    <div>
+                        <img src="/assets/logo.png">
+                    </div>
+                    <div>{{item.createTime}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

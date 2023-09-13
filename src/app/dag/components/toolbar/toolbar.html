@@ -1,0 +1,29 @@
+<div>
+    <ul class="app-toolbar">
+        <li nz-tooltip [nzTooltipTitle]="'保存'">
+            <button nzType="text" nz-button (click)="handleSave()">
+                <span nz-icon nzType="save"></span>
+            </button>
+        </li>
+        <li nz-tooltip [nzTooltipTitle]="'放大'">
+            <button nzType="text" nz-button (click)="handleToolbar('zoom-in')">
+                <span nz-icon nzType="zoom-in"></span>
+            </button>
+        </li>
+        <li nz-tooltip [nzTooltipTitle]="'缩小'">
+            <button nzType="text" nz-button (click)="handleToolbar('zoom-out')">
+                <span nz-icon nzType="zoom-out"></span>
+            </button>
+        </li>
+        <li nz-tooltip [nzTooltipTitle]="'实际大小'">
+            <button nzType="text" nz-button (click)="handleToolbar('one-to-one')">
+                <span nz-icon nzType="one-to-one"></span>
+            </button>
+        </li>
+        <li nz-tooltip [nzTooltipTitle]="'自适应'">
+            <button nzType="text" nz-button (click)="handleToolbar('auto-fit')">
+                <span nz-icon nzType="column-width"></span>
+            </button>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,7 @@
+<div class="node-panel">
+    <div class="node-panel-wrapper">
+        <li *ngFor="let node of nodes" draggable="true" (dragstart)="handleDragStart($event,node.key)">
+            <span nz-tooltip [nzTooltipTitle]="node.label" nz-icon [nzType]="node.icon" class="node-panel-icon"></span>
+        </li>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<nz-card [nzBordered]="false" class="card-hover-shadow card-radius metrics-card" [nzLoading]="loading">
+    <h6 class="metrics-card-subtitle">{{subtitle}}</h6>
+    <div nz-row nzGutter="16">
+        <div nz-col nzSpan="10">
+            <h2 class="mb-0 text-data" nz-tooltip [nzTooltipTitle]="data">
+                {{data}}
+            </h2>
+        </div>
+        <div nz-col nzSpan="14">
+            <div style="height: 3rem">
+                <div #miniChart></div>
+            </div>
+        </div>
+    </div>
+    <app-badge [riseUp]="isRise" [desc]="desc">{{isRise?'+':''}}{{growth|percent:'1.2-2'}}</app-badge>
+</nz-card>

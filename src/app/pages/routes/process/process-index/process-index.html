@@ -1,0 +1,113 @@
+<nz-spin [nzSpinning]="loading">
+    <nz-card class="card-shadow search-card">
+        <div nz-form [nzLayout]="'inline'">
+            <!--<nz-form-item>
+                <nz-form-label>流程定义ID</nz-form-label>
+                <nz-form-control>
+                    <input [disabled]="true" nz-input [(ngModel)]="bodyParams.definitionId">
+                </nz-form-control>
+            </nz-form-item>-->
+            <nz-form-item>
+                <nz-form-label>申请单号</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="bodyParams.id">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>申请人ID</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="bodyParams.starter">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>申请部门</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="bodyParams.deptName">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>申请状态</nz-form-label>
+                <nz-form-control>
+                    <nz-select [(ngModel)]="bodyParams.status">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option nzValue="CANCEL" nzLabel="已撤销"></nz-option>
+                        <nz-option nzValue="RUNNING" nzLabel="运行中"></nz-option>
+                        <nz-option nzValue="SUCCESS" nzLabel="已成功"></nz-option>
+                        <nz-option nzValue="FAILED" nzLabel="已失败"></nz-option>
+                    </nz-select>
+                    <!--                    <input nz-input [(ngModel)]="bodyParams.starterName">-->
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>申请日期</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker [(ngModel)]="createTimeGe" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+                    ~
+                    <nz-date-picker [(ngModel)]="createTimeLe" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>内容</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="bodyParams.content">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button [nzType]="'primary'" (click)="query(1)">
+                    <span nz-icon [nzType]="'search'"></span>查询
+                </button>
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button [nzType]="'primary'" (click)="download()">
+                    <span nz-icon [nzType]="'download'"></span>导出
+                </button>
+            </nz-form-item>
+        </div>
+    </nz-card>
+
+    <br>
+
+    <nz-card class="card-shadow">
+        <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
+                  [nzTotal]="total"
+                  [(nzPageIndex)]="queryParams.page"
+                  [(nzPageSize)]="queryParams.size"
+                  (nzPageIndexChange)="query($event)">
+            <thead>
+            <tr>
+                <th>申请单号</th>
+                <th>流程名称</th>
+                <th>状态</th>
+                <th>申请人ID</th>
+                <th>申请人姓名</th>
+                <th>申请部门</th>
+                <th>申请日期</th>
+                <th>内容</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of basicTable.data">
+                <td><span class="fw-bold text-gradient bg-gradient-danger">{{item.id}}</span></td>
+                <td>{{item.name}}</td>
+                <td>
+                    <nz-tag [nzColor]="item.status|dict:'processInstance':'color'">
+                        {{item.status|dict:'processInstance':'status'}}
+                    </nz-tag>
+                </td>
+                <td>{{item.starter}}</td>
+                <td>{{item.starterName}}</td>
+                <td>{{item.deptName}}</td>
+                <td>{{item.createTime}}</td>
+                <td>
+                    <div nz-tooltip [nzTooltipTitle]="item.content" class="truncate"
+                         style="width: 300px">{{item.content}}</div>
+                </td>
+                <td>
+                    <a [routerLink]="'/process/process-detail'" [queryParams]="{id:item.id}">详情</a>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+</nz-spin>

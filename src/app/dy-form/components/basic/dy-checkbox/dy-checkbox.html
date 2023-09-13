@@ -1,0 +1,11 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
+                 [nzRequired]="config.required">{{config.label}}</nz-form-label>
+  <nz-form-control>
+    <ng-container *ngFor="let item of config.options.split('\n')">
+      <label nz-checkbox [nzValue]="item" [nzChecked]="isCheck(item)"
+             (nzCheckedChange)="change($event,item)"
+             [nzDisabled]="config.readOnly">{{item}}</label>
+    </ng-container>
+  </nz-form-control>
+</nz-form-item>

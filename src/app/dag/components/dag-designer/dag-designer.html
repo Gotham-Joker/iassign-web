@@ -1,0 +1,14 @@
+<div #ele class="h-100vh d-flex flex-col relative">
+    <!-- 顶部工具栏 -->
+    <dag-toolbar [dagContainer]="dagContainer" (onSave)="onSave.emit($event)"></dag-toolbar>
+    <!-- dag区域 -->
+    <div [ngStyle]="{height:containerHeight}">
+        <dag-container #dagContainer
+                           (dragover)="handleDragOver($event)"
+                           (drop)="handleDrop($event)"></dag-container>
+    </div>
+
+    <!-- 侧边栏：节点拖拽面板 -->
+    <dag-node-panel (nodeDrag)="handleDrag($event)"></dag-node-panel>
+
+</div>

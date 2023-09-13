@@ -1,0 +1,24 @@
+<nz-tabset [(nzSelectedIndex)]="ref.config.tabIndex">
+  <nz-tab nzTitle="外观">
+    <div nz-form layout="horizontal">
+
+      <nz-form-item>
+        <nz-form-label> 列 数</nz-form-label>
+        <nz-form-control>
+          <nz-input-number style="width:100%" [nzMin]="1" [nzMax]="10" [(ngModel)]="ref.config.colSize"
+                           (ngModelChange)="change($event)"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>列间隔<i nz-icon [nzType]="'question-circle'" nz-popover nzPopoverContent="像素,推荐16+8n"></i></nz-form-label>
+        <nz-form-control>
+          <nz-input-number style="width: 100%" [nzMin]="0" [nzStep]="8"
+                           [(ngModel)]="ref.config.gutter"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+
+    </div>
+  </nz-tab>
+
+</nz-tabset>

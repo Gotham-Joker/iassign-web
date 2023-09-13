@@ -1,0 +1,76 @@
+<nz-spin [nzSpinning]="loading">
+    <nz-card class="card-shadow">
+        <div nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <nz-form-label>ID</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.id">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>角色名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.name_like">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button [nzType]="'primary'" (click)="query(true)">
+                    <i nz-icon [nzType]="'search'"></i>查询
+                </button>
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button (click)="edit(null)"><i nz-icon [nzType]="'plus'"></i>添加角色</button>
+            </nz-form-item>
+        </div>
+    </nz-card>
+    <br>
+    <nz-card class="card-shadow">
+        <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
+                  [nzTotal]="total"
+                  [(nzPageIndex)]="queryParams.page"
+                  [(nzPageSize)]="queryParams.size"
+                  (nzPageIndexChange)="pageChange($event)">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>角色名</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of basicTable.data">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>
+                    <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 编辑</a>
+                    <nz-divider [nzType]="'vertical'"></nz-divider>
+                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
+                       (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+    <nz-modal [(nzVisible)]="modal.visible" [nzTitle]="modal.title" (nzOnCancel)="modal.visible=false" (nzOnOk)="save()"
+              [nzOkLoading]="modal.loading" [nzCloseIcon]="'svg:close'"
+              [nzContent]="content">
+        <ng-template #content>
+            <div nz-form [nzLayout]="'horizontal'" [formGroup]="modal.form">
+                <nz-form-item>
+                    <nz-form-label nzRequired>角色名</nz-form-label>
+                    <nz-form-control nzErrorTip="必填项">
+                        <input placeholder="e.g. 管理员" nz-input formControlName="name">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>分配菜单</nz-form-label>
+                    <app-transfer [list]="modal.menus" formControlName="menuIds"></app-transfer>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>分配权限</nz-form-label>
+                    <app-transfer [list]="modal.pms" formControlName="permissionIds"></app-transfer>
+                </nz-form-item>
+            </div>
+        </ng-template>
+    </nz-modal>
+</nz-spin>

@@ -1,0 +1,11 @@
+<app-backward [isBack]="false" (onBack)="backward()"></app-backward>
+<nz-card class="card-shadow card-radius important-mt-3">
+    <div class="card-content-responsive">
+        <h2 class="text-center">{{data.name}}</h2>
+        <small class="text-center description mb-3">{{data.description}}</small>
+
+        <dy-form [form]="data"></dy-form>
+
+        <button nz-button nzType="primary" nzShape="round" nzBlock>提 交</button>
+    </div>
+</nz-card>

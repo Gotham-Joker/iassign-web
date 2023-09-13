@@ -1,0 +1,10 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
+                 [nzRequired]="config.required">{{config.label}}</nz-form-label>
+  <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
+    <nz-date-picker style="width: 280px" [nzDisabled]="config.readOnly"
+                    [(ngModel)]="date" (ngModelChange)="change($event)"
+                    [nzShowTime]="config.showTime"
+                    [nzFormat]="config.showTime?dateTimeFormat:dateFormat"></nz-date-picker>
+  </nz-form-control>
+</nz-form-item>

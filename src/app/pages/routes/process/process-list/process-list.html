@@ -1,0 +1,42 @@
+<nz-spin [nzSpinning]="loading">
+    <div class="shadow-lg shadow-gray-200 b-rd-2 p-4 bg-white search-card">
+        <div nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <nz-form-label>关键字</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="keyword" placeholder="序号,名称,部门,描述"/>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <button nz-button [nzType]="'primary'" (click)="query()">
+                    <i nz-icon [nzType]="'search'"></i>查询
+                </button>
+            </nz-form-item>
+        </div>
+    </div>
+
+    <ng-container *ngFor="let key of list">
+        <div class="p-4 b-rd-2 shadow-lg shadow-gray-200 mt-5 bg-white">
+            <div class="text-base fw-bold">{{key}}</div>
+            <div nz-row nzGutter="16">
+                <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="6" *ngFor="let item of group[key]">
+                    <div class="process-item" routerLink="../process-start"
+                         [queryParams]="{id:item.id,formId:item.formId}">
+                        <span class="process-icon-wrapper">
+                            <nz-avatar [nzSrc]="item.icon" nzSize="large" class="process-icon"></nz-avatar>
+                        </span>
+                        <div class="pl-3">
+                            <div class="text-base fw-bold text-white">
+                                <span>{{item.seqNo}}</span>
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <span>{{item.name}}</span>
+                            </div>
+                            <div class="process-desc text-ellipsis">{{item.description}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</nz-spin>

@@ -1,0 +1,25 @@
+@media(max-width: 1099.98px) {
+  .search-input {
+    width: 100%;
+  }
+}
+@media(min-width: 1100px) {
+  .search-input {
+    width: 20rem;
+  }
+}
+
+
+ul {
+  &.search-input li:not(:first-child) {
+    border-top: 1px solid #efefef;
+  }
+
+  &.search-input li {
+    padding: 8px 0;
+  }
+
+  &.search-input {
+    margin-bottom: 0;
+  }
+}

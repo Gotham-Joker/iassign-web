@@ -1,0 +1,77 @@
+<nz-card nzBorderless class="card-radius card-shadow">
+    <nz-tabset nzTabPosition="left">
+        <nz-tab nzTitle="Profile">
+            <div>
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <img [src]="userInfo.avatar">
+                        <div class="absolute right-0 bottom-0">
+                            <nz-upload [nzBeforeUpload]="upload" [nzShowUploadList]="false"
+                                       [nzAccept]="['.jpg','.png']">
+                                <button nzSize="small" nz-button nzShape="circle">
+                                    <span nz-icon nzType="upload"></span>
+                                </button>
+                            </nz-upload>
+                        </div>
+                    </div>
+                    <div class="flex flex-col ml-3">
+                        <div class="fw-bold">{{userInfo.username}}</div>
+                        <span class="text-gray-800">{{userInfo.deptName}}</span>
+                        <span class="text-gray-800">
+                            中国
+                            <nz-divider nzType="vertical"></nz-divider>
+                            工银澳门
+                        </span>
+                    </div>
+                  <!--  <div class="flex-grow-1 flex justify-end ml-3 mr-3">
+                        &lt;!&ndash; <nz-upload [nzBeforeUpload]="upload" [nzShowUploadList]="false" [nzAccept]="['.jpg','.png']">
+                             <button nzShape="round" nz-button nzType="default">
+                                 更换头像 <span nz-icon nzType="upload"></span>
+                             </button>
+                         </nz-upload>&ndash;&gt;
+                        <button nzShape="round" nz-button nzType="default" class="ml-2">
+                            编辑信息 <span nz-icon nzType="edit"></span>
+                        </button>
+                    </div>-->
+                </div>
+                <div class="profile-card mt-3">
+                    <nz-descriptions nzTitle="个人信息" nzSize="default">
+                        <nz-descriptions-item nzTitle="ID">{{userInfo.id}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="姓名">{{userInfo.username}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="邮箱">{{userInfo.email}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="部门">{{userInfo.deptName}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="部门ID">{{userInfo.deptId}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="部门代码">{{userInfo.deptCode}}</nz-descriptions-item>
+                    </nz-descriptions>
+                </div>
+            </div>
+        </nz-tab>
+        <!-- <nz-tab nzTitle="Security">
+             <div class="profile-card">
+                 <div nz-form [formGroup]="passwdForm" nzLayout="vertical" style="width: 320px">
+                     <nz-form-item>
+                         <nz-form-label nzRequired>原密码</nz-form-label>
+                         <nz-form-control nzErrorTip="请输入原密码">
+                             <input nz-input type="password" formControlName="rawPasswd">
+                         </nz-form-control>
+                     </nz-form-item>
+                     <nz-form-item>
+                         <nz-form-label nzRequired>新密码</nz-form-label>
+                         <nz-form-control nzErrorTip="请输入新密码，长度不少于6位">
+                             <input nz-input type="password" formControlName="newPasswd">
+                         </nz-form-control>
+                     </nz-form-item>
+                     <nz-form-item>
+                         <nz-form-label nzRequired>确认密码</nz-form-label>
+                         <nz-form-control nzErrorTip="请确认密码">
+                             <input nz-input type="password" formControlName="confirmPasswd">
+                         </nz-form-control>
+                     </nz-form-item>
+                     <nz-form-item>
+                         <button nzShape="round" nzBlock nz-button nzType="primary">确认修改</button>
+                     </nz-form-item>
+                 </div>
+             </div>
+         </nz-tab>-->
+    </nz-tabset>
+</nz-card>

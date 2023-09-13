@@ -1,0 +1,113 @@
+<nz-spin [nzSpinning]="loading">
+
+
+    <nz-card class="card-shadow">
+        <div nz-form [nzLayout]="'inline'">
+            <nz-form-item>
+                <nz-form-label>ID</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.id">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>菜单名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.name_like">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button [nzType]="'primary'" (click)="query(true)">
+                    <i nz-icon [nzType]="'search'"></i>查询
+                </button>
+            </nz-form-item>
+            <nz-form-item>
+                <button nz-button (click)="edit(null)"><i nz-icon [nzType]="'plus'"></i>添加菜单</button>
+            </nz-form-item>
+        </div>
+    </nz-card>
+    <br>
+    <nz-card class="card-shadow">
+        <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
+                  [nzTotal]="total"
+                  [(nzPageIndex)]="queryParams.page"
+                  [(nzPageSize)]="queryParams.size"
+                  (nzPageIndexChange)="pageChange($event)">
+            <thead>
+            <tr>
+                <th>菜单名</th>
+                <th>图标</th>
+                <th>link</th>
+                <th>weight</th>
+                <th>所有人可见</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of basicTable.data">
+                <td>{{item.text}}</td>
+                <td>{{item.icon}}</td>
+                <td>{{item.link}}</td>
+                <td>{{item.weight}}</td>
+                <td>{{item.allAvailable}}</td>
+                <td>
+                    <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 编辑</a>
+                    <nz-divider [nzType]="'vertical'"></nz-divider>
+                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
+                       (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+    <nz-modal [(nzVisible)]="modal.visible" [nzTitle]="modal.title" (nzOnCancel)="modal.visible=false" (nzOnOk)="save()"
+              [nzOkLoading]="modal.loading" [nzCloseIcon]="'svg:close'"
+              [nzContent]="content">
+        <ng-template #content>
+            <div nz-form [nzLayout]="'horizontal'" [formGroup]="modal.form">
+                <nz-form-item>
+                    <nz-form-label nzRequired>父级菜单</nz-form-label>
+                    <nz-form-control nzErrorTip="必填项">
+                        <nz-select formControlName="pid" [nzPlaceHolder]="'父级菜单'">
+                            <nz-option nzLabel="HOME" [nzValue]="'0'"></nz-option>
+                            <nz-option *ngFor="let item of parents" [nzLabel]="item.text"
+                                       [nzValue]="item.id"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzRequired>weight</nz-form-label>
+                    <nz-form-control nzErrorTip="必填项">
+                        <nz-input-number nzPlaceHolder="e.g. 1000" formControlName="weight"></nz-input-number>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzRequired>菜单名</nz-form-label>
+                    <nz-form-control nzErrorTip="必填项">
+                        <input placeholder="e.g. 用户管理" nz-input formControlName="text">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>icon</nz-form-label>
+                    <nz-form-control>
+                        <input placeholder="e.g. dashboard" nz-input formControlName="icon">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>链接</nz-form-label>
+                    <nz-form-control>
+                        <input placeholder="e.g. /layout/dashboard" nz-input formControlName="link">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>所有人可见</nz-form-label>
+                    <nz-form-control>
+                        <nz-radio-group formControlName="allAvailable">
+                            <label nz-radio [nzValue]="true">是</label>
+                            <label nz-radio [nzValue]="false">否</label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </ng-template>
+    </nz-modal>
+</nz-spin>

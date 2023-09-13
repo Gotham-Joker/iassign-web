@@ -1,0 +1,183 @@
+.app-header-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  padding: 2px 25px;
+  background-color: white;
+  z-index: 500;
+}
+
+.shadow-blur {
+  box-shadow: inset 0 0 1px 1px rgba(255, 255, 255, 0.9), 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+}
+@media print {
+  .app-header-bar {
+    display: none !important; // 打印的时候，隐藏顶部
+  }
+}
+
+@media(max-width: 767.98px) {
+  .app-breadcrumb {
+    display: none;
+  }
+
+}
+
+@media(min-width: 768px) {
+  .app-breadcrumb {
+    display: block;
+  }
+}
+
+.app-breadcrumb-responsive {
+  display: flex;
+  align-items: center;
+  margin-left: 64px;
+  max-height: 48px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+}
+
+.app-header-wrap {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  transition: 0.3s;
+  margin-left: 136px;
+}
+
+.app-collapsed {
+  .app-header-wrap {
+    margin-left: 0;
+  }
+}
+
+.app-header-item {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 8px;
+}
+
+.app-header-item li {
+  list-style: none;
+  //margin-left: 8px;
+}
+
+.header-btn {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.header-avatar-wrapper {
+  cursor: pointer;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 4px;
+
+  .header-name {
+    color: rgba(0, 0, 0, .7);
+    font-weight: 500
+  }
+
+  &:hover {
+    background-color: rgba(64, 169, 255, 0.2);
+  }
+}
+
+.header-avatar {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    align-items: center;
+  }
+}
+
+.header-icon {
+  height: 36px;
+  min-width: 50px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    font-size: 1.4rem;
+    color: #606060
+  }
+
+  &:hover {
+    background-color: rgb(64, 169, 255, 0.2);
+  }
+}
+
+.header-notification {
+  background-color: white;
+  padding: 0.875rem;
+  border-radius: 0.5rem;
+  outline: none;
+  box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+  width: 370px;
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+
+    img {
+      border-radius: 50%;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.notification-item {
+  position: relative;
+  border-bottom: 1px solid #e8e8e8;
+
+  .close-notice {
+    position: absolute;
+    cursor: pointer;
+    color: rgba(0,0,0,.45);
+    top: 0.5rem;
+    right: 0;
+
+    &:hover {
+      color: black;
+    }
+  }
+}
+
+.notification-text {
+  padding-right: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  // 最多显示2行文字，超出就是省略号，即text-overflow: ellipsis
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 0;
+  margin-top: 4px;
+  cursor: pointer;
+  color: rgba(38, 38, 38, 1);
+
+  &:hover {
+    color: #1890ff; // ng-zorro的链接色
+  }
+}

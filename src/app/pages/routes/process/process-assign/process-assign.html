@@ -1,0 +1,63 @@
+<!-- 指派清单 -->
+<nz-modal nzCloseIcon="svg:close" [(nzVisible)]="visible" [nzContent]="assignContent"
+          (nzOnCancel)="hide()" (nzOnOk)="assign()" nzOkText="指派">
+    <ng-template #assignContent>
+        <div class="mt-3">
+            <div class="text-black b-t b-t-solid b-purple-500 fw-bold text-lg">指派給其他用户处理，并发送邮件给对方</div>
+            <p class="text-gray-600 my-4">
+                请注意：如果用户没有邮箱地址或者邮箱地址不正确，系统会忽略这些用户，若发现指派清单中查找不到用户，请反馈问题</p>
+            <div class="my-4">
+                <div nz-row nzGutter="32">
+                    <span nz-col nzSpan="6" class="font-bold text-gray-500 text-right">Operation:</span>
+                    <span nz-col nzSpan="18" class="text-left">
+                      <nz-tag nzColor="processing" class="important-rounded-1rem">指派</nz-tag>
+                    </span>
+                </div>
+                <div nz-row nzGutter="32" class="mt-3 flex items-center">
+                    <span nz-col nzSpan="6" class="font-bold text-gray-500 text-right">Assign to:</span>
+                    <span nz-col nzSpan="18" class="text-left">
+                        <span class="flex items-center">
+                            <ng-container *ngIf="isAssigning;else labelTpl">
+                                <nz-select style="min-width: 180px" nzShowSearch nzServerSearch
+                                           nzPlaceHolder="请输入姓名或邮箱" [(ngModel)]="selectedValue"
+                                           [nzShowArrow]="false" [nzFilterOption]="nzFilterOption"
+                                           (nzOnSearch)="search($event)"
+                                           (ngModelChange)="confirm($event)">
+                                    <nz-option *ngFor="let item of options" [nzLabel]="item.username+'('+item.email+')'"
+                                               [nzValue]="item"></nz-option>
+                                </nz-select>
+                            </ng-container>
+                            <ng-template #labelTpl>
+                                <nz-avatar [nzSrc]="avatar"></nz-avatar>
+                                <span class="mx-2 fw-bold">{{data.username}}</span>
+                                <a (click)="isAssigning=true">
+                                    <span class="text-base" nz-icon nzType="svg:switch"></span>
+                                </a>
+                            </ng-template>
+                        </span>
+                    </span>
+                </div>
+                <div nz-row nzGutter="32" class="my-3 flex items-center">
+                    <span nz-col nzSpan="6" class="font-bold text-gray-500 text-right">Email:</span>
+                    <span nz-col nzSpan="18" class="text-left">
+                        <span class="flex items-center">
+                           {{data?.email}}
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="b-t b-t-solid b-gray-300">
+                <div class="my-3 fw-bold">Remark（备注）</div>
+                <div class="flex justify-between items-center">
+                    <nz-avatar class="flex-shrink-0" [nzSrc]="startupSvc.userInfo.avatar"></nz-avatar>
+                    <input nz-input class="important-mx-2" [(ngModel)]="modal.assignRemark">
+                    <div class="rounded bg-purple-500 px-3 py-1 text-white cursor-pointer hover:bg-purple-400"
+                         (click)="changeAssignRemark()">
+                        <span nz-icon nzType="svg:send"></span>
+                    </div>
+                </div>
+            </div>
+            <p *ngIf="data?.remark" class="rounded mt-3 p-2 bg-gray-50">{{data?.remark}}</p>
+        </div>
+    </ng-template>
+</nz-modal>

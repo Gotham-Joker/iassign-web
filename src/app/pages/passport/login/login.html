@@ -1,0 +1,74 @@
+<div class="app-login-wrapper px-3">
+    <div class="app-login-inner py-3">
+        <div class="login-card">
+            <div class="card-body">
+                <div class="brand-logo">
+                    <!--LOGO-->
+                    <img alt="logo" width="32" height="32" src="assets/logo.png">
+                    <h1 class="brand-text text-gradient text-info">I_ASSIGN</h1>
+                </div>
+                <nz-spin [nzSpinning]="isLoading" [nzIndicator]="loadingIndicator">
+                    <ng-template #loadingIndicator>
+                        <div class="loading-wrapper"><i nz-icon nzType="loading"></i></div>
+                    </ng-template>
+                    <h5 class="card-title mb-2 text-gradient text-info font-weight-bolder">Welcome back</h5>
+                    <p class="card-text mb-3">请使用最新版edge或chrome以获得更好的体验</p>
+
+                    <form class="auth-login-form mt-3" nz-form [formGroup]="loginReq" (keyup)="enterKeyup($event)"
+                          (ngSubmit)="submit()">
+                        <label class="block">Account</label>
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="请输入账号">
+                                <nz-input-group [nzPrefix]="iconUser">
+                                    <ng-template #iconUser><i nz-icon nzType="user"></i></ng-template>
+                                    <input nz-input formControlName="id" placeholder="please enter your account"
+                                           autofocus/>
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <div class="flex justify-between items-center">
+                            <label>Password</label>
+                            <a href="javascript:void(0)" [tabIndex]="-1">
+                                <small>忘记密码?</small>
+                            </a>
+                        </div>
+                        <nz-form-item>
+                            <nz-form-control nzErrorTip="请输入密码">
+                                <nz-input-group [nzPrefix]="iconLock">
+                                    <ng-template #iconLock><i nz-icon nzType="lock"></i></ng-template>
+                                    <input nz-input formControlName="password" type="password"
+                                           placeholder="please enter password"/>
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <div class="mb-1 flex items-center">
+                            <input type="checkbox" class="form-check-input" formControlName="rememberMe">
+                            <span class="ml-2 remember-me">记住我</span>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn-login text-base bg-gradient-info">
+                                登 录
+                            </button>
+                        </div>
+                    </form>
+
+                    <p class="text-center text-sm mt-3">
+                        首次使用我们的平台?
+                        <a href="javascript:void(0)">
+                            <span class="text-gradient text-info fw-bold">注册账号</span>
+                        </a>
+                    </p>
+                    <div class="divider">
+                        <div class="text-border">
+                            or
+                        </div>
+                    </div>
+                    <div class="app-footer-btn flex justify-center">
+                        <span nz-icon class="btn-social" nzType="svg:wechat"></span>
+                        <span nz-icon class="btn-social" nzType="svg:facebook"></span>
+                    </div>
+                </nz-spin>
+            </div>
+        </div>
+    </div>
+</div>

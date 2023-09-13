@@ -1,0 +1,114 @@
+<div class="app-header-bar shadow-blur">
+    <div class="app-header-wrap">
+        <div class="app-breadcrumb-responsive">
+            <div class="app-breadcrumb">
+                <nz-breadcrumb [nzAutoGenerate]="true">
+                    <nz-breadcrumb-item><a routerLink="/">Home</a></nz-breadcrumb-item>
+                </nz-breadcrumb>
+            </div>
+        </div>
+
+        <div class="app-header">
+            <div class="app-header-item">
+                <!-- 关键字搜索 -->
+                <app-keyword-search></app-keyword-search>
+            </div>
+            <div class="app-header-item">
+                <ul class="header-btn">
+                    <li nz-dropdown [nzDropdownMenu]="notification" [nzTrigger]="'click'" [(nzVisible)]="visible">
+                        <a>
+                            <div class="header-icon">
+                                <nz-badge nzDot [nzShowDot]="showDot">
+                                    <span nz-icon nzType="svg:bell" class="icon"></span>
+                                </nz-badge>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="header-avatar-wrapper flex items-center"
+                             nz-dropdown [nzDropdownMenu]="menu">
+                            <div class="header-avatar mr-3">
+                                <img class="rounded-50%" [src]="userInfo.avatar" alt="">
+                            </div>
+                            <span class="header-name">{{userInfo.username}}</span>
+                        </div>
+                    </li>
+                </ul>
+                <nz-dropdown-menu #notification="nzDropdownMenu">
+                    <!-- 这里要加ngIf，表示重新创建dom，不然下拉菜单会出现奇怪的bug，隐藏后再展示，无法再次绑定动画 -->
+                    <div class="header-notification" *ngIf="visible">
+                        <nz-tabset [nzTabBarStyle]="{'height':'35px','margin-bottom':'0'}">
+                            <nz-tab nzTitle="Notifications">
+                                <ng-container *ngIf="showDot;else emptyTpl">
+                                    <nz-spin [nzSpinning]="loading">
+                                        <ul class="important-mb-0">
+                                            <li *ngFor="let item of messages;let idx=index"
+                                                class="notification-item py-2"
+                                                [@removed]="isRemoved(item)"
+                                                (@removed.done)="removedDone($event,idx)">
+
+                                                <!-- 展示通知模板 -->
+                                                <ng-container [ngTemplateOutlet]="noticeTpl"
+                                                              [ngTemplateOutletContext]="{$implicit:item,data:item}">
+                                                </ng-container>
+
+                                                <span nz-icon nzType="close" class="close-notice"
+                                                      (click)="removeItem(item)"></span>
+                                            </li>
+                                        </ul>
+                                    </nz-spin>
+                                    <div class="flex justify-center mt-2 text-md" (click)="clearMessage()"><a>清 空</a>
+                                    </div>
+                                </ng-container>
+                                <ng-template #emptyTpl>
+                                    <div class="mt-3">
+                                        <nz-empty></nz-empty>
+                                    </div>
+                                </ng-template>
+                            </nz-tab>
+                            <!--  <nz-tab nzTitle="待办">
+                                  <div class="mt-3">
+                                      <nz-empty></nz-empty>
+                                  </div>
+                              </nz-tab>-->
+                        </nz-tabset>
+                        <div *ngIf="showAll" class="absolute right-4 top-4 py-1.4"><a>查看所有</a></div>
+                    </div>
+                </nz-dropdown-menu>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <ul nz-menu>
+                        <li nz-menu-item>
+                            <a routerLink="/account-setting"> <span nz-icon [nzType]="'user'" class="mr-2"></span>个人中心</a>
+                        </li>
+                        <li nz-menu-item (click)="logout()">
+                            <a><span nz-icon [nzType]="'logout'" class="mr-2"></span>退出登录</a>
+                        </li>
+                    </ul>
+                </nz-dropdown-menu>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 通知模板 -->
+<ng-template #noticeTpl let-data="data">
+    <div class="flex">
+        <nz-avatar class="flex-shrink-0" [nzSrc]="data.fromUserAvatar"
+                   nzSize="large"></nz-avatar>
+        <div class="flex flex-grow-1 ml-3">
+            <div class="flex flex-col">
+                <div class="flex items-center">
+                    <strong>{{data.fromUsername}}</strong>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="routeToLink(data.link)">
+                        {{data.subject}}
+                    </a>
+                </div>
+                <span class="text-xs text-neutral-700">{{data.createTime|diffTime}}</span>
+                <p class="notification-text" (click)="routeToLink(data.link)">
+                    {{data.content}}
+                </p>
+            </div>
+        </div>
+    </div>
+</ng-template>

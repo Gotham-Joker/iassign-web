@@ -1,0 +1,55 @@
+<dag-designer #designer (onSave)="openModal($event)"></dag-designer>
+
+<nz-modal nzCloseIcon="svg:close" [(nzVisible)]="visible" [nzContent]="content"
+          (nzOnCancel)="visible=false" (nzOnOk)="saveOrUpdate()">
+    <ng-template #content>
+        <div class="mt-4">
+
+            <div nz-form nzLayout="horizontal" [formGroup]="form">
+                <nz-form-item>
+                    <nz-form-label>流程图标</nz-form-label>
+                    <div class="flex items-center">
+                        <nz-avatar [nzSrc]="form.controls['icon'].value" nzSize="default"></nz-avatar>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <nz-upload [nzBeforeUpload]="upload" [nzShowUploadList]="false"
+                                   [nzAccept]="['.jpg','.png']">
+                            <button nz-button nzShape="circle">
+                                <span nz-icon nzType="upload"></span>
+                            </button>
+                        </nz-upload>
+                    </div>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzRequired>流程名称</nz-form-label>
+                    <nz-form-control nzErrorTip="必填项">
+                        <input nz-input formControlName="name">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzRequired>流程序号</nz-form-label>
+                    <nz-form-control nzErrorTip="必填项">
+                        <input nz-input formControlName="seqNo">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzRequired>流程描述</nz-form-label>
+                    <nz-form-control nzErrorTip="请输入描述">
+                        <input nz-input formControlName="description">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzRequired>流程分组</nz-form-label>
+                    <nz-form-control nzErrorTip="请输入分组">
+                        <input nz-input formControlName="groupName">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>表单ID</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="formId">
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </ng-template>
+</nz-modal>
