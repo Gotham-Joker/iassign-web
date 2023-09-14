@@ -132,6 +132,7 @@ export class FormsDesigner implements OnInit {
 
             // const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(componentClazz);
             const el = component.location.nativeElement;
+            this.render.addClass(el, "cdk-drag");
             // 给它绑定拖拽指令
             const cdkDrag = new CdkDrag(component.location, this.formContainer, document, this.ngZone, this.formItemContainer,
                 {}, new Dir(), this.dragDrop, component.changeDetectorRef);
