@@ -26,11 +26,11 @@ import {DyDatepicker} from "./components/basic/dy-datepicker/dy-datepicker";
 import {DyUpload} from "./components/basic/dy-upload/dy-upload";
 import {DyRow} from "./components/layout/dy-row/dy-row";
 import {DyRowConfig} from "./components/layout/dy-row/dy-row-config";
-import {IdWorker} from "../snowflake-id/id-worker";
 import {DyTextarea} from "./components/basic/dy-textarea/dy-textarea";
 import {DyTextareaConfig} from "./components/basic/dy-textarea/dy-textarea-config";
 import {DyInputNumber} from "./components/basic/dy-input-number/dy-input-number";
 import {DyInputNumberConfig} from "./components/basic/dy-input-number/dy-input-number-config";
+import {IdWorker} from "../core/snowflake-id/id-worker";
 
 export declare interface FormConfig {
     id?: string, // 表单编辑的话应该要填id
