@@ -1,120 +1,134 @@
 import {
-  AfterViewInit,
-  Component,
-  NgZone,
-  OnInit,
-  QueryList,
-  Renderer2,
-  ViewChild,
-  ViewChildren,
-  ViewContainerRef
+    AfterViewInit,
+    Component,
+    NgZone,
+    OnInit,
+    Renderer2,
+    ViewChild,
+    ViewContainerRef
 } from '@angular/core';
-import {CdkDrag, CdkDragDrop, CdkDropList, DragDrop} from '@angular/cdk/drag-drop';
-import {Dir} from '@angular/cdk/bidi';
+import {CdkDragDrop, CdkDropList, DragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {timer} from 'rxjs';
 import {DyFormDragItem} from "../../../interface/dy-form-interface";
+import {NzRowDirective} from "ng-zorro-antd/grid";
 
 @Component({
-  selector: 'dy-row',
-  templateUrl: './dy-row.html',
-  styles: [':host{display: block;}']
+    selector: 'dy-row',
+    templateUrl: './dy-row.html',
+    styles: [':host{display: block;}.indicator-bd{border: solid 1px #1890ff;cursor: move}']
 })
 export class DyRow implements OnInit, AfterViewInit {
-  public app: any;
-  public data = null;
+    public app: any;
+    public data = null;
 
-  config: any = {
-    type: 'row',
-    cols: [],
-    children: []
-  };
-  idx: number = 0;
+    config: any = {
+        type: 'row',
+        layout: 'horizontal',
+        children: []
+    };
 
-  @ViewChildren('itemContainer', {read: ViewContainerRef})
-  itemContainer: QueryList<ViewContainerRef>;
-  @ViewChild('dropList', {read: CdkDropList})
-  cdkDropList: CdkDropList;
+    @ViewChild('dropList', {read: CdkDropList})
+    cdkDropList: CdkDropList;
+    @ViewChild('nzRow', {read: NzRowDirective})
+    nzRow: NzRowDirective;
+    cols: { ctx: DyRow, comp: any, configComp: any, config: any }[] = []; // 列
 
-  constructor(private ngZone: NgZone,
-              private dragDrop: DragDrop,
-              private render: Renderer2) {
-  }
-
-
-  ngOnInit(): void {
-    // 回显的时候，要异步，不然angular会报错，于是就有了timer(0)
-    timer(0).subscribe(() => {
-      for (let i = 0; i < this.config.children.length; i++) {
-        const config = this.config.children[i];
-        const event = this.app.resolveType(config);
-        this.onDrop(event, config);
-      }
-    });
-  }
-
-  onDrop(event: CdkDragDrop<string[]> | any, config?: any) {
-    if (this.idx >= this.config.cols.length) {
-      return;
+    constructor(public ngZone: NgZone,
+                public dragDrop: DragDrop,
+                public render: Renderer2) {
     }
-    const item: DyFormDragItem = event.item.data;
-    const viewContainerRef = this.itemContainer.get(this.idx) as any;
-    if (item != null) {
-      const configClazz = item.configComponent;
-      const componentClazz = item.itemComponent;
-      // 创建表单项
-      const component = viewContainerRef.createComponent(componentClazz);
-      if (config) {
-        component.instance.config = config;
-      }
-      const el = component.location.nativeElement;
-      // 添加拖拽指令
-      const cdkDrag = new CdkDrag(component.location, this.cdkDropList, document, this.ngZone, viewContainerRef,
-        {}, new Dir(), this.dragDrop, component.changeDetectorRef);
 
-      const id = this.app.genId();
-      // 绑定函数：显示配置面板
-      const mouseDown = this.render.listen(el, 'mousedown', (event) => {
-        event.stopPropagation(); // 阻止事件继续传播
-        if (id == this.app.formItemId) {
-          return;
+
+    ngOnInit(): void {
+        // 回显的时候，要异步，不然angular会报错，于是就有了timer(0)
+        timer(0).subscribe(() => {
+            for (let i = 0; i < this.config.children.length; i++) {
+                const config = this.config.children[i];
+                const event = this.app.resolveType(config);
+                this.onDrop(event, config);
+            }
+        });
+    }
+
+    onDrop(event: CdkDragDrop<string[]> | any, config?: any) {
+        const item: DyFormDragItem = event.item.data;
+        if (item != null) {
+            const configClazz = item.configComponent;
+            const componentClazz = item.itemComponent;
+            this.cols.push({ctx: this, comp: componentClazz, configComp: configClazz, config});
+        } else {
+            // if (event.previousContainer === event.container) {
+            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+            /*   } else {
+                   transferArrayItem(
+                       event.previousContainer.data,
+                       event.container.data,
+                       event.previousIndex,
+                       event.currentIndex);
+               }*/
         }
-        this.app.formItemId = id;
-        this.app.showConfigPanel(component, configClazz);
-      });
 
-      // 绑定函数：右键菜单
-      const contextMenu = this.render.listen(el, 'contextmenu', (ev) => {
-        ev.stopPropagation(); // 阻止事件继续传播
-        this.app.showContextMenu(ev);
-      });
-      this.app.formItemsHolder[id] = {
-        listeners: [mouseDown, contextMenu],
-        instance: component,
-        cdkDrag
-      };
-      this.app.formItemId = id;
-      this.app.showConfigPanel(component, configClazz);
-      viewContainerRef.insert(viewContainerRef.get(viewContainerRef.length - 1) as any);
-      this.idx++;
-    }/* else {
-      this.itemContainer.move(this.itemContainer.get(event.previousIndex) as any, event.currentIndex);
-    }*/
-  }
-
-  ngAfterViewInit(): void {
-  }
-
-
-  toJson(children: any[], getInst: (viewRef: any) => (any | null)) {
-    const len = this.itemContainer.length;
-    for (let i = 0; i < len; i++) {
-      const viewRef = this.itemContainer.get(i) as ViewContainerRef;
-      for (let j = 0; j < viewRef.length; j++) {
-        const subViewRef = viewRef.get(j);
-        const inst = getInst(subViewRef);
-        children.push(inst.config);
-      }
     }
-  }
 
+    ngAfterViewInit(): void {
+    }
+
+
+    toJson(children: any[]) {
+        const len = this.cols.length;
+        for (let i = 0; i < len; i++) {
+            const col = this.cols[i];
+            children.push(col.config);
+        }
+    }
+
+    /**
+     * 创建组件，并在组件上一级的列中绑定组件span配置项
+     * @param that
+     * @param idx
+     * @param component
+     * @param dyCol
+     */
+    onCreate(that: DyRow, idx: number, component: any, dyCol: { comp: any, configComp: any, config: any }) {
+        if (dyCol.config != null) {
+            component.instance['config'] = dyCol.config;
+        }
+        const el = component.location.nativeElement;
+        const id = that.app.genId();
+        // 绑定函数：显示配置面板
+        const mouseDown = that.render.listen(el, 'mousedown', (event) => {
+            event.stopPropagation(); // 阻止事件继续传播
+            if (id == that.app.formItemId) {
+                return;
+            }
+            that.app.formItemId = id;
+            that.app.showConfigPanel(component, dyCol.configComp);
+        });
+
+        // 绑定函数：右键菜单
+        const contextMenu = that.render.listen(el, 'contextmenu', (ev) => {
+            ev.stopPropagation(); // 阻止事件继续传播
+            that.app.showContextMenu(ev);
+        });
+        that.app.formItemsHolder[id] = {
+            listeners: [mouseDown, contextMenu],
+            instance: component
+        };
+        that.app.formItemId = id;
+        that.app.showConfigPanel(component, dyCol.configComp);
+        // 让nz-col重新绑定config，不过这样数据会反向流动到父级元素(nz-col)，angular是不允许这样的
+        // 所以，搞个异步timer，即setTimeout来解决此问题。理论上onPush策略性能应该更好，但是现在的情况太复杂了，手动检测不现实。
+        timer(0).subscribe(() => {
+            that.cols[idx]['config'] = component.instance['config'];
+        })
+    }
+
+    /**
+     * 销毁列
+     * @param that
+     * @param idx
+     */
+    onDestroy(that: DyRow, idx: number) {
+        that.cols.splice(idx, 1);
+    };
 }

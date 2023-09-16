@@ -11,6 +11,7 @@ export class DyTextarea implements OnInit {
     type: 'textarea',
     noColon: false,
     label: '文本',
+    dyColSpan:12,
     required: false,
     placeholder: '',
     value: ''
@@ -26,7 +27,7 @@ export class DyTextarea implements OnInit {
   validate() {
     // 添加校验函数
     const validators = [];
-    if (null != this.config.required) {
+    if (this.config.required) {
       const requiredFn = (ctl: any) => {
         return Validators.required(ctl);
       };

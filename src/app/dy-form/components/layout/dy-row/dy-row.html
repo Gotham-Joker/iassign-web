@@ -1,8 +1,11 @@
-<div nz-row [nzGutter]="config.gutter" cdkDropList #dropList (cdkDropListDropped)="onDrop($event)"
-     style="min-height: 70px;border: solid 1px #1890ff;border-radius: 4px;margin: 1px 0;padding: 4px">
+<nz-row #nzRow [nzGutter]="config.gutter" cdkDropList #dropList (cdkDropListDropped)="onDrop($event)"
+        [cdkDropListData]="cols" [cdkDropListOrientation]="'horizontal'"
+        nz-form [nzLayout]="config.layout" class="indicator-bd cdk-drag-animating"
+        style="min-height: 70px;border-radius: 4px;margin: 1px 0;padding: 15px 4px">
 
-  <div *ngFor="let item of config.cols" nz-col [nzSpan]="24/config.cols.length">
-    <ng-container #itemContainer></ng-container>
-  </div>
-</div>
+    <div nz-col [nzSpan]="item.config?.dyColSpan" class="cdk-drag py-3 indicator-bd"
+         *ngFor="let item of cols;let i=index" cdkDrag>
+        <ng-container *dyCol="item;index:i;create: onCreate;destroy:onDestroy"></ng-container>
+    </div>
 
+</nz-row>

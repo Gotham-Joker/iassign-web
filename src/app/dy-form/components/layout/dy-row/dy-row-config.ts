@@ -15,12 +15,4 @@ export class DyRowConfig implements OnInit, DyConfigComponent<DyRow> {
   ngOnInit(): void {
   }
 
-
-  change($event: any) {
-    const arr = [];
-    for (let i = 0; i < $event; i++) {
-      arr.push(i);
-    }
-    this.ref.config.cols = arr as any;
-  }
 }

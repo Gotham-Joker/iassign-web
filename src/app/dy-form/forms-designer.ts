@@ -26,7 +26,7 @@ import {DyDatepicker} from "./components/basic/dy-datepicker/dy-datepicker";
 import {DyUpload} from "./components/basic/dy-upload/dy-upload";
 import {DyRow} from "./components/layout/dy-row/dy-row";
 import {DyRowConfig} from "./components/layout/dy-row/dy-row-config";
-import {IdWorker} from "../core/snowflake-id/id-worker";
+import {IdWorker} from "../snowflake-id/id-worker";
 import {DyTextarea} from "./components/basic/dy-textarea/dy-textarea";
 import {DyTextareaConfig} from "./components/basic/dy-textarea/dy-textarea-config";
 import {DyInputNumber} from "./components/basic/dy-input-number/dy-input-number";
@@ -132,7 +132,7 @@ export class FormsDesigner implements OnInit {
 
             // const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(componentClazz);
             const el = component.location.nativeElement;
-            this.render.addClass(el, "cdk-drag");
+            this.render.addClass(el,"cdk-drag")
             // 给它绑定拖拽指令
             const cdkDrag = new CdkDrag(component.location, this.formContainer, document, this.ngZone, this.formItemContainer,
                 {}, new Dir(), this.dragDrop, component.changeDetectorRef);
@@ -254,7 +254,7 @@ export class FormsDesigner implements OnInit {
             formObj.children.push(inst.config);
             if (inst instanceof DyRow) {
                 inst.config.children = [];
-                inst.toJson(inst.config.children, this.getInst);
+                inst.toJson(inst.config.children);
             }
         }
         return formObj;

@@ -1,93 +1,103 @@
 <nz-tabset [(nzSelectedIndex)]="config.tabIndex">
-  <nz-tab nzTitle="外观">
+    <nz-tab nzTitle="外观">
 
-    <nz-form-item>
-      <nz-form-label [nzRequired]="true">字段</nz-form-label>
-      <nz-form-control>
-        <input nz-input [(ngModel)]="config.field" placeholder="field(表单内唯一)">
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label>标签</nz-form-label>
-      <nz-form-control>
-        <input nz-input [(ngModel)]="config.label" placeholder="请输入标签">
-      </nz-form-control>
-    </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzRequired]="true">字段</nz-form-label>
+            <nz-form-control>
+                <input nz-input [(ngModel)]="config.field" placeholder="field(表单内唯一)">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>标签</nz-form-label>
+            <nz-form-control>
+                <input nz-input [(ngModel)]="config.label" placeholder="请输入标签">
+            </nz-form-control>
+        </nz-form-item>
 
-    <nz-form-item>
-      <nz-form-label>占位文字</nz-form-label>
-      <nz-form-control>
-        <input nz-input [(ngModel)]="config.placeholder">
-      </nz-form-control>
-    </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>占位语句</nz-form-label>
+            <nz-form-control>
+                <input nz-input [(ngModel)]="config.placeholder">
+            </nz-form-control>
+        </nz-form-item>
 
-    <nz-form-item>
-      <nz-form-label>标签宽度</nz-form-label>
-      <nz-form-control>
-        <nz-input-number [nzMin]="0" [(ngModel)]="config.labelSpan"></nz-input-number>
-      </nz-form-control>
-    </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>栅格宽度</nz-form-label>
+            <nz-form-control>
+                <nz-input-number style="width: 100%" [nzMin]="0" [nzMax]="24"
+                                 [(ngModel)]="config.dyColSpan"></nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
 
-    <nz-form-item>
-      <nz-form-label>控件宽度</nz-form-label>
-      <nz-form-control>
-        <nz-input-number [nzMin]="0" [(ngModel)]="config.span"></nz-input-number>
-      </nz-form-control>
-    </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>标签宽度</nz-form-label>
+            <nz-form-control>
+                <nz-input-number style="width: 100%" [nzMin]="0" [nzMax]="24"
+                                 [(ngModel)]="config.labelSpan"></nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
 
-    <nz-form-item>
-      <nz-form-label>隐藏冒号</nz-form-label>
-      <nz-form-control>
-        <nz-switch [(ngModel)]="config.noColon"></nz-switch>
-      </nz-form-control>
-    </nz-form-item>
-  </nz-tab>
+        <nz-form-item>
+            <nz-form-label>控件宽度</nz-form-label>
+            <nz-form-control>
+                <nz-input-number style="width: 100%" [nzMin]="0" [nzMax]="24"
+                                 [(ngModel)]="config.span"></nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
 
-  <nz-tab nzTitle="数据">
-    <nz-form-item>
-      <nz-form-label>必填</nz-form-label>
-      <nz-form-control>
-        <nz-switch [(ngModel)]="config.required"></nz-switch>
-      </nz-form-control>
-      <nz-form-label>只读</nz-form-label>
-      <nz-form-control>
-        <nz-switch [(ngModel)]="config.readOnly"></nz-switch>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label>正则式</nz-form-label>
-      <nz-form-control>
-        <input nz-input [(ngModel)]="config.regex"/>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label>错误提示</nz-form-label>
-      <nz-form-control>
-        <input nz-input [(ngModel)]="config.msg"/>
-      </nz-form-control>
-    </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>隐藏冒号</nz-form-label>
+            <nz-form-control>
+                <nz-switch [(ngModel)]="config.noColon"></nz-switch>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>必填</nz-form-label>
+            <nz-form-control>
+                <nz-switch [(ngModel)]="config.required"></nz-switch>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>只读</nz-form-label>
+            <nz-form-control>
+                <nz-switch [(ngModel)]="config.readOnly"></nz-switch>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>正则式</nz-form-label>
+            <nz-form-control>
+                <input nz-input [(ngModel)]="config.regex"/>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>错误提示</nz-form-label>
+            <nz-form-control>
+                <input nz-input [(ngModel)]="config.msg"/>
+            </nz-form-control>
+        </nz-form-item>
 
-    <nz-form-item>
-      <button nz-button nzType="primary" nzBlock (click)="ref.validate()">验证</button>
-    </nz-form-item>
-  </nz-tab>
+        <nz-form-item>
+            <button nz-button nzType="primary" nzBlock (click)="ref.validate()">验证</button>
+        </nz-form-item>
 
-  <nz-tab nzTitle="高级">
-    <nz-divider nzPlain nzText="数据源" nzOrientation="center"></nz-divider>
-    <nz-form-item>
-      <nz-form-label>URL</nz-form-label>
-      <nz-form-control>
-        <input nz-input placeholder="http://api.dy-form.com/user" [(ngModel)]="config.url">
-      </nz-form-control>
-    </nz-form-item>
+    </nz-tab>
 
-    <nz-form-item>
-      <nz-form-label>响应字段</nz-form-label>
-      <nz-form-control>
-        <input nz-input placeholder="eg: data.ssicId" [(ngModel)]="config.res"/>
-      </nz-form-control>
-    </nz-form-item>
+    <nz-tab nzTitle="高级">
+        <nz-divider nzPlain nzText="数据源" nzOrientation="center"></nz-divider>
+        <nz-form-item>
+            <nz-form-label>URL</nz-form-label>
+            <nz-form-control>
+                <input nz-input placeholder="http://api.dy-form.com/user" [(ngModel)]="config.url">
+            </nz-form-control>
+        </nz-form-item>
 
-  </nz-tab>
+        <nz-form-item>
+            <nz-form-label>响应字段</nz-form-label>
+            <nz-form-control>
+                <input nz-input placeholder="eg: data.ssicId" [(ngModel)]="config.res"/>
+            </nz-form-control>
+        </nz-form-item>
+
+    </nz-tab>
 
 </nz-tabset>

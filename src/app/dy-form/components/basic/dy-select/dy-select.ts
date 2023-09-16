@@ -10,6 +10,7 @@ export class DySelect implements OnInit {
     config: any = {
         type: 'select',
         label: '选择',
+        dyColSpan:12,
         options: 'Alex\nJudith',
         value: ''
     };
@@ -24,7 +25,7 @@ export class DySelect implements OnInit {
     validate() {
         // 添加校验函数
         const validators = [];
-        if (null != this.config.required) {
+        if (this.config.required) {
             const requiredFn = (ctl: any) => {
                 return Validators.required(ctl);
             };

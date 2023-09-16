@@ -62,48 +62,49 @@ import {NzTimelineModule} from "ng-zorro-antd/timeline";
 import {NzIconModule} from "ng-zorro-antd/icon";
 
 import {
-  DeleteOutline,
-  SaveOutline,
-  UploadOutline,
-  CaretRightOutline,
-  QuestionCircleOutline
+    DeleteOutline,
+    SaveOutline,
+    UploadOutline,
+    CaretRightOutline,
+    QuestionCircleOutline
 } from '@ant-design/icons-angular/icons';
 import {DyInputNumber} from "./components/basic/dy-input-number/dy-input-number";
 import {DyInputNumberConfig} from "./components/basic/dy-input-number/dy-input-number-config";
+import {DyColDirective} from "./dy-col.directive";
 
 const icons: any[] = [
-  DeleteOutline,
-  SaveOutline,
-  UploadOutline,
-  CaretRightOutline,
-  QuestionCircleOutline
+    DeleteOutline,
+    SaveOutline,
+    UploadOutline,
+    CaretRightOutline,
+    QuestionCircleOutline
 ];
 
 const MODULES = [
-  NzFormModule, NzInputModule, NzInputNumberModule, NzButtonModule, NzSpinModule, NzAvatarModule,
-  NzMenuModule, NzBreadCrumbModule, NzDropDownModule, NzBadgeModule, NzCardModule, NzTabsModule,
-  NzTableModule, NzTagModule, NzDividerModule, NzMessageModule, NzSelectModule, NzPopconfirmModule,
-  NzModalModule, NzGridModule, NzRadioModule, NzTransferModule, NzSwitchModule, NzListModule,
-  NzDatePickerModule, NzPopoverModule, NzProgressModule, NzEmptyModule, NzStatisticModule, NzToolTipModule,
-  NzSegmentedModule, NzUploadModule, NzDrawerModule, NzCheckboxModule, NzLayoutModule,
-  NzDescriptionsModule, NzStepsModule, NzResultModule, NzTimelineModule
+    NzFormModule, NzInputModule, NzInputNumberModule, NzButtonModule, NzSpinModule, NzAvatarModule,
+    NzMenuModule, NzBreadCrumbModule, NzDropDownModule, NzBadgeModule, NzCardModule, NzTabsModule,
+    NzTableModule, NzTagModule, NzDividerModule, NzMessageModule, NzSelectModule, NzPopconfirmModule,
+    NzModalModule, NzGridModule, NzRadioModule, NzTransferModule, NzSwitchModule, NzListModule,
+    NzDatePickerModule, NzPopoverModule, NzProgressModule, NzEmptyModule, NzStatisticModule, NzToolTipModule,
+    NzSegmentedModule, NzUploadModule, NzDrawerModule, NzCheckboxModule, NzLayoutModule,
+    NzDescriptionsModule, NzStepsModule, NzResultModule, NzTimelineModule
 ]
 
 const COMPONENTS = [DyForm, FormsDesigner, DyRow, DyRowConfig, DyInput, DyInputConfig, DyInputNumber, DyInputNumberConfig,
-  DyTextarea, DyTextareaConfig, DySelect, DySelectConfig, DyRadio, DyRadioConfig,
-  DyCheckbox, DyCheckboxConfig, DyDatepicker, DyDatepickerConfig, DyUpload, DyUploadConfig];
+    DyTextarea, DyTextareaConfig, DySelect, DySelectConfig, DyRadio, DyRadioConfig, DyColDirective,
+    DyCheckbox, DyCheckboxConfig, DyDatepicker, DyDatepickerConfig, DyUpload, DyUploadConfig];
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  imports: [
-    CommonModule,
-    ...MODULES,
-    DragDropModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NzIconModule.forChild(icons)
-  ],
-  exports: [...COMPONENTS, NzIconModule]
+    declarations: [...COMPONENTS],
+    imports: [
+        CommonModule,
+        ...MODULES,
+        DragDropModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NzIconModule.forChild(icons)
+    ],
+    exports: [...COMPONENTS, NzIconModule]
 })
 export class DyformsModule {
 }

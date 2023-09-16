@@ -1,7 +1,7 @@
 <!-- 通用模板开始，用于复用，可减少重复代码 let-config的意思是将外部传进来的"$implicit"参数定义为config -->
 <ng-template #configTemplate let-config>
   <nz-form-item>
-    <nz-form-label [nzRequired]="config.required"
+    <nz-form-label *ngIf="config.label??false" [nzRequired]="config.required"
                    [nzNoColon]="config.noColon">{{config.label}}</nz-form-label>
     <nz-form-control [nzErrorTip]="config.msg" [nzValidateStatus]="config.status">
       <ng-container [ngSwitch]="config.type">
@@ -55,14 +55,14 @@
   <ng-container *ngFor="let item of form.children">
     <ng-container [ngSwitch]="item.type">
       <!-- 栅格布局配置开始 -->
-      <div nz-row [nzGutter]="item.gutter" *ngSwitchCase="'row'">
-        <div nz-col *ngFor="let col of item.children" [nzSpan]="24/item.colSize">
+      <nz-row *ngSwitchCase="'row'" [nzGutter]="item.gutter"  nz-form [nzLayout]="item.layout">
+        <div nz-col *ngFor="let col of item.children" [nzSpan]="col.dyColSpan">
           <!-- 栅格布局内的元素，其中configTemplate是最上面那个通用模板 -->
           <!-- 其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
           <ng-container [ngTemplateOutlet]="configTemplate"
                         [ngTemplateOutletContext]="{$implicit:col}"></ng-container>
         </div>
-      </div>
+      </nz-row>
       <!-- 栅格布局配置结束 -->
 
       <!-- 其他普通表单元素 -->

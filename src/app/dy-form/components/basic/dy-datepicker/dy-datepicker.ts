@@ -15,6 +15,7 @@ export class DyDatepicker implements OnInit {
     type: 'datepicker',
     noColon: false,
     label: '日期',
+    dyColSpan:12,
     required: false,
     showTime: false
   };
@@ -33,7 +34,7 @@ export class DyDatepicker implements OnInit {
   validate() {
     // 添加校验函数
     const validators = [];
-    if (null != this.config.required) {
+    if (this.config.required) {
       const requiredFn = (ctl: any) => {
         return Validators.required(ctl);
       };

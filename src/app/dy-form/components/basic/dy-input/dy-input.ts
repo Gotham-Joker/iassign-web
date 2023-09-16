@@ -15,6 +15,7 @@ export class DyInput implements OnInit {
         label: '标签',
         required: false,
         placeholder: '',
+        dyColSpan: 12,
         value: ''
     };
     status: any;  // 校验结果
