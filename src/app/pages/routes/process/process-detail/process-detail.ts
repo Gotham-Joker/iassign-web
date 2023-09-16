@@ -108,7 +108,7 @@ export class ProcessDetail implements OnInit {
                     this.drawer.data.emails = data.emails;
                     if (data.emails != null) {
                         this.emails = data.emails.split(",");
-                    }else {
+                    } else {
                         this.emails = [];
                     }
                     this.dag = data.dag;
@@ -201,7 +201,6 @@ export class ProcessDetail implements OnInit {
         // 再触发一次异步，重新渲染dag
         timer(0).subscribe(res => {
             this.modalLoading = false;
-            this.dagContainer.resetCells(JSON.parse(this.dag))
             const list = this.taskList;
             const nodeStatusList = [];
             for (let i = 0; i < list.length; i++) {
@@ -234,6 +233,7 @@ export class ProcessDetail implements OnInit {
                 }
                 nodeStatusList.push(nodeStatus);
             }
+            this.dagContainer.resetCells(JSON.parse(this.dag))
             // 查找审批历史，并且显示状态
             this.dagContainer.showNodeStatus(nodeStatusList);
         })

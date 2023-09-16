@@ -30,7 +30,19 @@ export class StartNode implements DagNode {
             ports: [
                 {
                     "id": IdWorker.nextId(),
+                    "group": "top"
+                },
+                {
+                    "id": IdWorker.nextId(),
                     "group": "bottom"
+                },
+                {
+                    "id": IdWorker.nextId(),
+                    "group": "left"
+                },
+                {
+                    "id": IdWorker.nextId(),
+                    "group": "right"
                 }
             ]
         }
@@ -47,15 +59,51 @@ export class StartNode implements DagNode {
             height: 40,
             ports: { // 连接端点
                 groups: {
+                    top: {
+                        position: 'top',
+                        attrs: {
+                            circle: {
+                                r: 4,
+                                magnet: true,
+                                stroke: '#C2C8D500',
+                                strokeWidth: 1,
+                                fill: '#ffffff00',
+                            }
+                        }
+                    },
+                    left: {
+                        position: 'left',
+                        attrs: {
+                            circle: {
+                                r: 4,
+                                magnet: true,
+                                stroke: '#C2C8D500',
+                                strokeWidth: 1,
+                                fill: '#ffffff00',
+                            }
+                        }
+                    },
+                    right: {
+                        position: 'right',
+                        attrs: {
+                            circle: {
+                                r: 4,
+                                magnet: true,
+                                stroke: '#C2C8D500',
+                                strokeWidth: 1,
+                                fill: '#ffffff00',
+                            }
+                        }
+                    },
                     bottom: {
                         position: 'bottom',
                         attrs: {
                             circle: {
                                 r: 4,
                                 magnet: true,
-                              stroke: '#C2C8D500',
-                              strokeWidth: 1,
-                              fill: '#ffffff00',
+                                stroke: '#C2C8D500',
+                                strokeWidth: 1,
+                                fill: '#ffffff00',
                             }
                         }
                     }

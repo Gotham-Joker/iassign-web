@@ -357,11 +357,7 @@ export class DagContainer implements OnInit, OnDestroy {
                 cells.push(this.graph.createEdge(item))
             }
         })
-        timer(300).pipe(takeUntil(this.$destroy)).subscribe(() => {
-            this.graph.resetCells(cells);
-            // this.graph.centerContent();
-            // this.graph.zoomToFit({maxScale: 1})
-        })
+        this.graph.resetCells(cells);
     }
 
 

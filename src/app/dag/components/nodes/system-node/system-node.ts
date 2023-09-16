@@ -110,9 +110,9 @@ export class SystemNode implements OnInit, DagNode {
                             circle: {
                                 r: 4,
                                 magnet: true,
-                                stroke: '#C2C8D5',
+                                stroke: '#C2C8D500',
                                 strokeWidth: 1,
-                                fill: '#fff',
+                                fill: '#ffffff00',
                             }
                         }
                     },
@@ -122,9 +122,9 @@ export class SystemNode implements OnInit, DagNode {
                             circle: {
                                 r: 4,
                                 magnet: true,
-                                stroke: '#C2C8D5',
+                                stroke: '#C2C8D500',
                                 strokeWidth: 1,
-                                fill: '#fff',
+                                fill: '#ffffff00',
                             }
                         }
                     },
@@ -134,9 +134,9 @@ export class SystemNode implements OnInit, DagNode {
                             circle: {
                                 r: 4,
                                 magnet: true,
-                                stroke: '#C2C8D5',
+                                stroke: '#C2C8D500',
                                 strokeWidth: 1,
-                                fill: '#fff',
+                                fill: '#ffffff00',
                             }
                         }
                     },
@@ -146,9 +146,9 @@ export class SystemNode implements OnInit, DagNode {
                             circle: {
                                 r: 4,
                                 magnet: true,
-                                stroke: '#C2C8D5',
+                                stroke: '#C2C8D500',
                                 strokeWidth: 1,
-                                fill: '#fff',
+                                fill: '#ffffff00',
                             }
                         }
                     }
