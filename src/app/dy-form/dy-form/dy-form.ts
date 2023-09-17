@@ -1,20 +1,20 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {HttpBackend, HttpClient} from "@angular/common/http";
 import {mergeMap, of} from "rxjs";
-import { FormControl, Validators, FormsModule } from "@angular/forms";
-import { formatNumber, NgIf, NgSwitch, NgSwitchCase, NgFor, NgTemplateOutlet, NgSwitchDefault } from "@angular/common";
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzGridModule } from 'ng-zorro-antd/grid';
+import {FormControl, Validators, FormsModule} from "@angular/forms";
+import {formatNumber, NgIf, NgSwitch, NgSwitchCase, NgFor, NgTemplateOutlet, NgSwitchDefault} from "@angular/common";
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzUploadModule} from 'ng-zorro-antd/upload';
+import {NzRadioModule} from 'ng-zorro-antd/radio';
+import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
+import {NzSelectModule} from 'ng-zorro-antd/select';
+import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
+import {NzInputNumberModule} from 'ng-zorro-antd/input-number';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzGridModule} from 'ng-zorro-antd/grid';
 
 @Component({
     selector: 'dy-form',
@@ -155,5 +155,12 @@ export class DyForm implements OnInit {
                 config.value.splice(indexOf, 1);
             }
         }
+    }
+
+    isCheck(value, item: any) {
+        if (value == null || !Array.isArray(value) || value.length == 0) {
+            return false;
+        }
+        return value.indexOf(item) != -1;
     }
 }

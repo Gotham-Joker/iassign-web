@@ -28,7 +28,7 @@
         </nz-select>
         <!-- 多选框 -->
         <ng-container *ngSwitchCase="'checkbox'">
-          <label *ngFor="let item of config.options.split('\n')" nz-checkbox [nzValue]="item"
+          <label *ngFor="let item of config.options.split('\n')" nz-checkbox [nzValue]="item" [ngModel]="isCheck(config.value,item)"
                  [nzDisabled]="readonly||config.readOnly"
                  (nzCheckedChange)="checkboxChange($event,config,item)">{{item}}</label>
         </ng-container>
