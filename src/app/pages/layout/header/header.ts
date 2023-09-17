@@ -6,7 +6,7 @@ import {
     OnInit, TemplateRef, ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import {Router} from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {StartupService} from "../../../core/startup.service";
 import {animate, style, transition, trigger} from "@angular/animations";
@@ -14,6 +14,20 @@ import {SysMessageService} from "../sys-message.service";
 import {environment} from "../../../../environments/environment";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {Observable, of, switchMap} from "rxjs";
+import { DiffTimePipe } from '../../../core/diff-time/diff-time.pipe';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NgIf, NgFor, NgTemplateOutlet } from '@angular/common';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { KeywordSearch } from '../keyword-search/keyword-search';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 
 @Component({
@@ -23,12 +37,14 @@ import {Observable, of, switchMap} from "rxjs";
     animations: [
         trigger('removed', [
             transition('* => removed', [
-                animate('.35s ease-out', style({transform: 'translateX(-100%)'}))
+                animate('.35s ease-out', style({ transform: 'translateX(-100%)' }))
             ])
         ])
     ],
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NzBreadCrumbModule, RouterLink, KeywordSearch, NzDropDownModule, NzBadgeModule, NzButtonModule, NzIconModule, NgIf, NzTabsModule, NzSpinModule, NgFor, NgTemplateOutlet, NzEmptyModule, NzMenuModule, NzAvatarModule, NzDividerModule, DiffTimePipe]
 })
 export class Header implements OnInit, OnDestroy {
     userInfo: any;

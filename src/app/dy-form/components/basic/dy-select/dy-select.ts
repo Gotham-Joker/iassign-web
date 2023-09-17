@@ -1,10 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators, FormsModule } from '@angular/forms';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NgIf, NgFor } from '@angular/common';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
     selector: 'dy-select',
     templateUrl: './dy-select.html',
-    styles: [':host{display: block;}']
+    styles: [':host{display: block;}'],
+    standalone: true,
+    imports: [NzGridModule, NzFormModule, NgIf, NzSelectModule, FormsModule, NgFor]
 })
 export class DySelect implements OnInit {
     config: any = {

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, NgZone, OnInit, Output, Renderer2, ViewChild, ViewContainerRef} from '@angular/core';
 import {CdkDrag, CdkDragDrop, CdkDropList, DragDrop} from "@angular/cdk/drag-drop";
-import {NzContextMenuService, NzDropdownMenuComponent} from "ng-zorro-antd/dropdown";
+import {NzContextMenuService, NzDropdownMenuComponent, NzDropDownModule} from "ng-zorro-antd/dropdown";
 import {Platform} from "@angular/cdk/platform";
 import {ScrollDispatcher, ViewportRuler} from "@angular/cdk/overlay";
 import {Dir} from "@angular/cdk/bidi";
@@ -31,6 +31,19 @@ import {DyTextareaConfig} from "./components/basic/dy-textarea/dy-textarea-confi
 import {DyInputNumber} from "./components/basic/dy-input-number/dy-input-number";
 import {DyInputNumberConfig} from "./components/basic/dy-input-number/dy-input-number-config";
 import {IdWorker} from "../core/snowflake-id/id-worker";
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {FormsModule} from '@angular/forms';
+import {NzRadioModule} from 'ng-zorro-antd/radio';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzPopoverModule} from 'ng-zorro-antd/popover';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NgFor, NgIf} from '@angular/common';
+import {NzMenuModule} from 'ng-zorro-antd/menu';
+import {NzLayoutModule} from 'ng-zorro-antd/layout';
+import {NzMessageModule} from "ng-zorro-antd/message";
 
 export declare interface FormConfig {
     id?: string, // 表单编辑的话应该要填id
@@ -45,7 +58,11 @@ export declare interface FormConfig {
 @Component({
     selector: 'dy-forms-designer',
     templateUrl: './forms-designer.html',
-    styleUrls: ['./forms-designer.scss']
+    styleUrls: ['./forms-designer.scss'],
+    standalone: true,
+    imports: [NzLayoutModule, NzMenuModule, NgFor, NzButtonModule, NgIf, CdkDropList, CdkDrag,
+        NzPopoverModule, NzIconModule, NzFormModule, NzModalModule, NzGridModule, NzRadioModule, FormsModule,
+        NzInputModule, NzDropDownModule, NzMessageModule]
 })
 export class FormsDesigner implements OnInit {
     // 左侧可拖动的组
@@ -132,7 +149,7 @@ export class FormsDesigner implements OnInit {
 
             // const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(componentClazz);
             const el = component.location.nativeElement;
-            this.render.addClass(el,"cdk-drag")
+            this.render.addClass(el, "cdk-drag")
             // 给它绑定拖拽指令
             const cdkDrag = new CdkDrag(component.location, this.formContainer, document, this.ngZone, this.formItemContainer,
                 {}, new Dir(), this.dragDrop, component.changeDetectorRef);

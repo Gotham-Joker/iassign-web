@@ -12,11 +12,11 @@ import {
 const ICONS: IconDefinition[] = [BackwardOutline];
 
 @NgModule({
-    declarations: [Backward],
     imports: [
         CommonModule,
         NzButtonModule,
-        NzIconModule.forChild(ICONS)
+        NzIconModule.forChild(ICONS),
+        Backward
     ],
     exports: [
         Backward

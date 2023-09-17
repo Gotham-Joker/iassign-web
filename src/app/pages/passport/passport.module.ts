@@ -31,14 +31,14 @@ const routes: Routes = [
  *
  */
 @NgModule({
-    declarations: [...COMPONENTS],
     imports: [
         RouterModule.forChild(routes),
         // SharedModule,
-        ...MODULES
+        ...MODULES,
+        ...COMPONENTS
     ],
     providers: [
-        {provide: NZ_ICONS, useValue: icons}
+        { provide: NZ_ICONS, useValue: icons }
     ]
 })
 export class PassportModule {

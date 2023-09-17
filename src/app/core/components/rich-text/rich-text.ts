@@ -34,7 +34,8 @@ const colors = Object.keys(COLORS);
             useExisting: forwardRef(() => RichText),
             multi: true
         }
-    ]
+    ],
+    standalone: true
 })
 export class RichText implements OnInit, ControlValueAccessor {
     onChangeCallback: (value: any) => void = (obj: any) => {

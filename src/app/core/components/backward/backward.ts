@@ -1,4 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
     selector: 'app-backward',
@@ -19,7 +22,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
     .backward-btn:hover {
       box-shadow: 0 10px 12px -8px rgba(0, 0, 0, .2);
     }
-    `]
+    `],
+    standalone: true,
+    imports: [NzButtonModule, NzWaveModule, NzIconModule]
 })
 export class Backward implements OnInit {
     // 用浏览器默认的返回行为

@@ -16,10 +16,10 @@ const routes: Route[] = [
 ]
 
 @NgModule({
-    declarations: [UserProfile],
     imports: [
         SharedModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        UserProfile
     ]
 })
 export class UserProfileModule {

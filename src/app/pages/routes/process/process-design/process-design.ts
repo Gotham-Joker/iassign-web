@@ -1,14 +1,24 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ProcessService} from "../process.service";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {NzMessageModule, NzMessageService} from "ng-zorro-antd/message";
+import {FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {DagDataService} from "./dag-data-service";
 import {of, switchMap} from "rxjs";
 import {UploadService} from "../../../../core/upload.service";
 import {DAG_DATA_SVC} from "../../../../dag/dag-data-service.interface";
 import {DagDesigner} from "../../../../dag/components/dag-designer/dag-designer";
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzUploadModule} from 'ng-zorro-antd/upload';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzModalModule} from 'ng-zorro-antd/modal';
 
 
 @Component({
@@ -17,7 +27,10 @@ import {DagDesigner} from "../../../../dag/components/dag-designer/dag-designer"
     providers: [
         // 加载用户、角色等数据
         {provide: DAG_DATA_SVC, useClass: DagDataService, deps: [HttpClient]}
-    ]
+    ],
+    standalone: true,
+    imports: [DagDesigner, NzModalModule, NzFormModule, FormsModule, ReactiveFormsModule, NzGridModule,
+        NzAvatarModule, NzDividerModule, NzUploadModule, NzButtonModule, NzWaveModule, NzIconModule, NzInputModule, NzMessageModule]
 })
 export class ProcessDesign implements OnInit {
     @ViewChild("designer", {read: DagDesigner})

@@ -7,15 +7,20 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import {CdkDragDrop, CdkDropList, DragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, DragDrop, moveItemInArray, CdkDrag } from '@angular/cdk/drag-drop';
 import {timer} from 'rxjs';
 import {DyFormDragItem} from "../../../interface/dy-form-interface";
-import {NzRowDirective} from "ng-zorro-antd/grid";
+import { NzRowDirective, NzGridModule } from "ng-zorro-antd/grid";
+import { DyColDirective } from '../../../dy-col.directive';
+import { NgFor } from '@angular/common';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
     selector: 'dy-row',
     templateUrl: './dy-row.html',
-    styles: [':host{display: block;}.indicator-bd{border: solid 1px #1890ff;cursor: move}']
+    styles: [':host{display: block;}.indicator-bd{border: solid 1px #1890ff;cursor: move}'],
+    standalone: true,
+    imports: [NzGridModule, CdkDropList, NzFormModule, NgFor, CdkDrag, DyColDirective]
 })
 export class DyRow implements OnInit, AfterViewInit {
     public app: any;

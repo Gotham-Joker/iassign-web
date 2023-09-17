@@ -1,11 +1,16 @@
 import {Component,  OnInit,} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
-import { formatDate} from '@angular/common';
+import { FormControl, Validators, FormsModule } from '@angular/forms';
+import { formatDate, NgIf } from '@angular/common';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
-  selector: 'dy-datepicker',
-  templateUrl: './dy-datepicker.html',
-  styles: [':host{display: block;}']
+    selector: 'dy-datepicker',
+    templateUrl: './dy-datepicker.html',
+    styles: [':host{display: block;}'],
+    standalone: true,
+    imports: [NzGridModule, NzFormModule, NgIf, NzDatePickerModule, FormsModule]
 })
 export class DyDatepicker implements OnInit {
 

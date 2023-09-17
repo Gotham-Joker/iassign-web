@@ -1,5 +1,6 @@
 import {Component, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-shot-overlay',
@@ -11,7 +12,9 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
             useExisting: forwardRef(() => ShotOverlay),
             multi: true
         }
-    ]
+    ],
+    standalone: true,
+    imports: [NgClass]
 })
 export class ShotOverlay implements ControlValueAccessor {
     visible: boolean = false;

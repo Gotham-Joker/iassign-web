@@ -95,14 +95,14 @@ const COMPONENTS = [DyForm, FormsDesigner, DyRow, DyRowConfig, DyInput, DyInputC
     DyCheckbox, DyCheckboxConfig, DyDatepicker, DyDatepickerConfig, DyUpload, DyUploadConfig];
 
 @NgModule({
-    declarations: [...COMPONENTS],
     imports: [
         CommonModule,
         ...MODULES,
         DragDropModule,
         FormsModule,
         ReactiveFormsModule,
-        NzIconModule.forChild(icons)
+        NzIconModule.forChild(icons),
+        ...COMPONENTS
     ],
     exports: [...COMPONENTS, NzIconModule]
 })

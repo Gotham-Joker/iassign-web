@@ -23,11 +23,11 @@ const routes: Route[] = [
  * 表单设计模块
  */
 @NgModule({
-    declarations: [...COMPONENTS],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
-        ...MODULES
+        ...MODULES,
+        ...COMPONENTS
     ]
 })
 export class FormDesignerModule {

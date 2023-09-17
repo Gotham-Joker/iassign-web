@@ -7,7 +7,9 @@ import {FormsDesigner} from "../../../../dy-form/forms-designer";
 @Component({
     selector: 'app-form-design',
     templateUrl: './form-design.html',
-    styleUrls: ['./form-design.scss']
+    styleUrls: ['./form-design.scss'],
+    standalone: true,
+    imports: [FormsDesigner]
 })
 export class FormDesign implements OnInit {
     @ViewChild("formsDesigner", {read: FormsDesigner})

@@ -8,7 +8,8 @@ import {StartupService} from "../startup.service";
  * ACL: 即访问控制列表Access Control List
  */
 @Directive({
-    selector: '[acl]'
+    selector: '[acl]',
+    standalone: true
 })
 export class AclDirective {
 

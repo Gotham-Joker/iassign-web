@@ -6,7 +6,8 @@ import {DictionaryService} from "./dictionary.service";
  */
 @Pipe({
     name: 'dict',
-    pure: true
+    pure: true,
+    standalone: true
 })
 export class DictPipe implements PipeTransform {
 

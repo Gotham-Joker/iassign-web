@@ -1,14 +1,30 @@
 import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from "ng-zorro-antd/message";
-import {FormBuilder, Validators} from "@angular/forms";
+import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {RoleService} from "./role.service";
 import {MenuService} from "../menu/menu.service";
 import {PermissionService} from "../permission/permission.service";
 import {zip} from "rxjs";
+import { Transfer } from '../transfer/transfer';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NgFor } from '@angular/common';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @Component({
     selector: 'app-role',
-    templateUrl: './role.html'
+    templateUrl: './role.html',
+    standalone: true,
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzDividerModule, NzPopconfirmModule, NzModalModule, ReactiveFormsModule, Transfer]
 })
 export class Role implements OnInit {
     queryParams: any = {

@@ -7,7 +7,10 @@ import {
     ViewContainerRef
 } from '@angular/core';
 
-@Directive({selector: '[dyCol]'})
+@Directive({
+    selector: '[dyCol]',
+    standalone: true
+})
 export class DyColDirective implements OnChanges, OnDestroy {
     public componentRef;
     @Input()

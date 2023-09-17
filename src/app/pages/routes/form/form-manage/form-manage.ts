@@ -1,11 +1,27 @@
 import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from "ng-zorro-antd/message";
 import {DyformService} from "../dyform.service";
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NgFor } from '@angular/common';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { RouterLink } from '@angular/router';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @Component({
     selector: 'app-form-manage',
     templateUrl: './form-manage.html',
-    styleUrls: ['./form-manage.scss']
+    styleUrls: ['./form-manage.scss'],
+    standalone: true,
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, RouterLink, NzTableModule, NgFor, NzDividerModule, NzPopconfirmModule]
 })
 export class FormManage implements OnInit {
 

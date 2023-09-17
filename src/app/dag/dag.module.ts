@@ -28,12 +28,12 @@ const COMPONENTS = [
 
 
 @NgModule({
-  declarations: [...COMPONENTS],
-  imports: [
-    ...MODULES
-  ],
-  providers: [],
-  exports: [...COMPONENTS]
+    imports: [
+        ...MODULES,
+        ...COMPONENTS
+    ],
+    providers: [],
+    exports: [...COMPONENTS]
 })
 export class DagModule {
 }

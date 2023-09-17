@@ -7,7 +7,8 @@ import {QUnitType} from "dayjs";
  * 将创建时间润色，例如“几分钟前，几个月前”
  */
 @Pipe({
-    name: 'diffTime'
+    name: 'diffTime',
+    standalone: true
 })
 export class DiffTimePipe implements PipeTransform {
     transform(value: any, ...args: any[]): any {

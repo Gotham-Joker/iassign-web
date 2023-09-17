@@ -2,12 +2,25 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnI
 import {IdWorker} from "../../../../core/snowflake-id/id-worker";
 import {DagNode} from "../../../interface/dag-node.interface";
 import {Cell} from "@antv/x6";
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-system-node',
     templateUrl: './system-node.html',
     styleUrls: ['./system-node.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzInputNumberModule, NzWaveModule]
 })
 export class SystemNode implements OnInit, DagNode {
     // 当前dag节点的数据

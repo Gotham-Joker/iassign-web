@@ -11,6 +11,28 @@ import {catchError} from "rxjs/operators";
 import {environment} from "../../../../../environments/environment";
 import {UploadService} from "../../../../core/upload.service";
 import {DagContainer} from "../../../../dag/components/dag-container/dag-container";
+import { DiffTimePipe } from '../../../../core/diff-time/diff-time.pipe';
+import { DictPipe } from '../../../../core/dictionary/dict.pipe';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { MailSelect } from '../../../../core/components/mail-select/mail-select';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { FormsModule } from '@angular/forms';
+import { ShotOverlay } from '../../../../core/components/shot-overlay/shot-overlay';
+import { ProcessAssign } from '../process-assign/process-assign';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NgIf, NgFor } from '@angular/common';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { AclDirective } from '../../../../core/acl/acl.directive';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { Backward } from '../../../../core/components/backward/backward';
 
 /**
  * 流程审批详情
@@ -21,7 +43,9 @@ import {DagContainer} from "../../../../dag/components/dag-container/dag-contain
     selector: 'app-process-detail',
     templateUrl: './process-detail.html',
     styleUrls: ['./process-detail.scss', '../../../../core/components/rich-text/colors.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [Backward, NzCardModule, AclDirective, NzButtonModule, NzWaveModule, NgIf, NzGridModule, NzIconModule, DyForm, NzTimelineModule, NgFor, NzTagModule, NzAvatarModule, NzModalModule, DagContainer, ProcessAssign, ShotOverlay, FormsModule, NzSpinModule, NzFormModule, MailSelect, RichText, NzUploadModule, NzSelectModule, DictPipe, DiffTimePipe]
 })
 export class ProcessDetail implements OnInit {
     form: any = {

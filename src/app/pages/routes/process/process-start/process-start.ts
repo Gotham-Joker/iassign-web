@@ -1,15 +1,26 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import {ProcessService} from "../process.service";
 import {DyformService} from "../../form/dyform.service";
 import {DyForm} from "../../../../dy-form/dy-form/dy-form";
 import {StartupService} from "../../../../core/startup.service";
 import {UserService} from "../../../layout/system/user/user.service";
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { MailSelect } from '../../../../core/components/mail-select/mail-select';
+import { NgIf } from '@angular/common';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { Backward } from '../../../../core/components/backward/backward';
 
 @Component({
     selector: 'app-process-start',
     templateUrl: './process-start.html',
-    styleUrls: ['./process-start.scss']
+    styleUrls: ['./process-start.scss'],
+    standalone: true,
+    imports: [Backward, NzCardModule, NzStepsModule, NzSpinModule, NgIf, MailSelect, DyForm, NzButtonModule, NzWaveModule, NzResultModule, RouterLink]
 })
 export class ProcessStart implements OnInit {
     data: any = {

@@ -1,11 +1,16 @@
 import {Component,  OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
-import {formatNumber} from "@angular/common";
+import { FormControl, Validators, FormsModule } from '@angular/forms';
+import { formatNumber, NgIf } from "@angular/common";
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
-  selector: 'dy-input-number',
-  templateUrl: './dy-input-number.html',
-  styles: [':host{display: block;}']
+    selector: 'dy-input-number',
+    templateUrl: './dy-input-number.html',
+    styles: [':host{display: block;}'],
+    standalone: true,
+    imports: [NzGridModule, NzFormModule, NgIf, NzInputNumberModule, FormsModule]
 })
 export class DyInputNumber implements OnInit {
 

@@ -1,11 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {environment} from "../../../../../environments/environment";
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NgIf } from '@angular/common';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
     selector: 'dy-upload',
     templateUrl: './dy-upload.html',
-    styles: [':host{display: block;}']
+    styles: [':host{display: block;}'],
+    standalone: true,
+    imports: [NzGridModule, NzFormModule, NgIf, NzUploadModule, NzButtonModule, NzWaveModule, NzIconModule]
 })
 export class DyUpload implements OnInit {
 

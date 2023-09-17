@@ -17,12 +17,24 @@ import {SystemNode} from "../nodes/system-node/system-node";
 import {StartNode} from "../nodes/start-node/start-node";
 import {EndNode} from "../nodes/end-node/end-node";
 import {NodeDataInterface} from "../../interface/node-data.interface";
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NgClass } from '@angular/common';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 @Component({
     selector: 'dag-container',
     templateUrl: './dag-container.html',
     styleUrls: ['./dag-container.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush // 通过手动调用detectChanges()来刷新UI，能极大的提升页面性能
+    ,
+    standalone: true,
+    imports: [NzDrawerModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NgClass, NzIconModule]
 })
 export class DagContainer implements OnInit, OnDestroy {
     @ViewChild('container', {static: true, read: ElementRef})

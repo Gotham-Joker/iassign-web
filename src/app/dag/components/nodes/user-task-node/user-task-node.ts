@@ -12,13 +12,26 @@ import {zip} from "rxjs";
 import {IdWorker} from "../../../../core/snowflake-id/id-worker";
 import {DagNode} from "../../../interface/dag-node.interface";
 import {DAG_DATA_SVC, DagDataServiceInterface} from "../../../dag-data-service.interface";
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NgClass, NgIf } from '@angular/common';
 
 
 @Component({
-  selector: 'dag-user-task-node',
-  templateUrl: './user-task-node.html',
-  styleUrls: ['./user-task-node.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'dag-user-task-node',
+    templateUrl: './user-task-node.html',
+    styleUrls: ['./user-task-node.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzSelectModule, NzWaveModule]
 })
 export class UserTaskNode implements OnInit, DagNode {
   // 当前dag节点的数据

@@ -2,12 +2,16 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter} fro
 import {Cell} from "@antv/x6";
 import {IdWorker} from "../../../../core/snowflake-id/id-worker";
 import {DagNode} from "../../../interface/dag-node.interface";
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
     selector: 'dag-start-node',
     templateUrl: './start-node.html',
     styleUrls: ['./start-node.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NzButtonModule, NzIconModule]
 })
 export class StartNode implements DagNode {
     data: any = {}

@@ -4,13 +4,23 @@ import {debounceTime} from "rxjs/operators";
 import * as _ from "lodash";
 import {Router} from "@angular/router";
 import {ProcessService} from "../../routes/process/process.service";
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NgIf, NgFor } from '@angular/common';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { FormsModule } from '@angular/forms';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 @Component({
     selector: 'app-keyword-search',
     templateUrl: './keyword-search.html',
     styleUrls: ['./keyword-search.scss'],
     // 变更检测采用手动触发
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NzPopoverModule, NzInputModule, NzButtonModule, FormsModule, NzIconModule, NzSpinModule, NgIf, NgFor, NzEmptyModule]
 })
 export class KeywordSearch implements OnInit {
 

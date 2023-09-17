@@ -1,10 +1,15 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DagContainer} from "../dag-container/dag-container";
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
     selector: 'dag-toolbar',
     templateUrl: './toolbar.html',
-    styleUrls: ['./toolbar.scss']
+    styleUrls: ['./toolbar.scss'],
+    standalone: true,
+    imports: [NzToolTipModule, NzButtonModule, NzIconModule]
 })
 export class Toolbar {
     @Input()

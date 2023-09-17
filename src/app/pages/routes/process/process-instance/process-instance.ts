@@ -4,11 +4,30 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {StartupService} from "../../../../core/startup.service";
 import * as dayjs from "dayjs";
 import {OnReuseRetrieve} from "../../../../core/route-reuse";
+import { DictPipe } from '../../../../core/dictionary/dict.pipe';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { RouterLink } from '@angular/router';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NgFor, NgIf } from '@angular/common';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @Component({
     selector: 'app-process-instance',
     templateUrl: './process-instance.html',
-    styleUrls: ['./process-instance.scss']
+    styleUrls: ['./process-instance.scss'],
+    standalone: true,
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzDatePickerModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzTagModule, RouterLink, NgIf, NzDividerModule, NzPopconfirmModule, DictPipe]
 })
 export class ProcessInstance implements OnInit, OnReuseRetrieve {
     loading: boolean = false;

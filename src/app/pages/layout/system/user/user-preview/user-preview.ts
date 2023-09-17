@@ -1,14 +1,28 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../user.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {RoleService} from "../../role/role.service";
 import {catchError, mergeMap} from "rxjs/operators";
+import { Transfer } from '../../transfer/transfer';
+import { NgIf } from '@angular/common';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { Backward } from '../../../../../core/components/backward/backward';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @Component({
     selector: 'app-user-view',
-    templateUrl: './user-preview.html'
+    templateUrl: './user-preview.html',
+    standalone: true,
+    imports: [NzSpinModule, NzCardModule, Backward, NzDividerModule, NzButtonModule, NzWaveModule, NzIconModule, FormsModule, NzFormModule, ReactiveFormsModule, NzGridModule, NzInputModule, NgIf, Transfer]
 })
 export class UserPreview implements OnInit {
     form!: FormGroup;

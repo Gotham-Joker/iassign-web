@@ -1,10 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators, FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NgIf } from '@angular/common';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
     selector: 'dy-input',
     templateUrl: './dy-input.html',
-    styles: [':host{display: block;}']
+    styles: [':host{display: block;}'],
+    standalone: true,
+    imports: [NzGridModule, NzFormModule, NgIf, NzInputModule, FormsModule]
 })
 export class DyInput implements OnInit {
 

@@ -2,11 +2,33 @@ import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from "ng-zorro-antd/message";
 import {ProcessService} from "../process.service";
 import {DeptService} from "../../../layout/system/dept/dept.service";
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { AclDirective } from '../../../../core/acl/acl.directive';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NgFor } from '@angular/common';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { RouterLink } from '@angular/router';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @Component({
     selector: 'app-process-manage',
     templateUrl: './process-manage.html',
-    styleUrls: ['./process-manage.scss']
+    styleUrls: ['./process-manage.scss'],
+    standalone: true,
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, RouterLink, NzTableModule, NgFor, NzAvatarModule, NzToolTipModule, NzSwitchModule, AclDirective, NzDividerModule, NzPopconfirmModule, NzModalModule, NzSelectModule]
 })
 export class ProcessManage implements OnInit {
 

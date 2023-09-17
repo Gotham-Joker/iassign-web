@@ -28,11 +28,11 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-    declarations: [...COMPONENTS],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
-        ...MODULES
+        ...MODULES,
+        ...COMPONENTS
     ]
 })
 export class SystemModule {

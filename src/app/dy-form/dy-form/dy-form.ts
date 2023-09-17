@@ -1,12 +1,46 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {HttpBackend, HttpClient} from "@angular/common/http";
 import {mergeMap, of} from "rxjs";
-import {FormControl, Validators} from "@angular/forms";
-import {formatNumber} from "@angular/common";
+import { FormControl, Validators, FormsModule } from "@angular/forms";
+import { formatNumber, NgIf, NgSwitch, NgSwitchCase, NgFor, NgTemplateOutlet, NgSwitchDefault } from "@angular/common";
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
     selector: 'dy-form',
     templateUrl: './dy-form.html',
+    standalone: true,
+    imports: [
+        NzGridModule,
+        NzFormModule,
+        NgIf,
+        NgSwitch,
+        NgSwitchCase,
+        NzInputModule,
+        FormsModule,
+        NzInputNumberModule,
+        NzDatePickerModule,
+        NzSelectModule,
+        NgFor,
+        NzCheckboxModule,
+        NzRadioModule,
+        NzUploadModule,
+        NzButtonModule,
+        NzWaveModule,
+        NzIconModule,
+        NgTemplateOutlet,
+        NgSwitchDefault,
+    ],
 })
 export class DyForm implements OnInit {
     @Input()

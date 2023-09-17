@@ -2,11 +2,15 @@ import {ChangeDetectorRef, Component, EventEmitter} from '@angular/core';
 import {Cell} from "@antv/x6";
 import {IdWorker} from "../../../../core/snowflake-id/id-worker";
 import {DagNode} from "../../../interface/dag-node.interface";
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
     selector: 'dag-end-node',
     templateUrl: './end-node.html',
-    styleUrls: ['./end-node.scss']
+    styleUrls: ['./end-node.scss'],
+    standalone: true,
+    imports: [NzButtonModule, NzIconModule]
 })
 export class EndNode implements DagNode {
     data: any = {}

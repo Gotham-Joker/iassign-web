@@ -3,11 +3,26 @@ import {ProcessService} from "../process.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzPresetColor} from "ng-zorro-antd/core/color";
 import * as dayjs from "dayjs";
+import { DictPipe } from '../../../../core/dictionary/dict.pipe';
+import { RouterLink } from '@angular/router';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NgFor } from '@angular/common';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzCardModule } from 'ng-zorro-antd/card';
 
 @Component({
     selector: 'app-todo-list',
     templateUrl: './todo-list.html',
-    styleUrls: ['./todo-list.scss']
+    styleUrls: ['./todo-list.scss'],
+    standalone: true,
+    imports: [NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzDatePickerModule, NzButtonModule, NzWaveModule, NzIconModule, NgFor, NzTagModule, RouterLink, DictPipe]
 })
 export class TodoList implements OnInit {
     loading: boolean = false; // 整个页面加载中

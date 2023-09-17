@@ -9,12 +9,12 @@ import {ProcessInstance} from "./process-instance/process-instance";
 import {ProcessList} from "./process-list/process-list";
 import {ProcessStart} from "./process-start/process-start";
 import {TodoList} from "./todo-list/todo-list";
-import {ShotOverlayModule} from "../../../core/components/shot-overlay/shot-overlay.module";
-import {RichTextModule} from "../../../core/components/rich-text/rich-text.module";
+
+
 import {DyformsModule} from "../../../dy-form/dyforms.module";
-import {MailSelectModule} from "../../../core/components/mail-select/mail-select.module";
+
 import {ProcessAssign} from "./process-assign/process-assign";
-import {DiffTimeModule} from "../../../core/diff-time/diff-time.module";
+
 import {ProcessIndex} from "./process-index/process-index";
 import {DagModule} from "../../../dag/dag.module";
 
@@ -37,20 +37,14 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-    declarations: [
-        ...COMPONENTS
-    ],
     imports: [
-        CommonModule,
-        DagModule,
-        SharedModule,
-        DyformsModule,
-        ShotOverlayModule,
-        RichTextModule,
-        MailSelectModule,
-        DiffTimeModule,
-        RouterModule.forChild(routes)
-    ]
+    CommonModule,
+    DagModule,
+    SharedModule,
+    DyformsModule,
+    RouterModule.forChild(routes),
+    ...COMPONENTS
+]
 })
 export class ProcessModule {
 }

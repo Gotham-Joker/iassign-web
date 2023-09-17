@@ -4,13 +4,25 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {UserService} from "../../../layout/system/user/user.service";
 import {BehaviorSubject, Subject, switchMap} from "rxjs";
 import {debounceTime} from "rxjs/operators";
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { FormsModule } from '@angular/forms';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NgIf, NgFor } from '@angular/common';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 /**
  * 流程指派
  */
 @Component({
     selector: 'app-process-assign',
-    templateUrl: 'process-assign.html'
+    templateUrl: 'process-assign.html',
+    standalone: true,
+    imports: [NzModalModule, NzGridModule, NzTagModule, NgIf, NzSelectModule, FormsModule, NgFor, NzAvatarModule, NzButtonModule, NzIconModule, NzInputModule]
 })
 export class ProcessAssign implements OnInit {
     @Input()

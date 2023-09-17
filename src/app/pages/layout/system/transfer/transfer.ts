@@ -4,7 +4,7 @@ import {
     forwardRef,
     Input, OnInit
 } from '@angular/core';
-import {TransferChange} from "ng-zorro-antd/transfer";
+import { TransferChange, NzTransferModule } from "ng-zorro-antd/transfer";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import * as _ from "lodash";
 import {NgStyleInterface} from "ng-zorro-antd/core/types";
@@ -20,7 +20,9 @@ import {NgStyleInterface} from "ng-zorro-antd/core/types";
             useExisting: forwardRef(() => Transfer),
             multi: true
         }
-    ]
+    ],
+    standalone: true,
+    imports: [NzTransferModule]
 })
 export class Transfer implements OnInit, ControlValueAccessor {
     innerValue: string[] = [];

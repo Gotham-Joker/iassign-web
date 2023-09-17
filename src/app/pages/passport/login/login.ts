@@ -1,16 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouteReuseStrategy} from "@angular/router";
 import {LoginService} from "./login.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {RouteReuse} from "../../../core/route-reuse";
 import {catchError} from "rxjs/operators";
 import {EMPTY} from "rxjs";
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.html',
-    styleUrls: ['./login.scss']
+    styleUrls: ['./login.scss'],
+    standalone: true,
+    imports: [NzSpinModule, NzIconModule, FormsModule, NzFormModule, ReactiveFormsModule, NzGridModule, NzInputModule]
 })
 export class LoginComponent implements OnInit {
 

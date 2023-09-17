@@ -7,6 +7,13 @@ import {
 } from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Subject, timer} from "rxjs";
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NgFor, NgIf } from '@angular/common';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
 
 export interface MailSelectOption {
     avatar?: string,
@@ -21,17 +28,18 @@ export interface MailSelectOption {
     styleUrls: ['./mail-search.scss'],
     animations: [
         trigger('optionAnimation', [
-            state('optionLeaving', style({opacity: 0, display: 'none'})),
+            state('optionLeaving', style({ opacity: 0, display: 'none' })),
             // 创建一个状态名为hidden，用于动画结束时直接隐藏元素。
             transition('optionEntering => optionLeaving', [
-                animate('.3s ease-out', style({opacity: 0}))
+                animate('.3s ease-out', style({ opacity: 0 }))
             ]),
             transition('optionLeaving => optionEntering', [
-                style({display: 'block', opacity: 1})
+                style({ display: 'block', opacity: 1 })
             ])
-
         ])
-    ]
+    ],
+    standalone: true,
+    imports: [CdkOverlayOrigin, NgFor, NzAvatarModule, NzInputModule, FormsModule, CdkConnectedOverlay, CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf, NgIf, NzEmptyModule]
 })
 
 export class MailSelect implements OnInit, OnChanges {

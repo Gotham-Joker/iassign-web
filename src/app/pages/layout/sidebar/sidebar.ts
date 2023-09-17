@@ -1,10 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {StartupService} from "../../../core/startup.service";
+import { RouterLink } from '@angular/router';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NgIf, NgFor } from '@angular/common';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
 
 @Component({
     selector: 'app-sidebar',
     templateUrl: './sidebar.html',
-    styleUrls: ['./sidebar.scss']
+    styleUrls: ['./sidebar.scss'],
+    standalone: true,
+    imports: [NzLayoutModule, NgIf, NzToolTipModule, NzMenuModule, NgFor, NzButtonModule, RouterLink]
 })
 export class Sidebar implements OnInit {
     @Input()
