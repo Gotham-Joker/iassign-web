@@ -152,7 +152,7 @@ export class RichText implements OnInit, ControlValueAccessor {
             let tmpStr = str;
             const bgEx = /background-color:\s*(rgb\(.*?\));?/
             const bgColorMatch = str.match(bgEx);
-            // 将background-color颜色提取出来，转换称class，并删除style里的background-color
+            // 将background-color颜色提取出来，转换成class，并删除style里的background-color
             if (bgColorMatch != null && bgColorMatch.length > 0) {
                 const rgb = bgColorMatch[1].replaceAll(" ", "");
                 const className = COLORS[rgb];
