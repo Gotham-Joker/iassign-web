@@ -4,7 +4,7 @@
             <nz-form-item>
                 <nz-form-label>关键字</nz-form-label>
                 <nz-form-control>
-                    <input nz-input [(ngModel)]="keyword" placeholder="序号,名称,部门,描述"/>
+                    <input nz-input [(ngModel)]="keyword" placeholder="序号,名称,部门,描述" (keydown.enter)="query()"/>
                 </nz-form-control>
             </nz-form-item>
 

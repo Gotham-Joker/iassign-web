@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {ProcessService} from "../process.service";
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { RouterLink } from '@angular/router';
-import { NgFor } from '@angular/common';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { FormsModule } from '@angular/forms';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import {RouterLink} from '@angular/router';
+import {NgFor} from '@angular/common';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {FormsModule} from '@angular/forms';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
 
 @Component({
     selector: 'app-process-list',
