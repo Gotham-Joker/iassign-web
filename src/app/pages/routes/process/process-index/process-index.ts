@@ -22,6 +22,7 @@ import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzDividerModule} from "ng-zorro-antd/divider";
 import {NzPaginationModule} from "ng-zorro-antd/pagination";
+import {Backward} from "../../../../core/components/backward/backward";
 
 @Component({
     selector: 'process-index',
@@ -35,7 +36,7 @@ import {NzPaginationModule} from "ng-zorro-antd/pagination";
     standalone: true,
     imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule,
         NzSelectModule, NzDatePickerModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor,
-        NzTagModule, NzToolTipModule, RouterLink, DictPipe, NzDividerModule, NgIf, NzPaginationModule]
+        NzTagModule, NzToolTipModule, RouterLink, DictPipe, NzDividerModule, NgIf, NzPaginationModule, Backward]
 })
 
 export class ProcessIndex implements OnInit {
