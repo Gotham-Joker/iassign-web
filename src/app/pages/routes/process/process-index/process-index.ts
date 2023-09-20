@@ -1,31 +1,38 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import dayjs from "dayjs";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ProcessService} from "../process.service";
 import {catchError} from "rxjs/operators";
 import {NzMessageService} from "ng-zorro-antd/message";
-import { DictPipe } from '../../../../core/dictionary/dict.pipe';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NgFor } from '@angular/common';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { FormsModule } from '@angular/forms';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import {DictPipe} from '../../../../core/dictionary/dict.pipe';
+import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
+import {NzTagModule} from 'ng-zorro-antd/tag';
+import {NgFor} from '@angular/common';
+import {NzTableModule} from 'ng-zorro-antd/table';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
+import {NzSelectModule} from 'ng-zorro-antd/select';
+import {FormsModule} from '@angular/forms';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {NzDividerModule} from "ng-zorro-antd/divider";
 
 @Component({
     selector: 'process-index',
     templateUrl: 'process-index.html',
+    styles: [
+        `.highlight span {
+          color: rgb(220, 38, 38);
+        }`
+    ],
+    encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzSelectModule, NzDatePickerModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzTagModule, NzToolTipModule, RouterLink, DictPipe]
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzSelectModule, NzDatePickerModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzTagModule, NzToolTipModule, RouterLink, DictPipe, NzDividerModule]
 })
 
 export class ProcessIndex implements OnInit {
@@ -55,12 +62,7 @@ export class ProcessIndex implements OnInit {
     }
 
     ngOnInit() {
-        this.route.queryParams.subscribe(params => {
-            if (params["id"]) {
-                this.bodyParams.definitionId = params["id"];
-                this.query(1);
-            }
-        })
+        this.query(1);
     }
 
     query(page?: number) {

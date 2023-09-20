@@ -1,12 +1,12 @@
 <nz-spin [nzSpinning]="loading">
     <nz-card class="card-shadow search-card">
         <div nz-form [nzLayout]="'inline'">
-            <!--<nz-form-item>
+            <nz-form-item>
                 <nz-form-label>流程定义ID</nz-form-label>
                 <nz-form-control>
-                    <input [disabled]="true" nz-input [(ngModel)]="bodyParams.definitionId">
+                    <input nz-input [(ngModel)]="bodyParams.definitionId">
                 </nz-form-control>
-            </nz-form-item>-->
+            </nz-form-item>
             <nz-form-item>
                 <nz-form-label>申请单号</nz-form-label>
                 <nz-form-control>
@@ -67,47 +67,34 @@
 
     <br>
 
-    <nz-card class="card-shadow">
-        <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
-                  [nzTotal]="total"
-                  [(nzPageIndex)]="queryParams.page"
-                  [(nzPageSize)]="queryParams.size"
-                  (nzPageIndexChange)="query($event)">
-            <thead>
-            <tr>
-                <th>申请单号</th>
-                <th>流程名称</th>
-                <th>状态</th>
-                <th>申请人ID</th>
-                <th>申请人姓名</th>
-                <th>申请部门</th>
-                <th>申请日期</th>
-                <th>内容</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let item of basicTable.data">
-                <td><span class="fw-bold text-gradient bg-gradient-danger">{{item.id}}</span></td>
-                <td>{{item.name}}</td>
-                <td>
-                    <nz-tag [nzColor]="item.status|dict:'processInstance':'color'">
-                        {{item.status|dict:'processInstance':'status'}}
-                    </nz-tag>
-                </td>
-                <td>{{item.starter}}</td>
-                <td>{{item.starterName}}</td>
-                <td>{{item.deptName}}</td>
-                <td>{{item.createTime}}</td>
-                <td>
-                    <div nz-tooltip [nzTooltipTitle]="item.content" class="truncate"
-                         style="width: 300px">{{item.content}}</div>
-                </td>
-                <td>
-                    <a [routerLink]="'/process/process-detail'" [queryParams]="{id:item.id}">详情</a>
-                </td>
-            </tr>
-            </tbody>
-        </nz-table>
-    </nz-card>
+    <ng-container *ngFor="let item of list">
+        <nz-card class="card-shadow card-radius important-mt-5">
+            <div class="flex justify-between items-center fw-bold">
+                <div>
+                    <span class="text-base text-gradient bg-gradient-danger fw-bold">{{item.id}}</span>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <span>{{item.name}}</span>
+                </div>
+                <div>
+                    <a [routerLink]="'/process/process-detail'" [queryParams]="{id:item.id}">
+                        <span nz-icon nzType="search"></span>
+                        详情
+                    </a>
+                </div>
+            </div>
+            <nz-tag [nzColor]="item.status|dict:'processInstance':'color'">{{item.status|dict:'processInstance':'status'}}</nz-tag>
+            <div class="my-2 text-base text-gray-500 my-2 highlight line-clamp-3"
+                 [innerHTML]="item.isHighlight?item.highlight.join(''):item.content"></div>
+
+            <div class="flex justify-between mt-3">
+                <div class="text-gray-500">
+                    <span nz-icon nzType="user"></span>
+                    <strong class="mx-2 text-cyan-600">{{item.starterName}}({{item.starter}})</strong>
+                    <span>{{item.deptName}}</span>
+                </div>
+                <div class="text-gray-500">申请于 {{item.createTime}}</div>
+            </div>
+        </nz-card>
+    </ng-container>
+
 </nz-spin>
