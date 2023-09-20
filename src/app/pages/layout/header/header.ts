@@ -6,7 +6,7 @@ import {
     OnInit, TemplateRef, ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import { Router, RouterLink } from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {StartupService} from "../../../core/startup.service";
 import {animate, style, transition, trigger} from "@angular/animations";
@@ -14,20 +14,20 @@ import {SysMessageService} from "../sys-message.service";
 import {environment} from "../../../../environments/environment";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {Observable, of, switchMap} from "rxjs";
-import { DiffTimePipe } from '../../../core/diff-time/diff-time.pipe';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NgIf, NgFor, NgTemplateOutlet } from '@angular/common';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzBadgeModule } from 'ng-zorro-antd/badge';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { KeywordSearch } from '../keyword-search/keyword-search';
-import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import {DiffTimePipe} from '../../../core/diff-time/diff-time.pipe';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import {NzMenuModule} from 'ng-zorro-antd/menu';
+import {NzEmptyModule} from 'ng-zorro-antd/empty';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {NzTabsModule} from 'ng-zorro-antd/tabs';
+import {NgIf, NgFor, NgTemplateOutlet} from '@angular/common';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzBadgeModule} from 'ng-zorro-antd/badge';
+import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
+import {KeywordSearch} from '../keyword-search/keyword-search';
+import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
 
 
 @Component({
@@ -37,7 +37,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
     animations: [
         trigger('removed', [
             transition('* => removed', [
-                animate('.35s ease-out', style({ transform: 'translateX(-100%)' }))
+                animate('.35s ease-out', style({transform: 'translateX(-100%)'}))
             ])
         ])
     ],
@@ -68,18 +68,16 @@ export class Header implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.userInfo = this.startupSvc.userInfo || {};
-        this.queryMessage().subscribe();
+        this.queryMessage().subscribe(() => this.cdr.markForCheck());
         this.registerSSE();
     }
 
     logout() {
-        const token = localStorage.getItem("token");
         localStorage.removeItem("token");
-        window.location.href = environment.SERVER_URL + "/ssic/logout?token=" + token;
-       /* this.http.get('/api/logout').subscribe(res => {
+        this.http.get('/api/logout').subscribe(res => {
             localStorage.removeItem("token");
             this.router.navigateByUrl('/passport/login');
-        })*/
+        })
     }
 
     /**
@@ -96,9 +94,7 @@ export class Header implements OnInit, OnDestroy {
                 this.total = data.total;
                 this.showDot = this.messages?.length > 0;
                 this.loading = false;
-                // 手动刷新UI
-                this.cdr.detectChanges();
-                return of(res);
+                return of(this.messages);
             }))
     }
 
@@ -118,12 +114,17 @@ export class Header implements OnInit, OnDestroy {
                 if (msg == 'close') {
                     this.closeSource();
                 } else {
-                    this.queryMessage().subscribe(() => {
+                    this.queryMessage().subscribe((data: any) => {
                         // 如果通知栏不是打开状态，那么给用户提个醒
-                        if (!this.visible && this.messages != null && this.messages.length > 0) {
-                            this.notice.template(this.noticeTpl, {nzData: this.messages[0], nzDuration: 10_000})
+                        console.log(this.visible)
+                        console.log(data)
+                        console.log(data != null)
+                        console.log(data.length)
+                        if (!this.visible && data != null && data.length > 0) {
+                            this.notice.template(this.noticeTpl, {nzData: data[0], nzDuration: 10_000})
                         }
-                    })
+                        this.cdr.detectChanges();
+                    });
                 }
             }
             source.onerror = (err) => {
@@ -168,7 +169,7 @@ export class Header implements OnInit, OnDestroy {
             this.sysMessageSvc.markAsRead(msgId)
                 .pipe(switchMap(() => {
                     return this.queryMessage();
-                })).subscribe();
+                })).subscribe(() => this.cdr.detectChanges());
         }
     }
 
@@ -177,7 +178,7 @@ export class Header implements OnInit, OnDestroy {
         this.loading = true;
         this.sysMessageSvc.markAsRead(null).pipe(switchMap(() => {
             return this.queryMessage();
-        })).subscribe();
+        })).subscribe(() => this.cdr.detectChanges());
     }
 
     /**
