@@ -1,7 +1,7 @@
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component,
+    Component, NgZone,
     OnDestroy,
     OnInit, TemplateRef, ViewChild,
     ViewEncapsulation
@@ -63,7 +63,8 @@ export class Header implements OnInit, OnDestroy {
                 private notice: NzNotificationService,
                 private startupSvc: StartupService,
                 private sysMessageSvc: SysMessageService,
-                private cdr: ChangeDetectorRef) {
+                private cdr: ChangeDetectorRef,
+                private zone: NgZone) {
     }
 
     ngOnInit(): void {
@@ -116,10 +117,6 @@ export class Header implements OnInit, OnDestroy {
                 } else {
                     this.queryMessage().subscribe((data: any) => {
                         // 如果通知栏不是打开状态，那么给用户提个醒
-                        console.log(this.visible)
-                        console.log(data)
-                        console.log(data != null)
-                        console.log(data.length)
                         if (!this.visible && data != null && data.length > 0) {
                             this.notice.template(this.noticeTpl, {nzData: data[0], nzDuration: 10_000})
                         }
@@ -197,7 +194,13 @@ export class Header implements OnInit, OnDestroy {
 
     routeToLink(link: any) {
         if (link != null && link != "") {
-            this.router.navigate(['/process/process-detail'], {queryParams: {id: link}});
+            /* fix：修复问题。
+            * 因为当前组件采用onPush策略，所以导航要手动放回angular中运行，
+            * 否则其他模块的变更检查可能会有异常，例如导航进入流程详情页后，点击"查看流程图"按钮会报错说dagContainer是undefined，无法resetCells
+            * */
+            this.zone.run(() => {
+                this.router.navigate(['/process/process-detail'], {queryParams: {id: link}});
+            })
         }
     }
 }
