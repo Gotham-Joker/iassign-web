@@ -60,7 +60,6 @@ export class ProcessDetail implements OnInit {
     instanceId: string = '';
     dag: string = '';
     visible: boolean = false;
-    modalLoading: boolean = false;
     @ViewChild("dagContainer", {read: DagContainer})
     dagContainer: DagContainer;
     @ViewChild("auditFormContainer", {read: DyForm})
@@ -221,10 +220,8 @@ export class ProcessDetail implements OnInit {
      */
     viewGraph() {
         this.visible = true;
-        this.modalLoading = true;
         // 再触发一次异步，重新渲染dag
         timer(0).subscribe(res => {
-            this.modalLoading = false;
             const list = this.taskList;
             const nodeStatusList = [];
             for (let i = 0; i < list.length; i++) {

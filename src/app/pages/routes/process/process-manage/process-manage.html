@@ -84,7 +84,7 @@
                         <a (click)="openDeploy(item)"><span nz-icon [nzType]="'eye'"></span> 部署</a>
                         <nz-divider [nzType]="'vertical'"></nz-divider>
                     </ng-container>
-                    <a [routerLink]="'/process/process-index'" [queryParams]="{id:item.id}">
+                    <a [routerLink]="'/process/process-index'" [queryParams]="{definitionId:item.id}">
                         <span nz-icon nzType="search"></span>
                         查数
                     </a>

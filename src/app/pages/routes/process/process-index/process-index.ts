@@ -62,7 +62,12 @@ export class ProcessIndex implements OnInit {
     }
 
     ngOnInit() {
-        this.query(1);
+        this.route.queryParams.subscribe(params => {
+            if (params["definitionId"]) {
+                this.bodyParams.definitionId = params["definitionId"];
+            }
+            this.query(1);
+        })
     }
 
     query(page?: number) {
