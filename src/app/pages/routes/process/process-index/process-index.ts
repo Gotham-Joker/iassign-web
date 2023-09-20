@@ -7,7 +7,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {DictPipe} from '../../../../core/dictionary/dict.pipe';
 import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
 import {NzTagModule} from 'ng-zorro-antd/tag';
-import {NgFor} from '@angular/common';
+import {NgFor, NgIf} from '@angular/common';
 import {NzTableModule} from 'ng-zorro-antd/table';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzWaveModule} from 'ng-zorro-antd/core/wave';
@@ -21,6 +21,7 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzDividerModule} from "ng-zorro-antd/divider";
+import {NzPaginationModule} from "ng-zorro-antd/pagination";
 
 @Component({
     selector: 'process-index',
@@ -32,7 +33,9 @@ import {NzDividerModule} from "ng-zorro-antd/divider";
     ],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzSelectModule, NzDatePickerModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzTagModule, NzToolTipModule, RouterLink, DictPipe, NzDividerModule]
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule,
+        NzSelectModule, NzDatePickerModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor,
+        NzTagModule, NzToolTipModule, RouterLink, DictPipe, NzDividerModule, NgIf, NzPaginationModule]
 })
 
 export class ProcessIndex implements OnInit {
