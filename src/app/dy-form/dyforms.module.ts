@@ -15,7 +15,7 @@ import {DyCheckbox} from "./components/basic/dy-checkbox/dy-checkbox";
 import {DyCheckboxConfig} from "./components/basic/dy-checkbox/dy-checkbox-config";
 import {DyDatepicker} from "./components/basic/dy-datepicker/dy-datepicker";
 import {DyDatepickerConfig} from "./components/basic/dy-datepicker/dy-datepicker-config";
-import {DyForm} from "./dy-form/dy-form";
+import {DyForm} from "./dy-form";
 import {DyTextarea} from "./components/basic/dy-textarea/dy-textarea";
 import {DyTextareaConfig} from "./components/basic/dy-textarea/dy-textarea-config";
 import {DyUpload} from "./components/basic/dy-upload/dy-upload";

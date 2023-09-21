@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import {ProcessService} from "../process.service";
 import {DyformService} from "../../form/dyform.service";
-import {DyForm} from "../../../../dy-form/dy-form/dy-form";
+import {DyForm} from "../../../../dy-form/dy-form";
 import {StartupService} from "../../../../core/startup.service";
 import {UserService} from "../../../layout/system/user/user.service";
 import { NzResultModule } from 'ng-zorro-antd/result';

@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DyformService} from "../dyform.service";
 import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { DyForm } from '../../../../dy-form/dy-form/dy-form';
+import { DyForm } from '../../../../dy-form/dy-form';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { Backward } from '../../../../core/components/backward/backward';
 

@@ -5,7 +5,7 @@ import {EMPTY, mergeMap, of, switchMap, timer} from "rxjs";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {UserService} from "../../../layout/system/user/user.service";
 import {NzNotificationService} from "ng-zorro-antd/notification";
-import {DyForm} from "../../../../dy-form/dy-form/dy-form";
+import {DyForm} from "../../../../dy-form/dy-form";
 import {RichText} from "../../../../core/components/rich-text/rich-text";
 import {catchError} from "rxjs/operators";
 import {environment} from "../../../../../environments/environment";
