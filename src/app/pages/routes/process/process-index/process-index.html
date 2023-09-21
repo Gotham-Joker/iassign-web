@@ -5,7 +5,8 @@
             <nz-form-item>
                 <nz-form-label>流程定义ID</nz-form-label>
                 <nz-form-control>
-                    <input nz-input [(ngModel)]="bodyParams.definitionId" style="width: 200px" (keydown.enter)="query(1)">
+                    <input nz-input [(ngModel)]="bodyParams.definitionId" style="width: 200px"
+                           (keydown.enter)="query(1)">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
@@ -100,7 +101,8 @@
 
     <ng-container *ngIf="total>0">
         <div class="mt-5 flex justify-end items-center">
-            <nz-pagination [nzPageIndex]="queryParams.page" [nzTotal]="total"></nz-pagination>
+            <nz-pagination [nzPageIndex]="queryParams.page" [nzTotal]="total"
+                           (nzPageIndexChange)="query($event)"></nz-pagination>
         </div>
     </ng-container>
 
