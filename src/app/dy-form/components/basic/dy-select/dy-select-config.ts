@@ -11,12 +11,13 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzTabsModule} from 'ng-zorro-antd/tabs';
+import {NzSelectModule} from "ng-zorro-antd/select";
 
 @Component({
     selector: 'dy-select-config',
     templateUrl: './dy-select-config.html',
     standalone: true,
-    imports: [NzTabsModule, NzGridModule, NzFormModule, NzInputModule, FormsModule, NzInputNumberModule, NzSwitchModule, NzButtonModule, NzWaveModule, NzDividerModule]
+    imports: [NzTabsModule, NzGridModule, NzFormModule, NzInputModule, FormsModule, NzInputNumberModule, NzSwitchModule, NzButtonModule, NzWaveModule, NzDividerModule, NzSelectModule]
 })
 export class DySelectConfig implements OnInit, DyConfigComponent<DySelect> {
     ref: DySelect;

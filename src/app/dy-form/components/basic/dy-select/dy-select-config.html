@@ -46,6 +46,16 @@
         </nz-form-item>
 
         <nz-form-item>
+            <nz-form-label>模式</nz-form-label>
+            <nz-form-control>
+                <nz-select [(ngModel)]="config.mode">
+                    <nz-option nzLabel="单选" nzValue="default"></nz-option>
+                    <nz-option nzLabel="多选" nzValue="multiple"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
             <nz-form-label>隐藏冒号</nz-form-label>
             <nz-form-control>
                 <nz-switch [(ngModel)]="config.noColon"></nz-switch>

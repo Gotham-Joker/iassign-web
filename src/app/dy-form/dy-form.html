@@ -22,7 +22,8 @@
                 <textarea *ngSwitchCase="'textarea'" nz-input [(ngModel)]="config.value" [disabled]="readonly"
                           [placeholder]="config.placeholder"></textarea>
                 <!--下拉框-->
-                <nz-select *ngSwitchCase="'select'" [(ngModel)]="config.value" [nzDisabled]="readonly" nzShowSearch>
+                <nz-select *ngSwitchCase="'select'" [(ngModel)]="config.value" [nzDisabled]="readonly" nzShowSearch
+                           nzAllowClear [nzMode]="config.mode??'default'">
                     <nz-option *ngFor="let option of options[config.field]"
                                [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
                 </nz-select>
