@@ -83,6 +83,7 @@
 
     <nz-tab nzTitle="高级">
         <nz-divider nzPlain nzText="数据源" nzOrientation="center"></nz-divider>
+        <p>高级配置会使得"外观"的"选项"失效</p>
         <nz-form-item>
             <nz-form-label>URL</nz-form-label>
             <nz-form-control>
@@ -93,7 +94,21 @@
         <nz-form-item>
             <nz-form-label>响应字段</nz-form-label>
             <nz-form-control>
-                <input nz-input placeholder="eg: data.ssicId" [(ngModel)]="config.res"/>
+                <input nz-input placeholder="eg: data" [(ngModel)]="config.res"/>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label>LABEL</nz-form-label>
+            <nz-form-control>
+                <input nz-input placeholder="eg: label" [(ngModel)]="config.resLabel"/>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-label>VALUE</nz-form-label>
+            <nz-form-control>
+                <input nz-input placeholder="eg: value" [(ngModel)]="config.resValue"/>
             </nz-form-control>
         </nz-form-item>
 

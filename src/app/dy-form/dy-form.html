@@ -1,76 +1,78 @@
 <!-- 通用模板开始，用于复用，可减少重复代码 let-config的意思是将外部传进来的"$implicit"参数定义为config -->
 <ng-template #configTemplate let-config>
-  <nz-form-item>
-    <nz-form-label *ngIf="config.label??false" [nzRequired]="config.required"
-                   [nzNoColon]="config.noColon">{{config.label}}</nz-form-label>
-    <nz-form-control [nzErrorTip]="config.msg" [nzValidateStatus]="config.status">
-      <ng-container [ngSwitch]="config.type">
-        <!--输入框-->
-        <input *ngSwitchCase="'input'" nz-input [(ngModel)]="config.value" [disabled]="readonly"
-               [placeholder]="config.placeholder">
-        <nz-input-number style="width: 100%;" *ngSwitchCase="'number'" [(ngModel)]="config.value"
-                         [nzDisabled]="readonly"
-                         [nzPlaceHolder]="config.placeholder"
-                         [nzParser]="numberParser"
-                         [nzFormatter]="numberFormatter"></nz-input-number>
-        <!--日期选择器-->
-        <nz-date-picker *ngSwitchCase="'datepicker'"
-                        [nzDisabled]="readonly"
-                        [nzShowTime]="config.showTime"
-                        [nzFormat]="config.showTime?dateTimeFormat:dateFormat"
-                        [(ngModel)]="config.value"></nz-date-picker>
-        <textarea *ngSwitchCase="'textarea'" nz-input [(ngModel)]="config.value" [disabled]="readonly"
-                  [placeholder]="config.placeholder"></textarea>
-        <!--下拉框-->
-        <nz-select *ngSwitchCase="'select'" [(ngModel)]="config.value" [nzDisabled]="readonly" nzShowSearch>
-          <nz-option *ngFor="let option of config.options.split('\n')"
-                     [nzLabel]="option" [nzValue]="option">{{option}}</nz-option>
-        </nz-select>
-        <!-- 多选框 -->
-        <ng-container *ngSwitchCase="'checkbox'">
-          <label *ngFor="let item of config.options.split('\n')" nz-checkbox [nzValue]="item" [ngModel]="isCheck(config.value,item)"
-                 [nzDisabled]="readonly||config.readOnly"
-                 (nzCheckedChange)="checkboxChange($event,config,item)">{{item}}</label>
-        </ng-container>
-        <!--单选框-->
-        <ng-container *ngSwitchCase="'radio'">
-          <nz-radio-group *ngIf="config.options?.length>0" [(ngModel)]="config.value">
-            <label nz-radio *ngFor="let item of config.options?.split('\n')"
-                   [nzValue]="item" [nzDisabled]="readonly||config.readOnly">{{item}}</label>
-          </nz-radio-group>
-        </ng-container>
-        <!-- 上传组件 -->
-        <nz-upload *ngSwitchCase="'upload'" [nzDisabled]="readonly||config.readOnly"
-                   [(nzFileList)]="config.value" [nzBeforeUpload]="upload(config)">
-          <button nz-button><i nz-icon [nzType]="'upload'"></i>点击上传</button>
-        </nz-upload>
-      </ng-container>
-    </nz-form-control>
-  </nz-form-item>
+    <nz-form-item>
+        <nz-form-label *ngIf="config.label??false" [nzRequired]="config.required"
+                       [nzNoColon]="config.noColon">{{config.label}}</nz-form-label>
+        <nz-form-control [nzErrorTip]="config.msg" [nzValidateStatus]="config.status">
+            <ng-container [ngSwitch]="config.type">
+                <!--输入框-->
+                <input *ngSwitchCase="'input'" nz-input [(ngModel)]="config.value" [disabled]="readonly"
+                       [placeholder]="config.placeholder">
+                <nz-input-number style="width: 100%;" *ngSwitchCase="'number'" [(ngModel)]="config.value"
+                                 [nzDisabled]="readonly"
+                                 [nzPlaceHolder]="config.placeholder"
+                                 [nzParser]="numberParser"
+                                 [nzFormatter]="numberFormatter"></nz-input-number>
+                <!--日期选择器-->
+                <nz-date-picker *ngSwitchCase="'datepicker'"
+                                [nzDisabled]="readonly"
+                                [nzShowTime]="config.showTime"
+                                [nzFormat]="config.showTime?dateTimeFormat:dateFormat"
+                                [(ngModel)]="config.value"></nz-date-picker>
+                <textarea *ngSwitchCase="'textarea'" nz-input [(ngModel)]="config.value" [disabled]="readonly"
+                          [placeholder]="config.placeholder"></textarea>
+                <!--下拉框-->
+                <nz-select *ngSwitchCase="'select'" [(ngModel)]="config.value" [nzDisabled]="readonly" nzShowSearch>
+                    <nz-option *ngFor="let option of options[config.field]"
+                               [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                </nz-select>
+                <!-- 多选框 -->
+                <ng-container *ngSwitchCase="'checkbox'">
+                    <label *ngFor="let option of options[config.field]" nz-checkbox [nzValue]="option.value"
+                           [ngModel]="isCheck(config.value,option.value)"
+                           [nzDisabled]="readonly||config.readOnly"
+                           (nzCheckedChange)="checkboxChange($event,config,option.value)">{{option.label}}</label>
+                </ng-container>
+                <!--单选框-->
+                <ng-container *ngSwitchCase="'radio'">
+                    <nz-radio-group *ngIf="config.options?.length>0" [(ngModel)]="config.value">
+                        <label nz-radio *ngFor="let option of options[config.field]"
+                               [nzValue]="option.value"
+                               [nzDisabled]="readonly||config.readOnly">{{option.label}}</label>
+                    </nz-radio-group>
+                </ng-container>
+                <!-- 上传组件 -->
+                <nz-upload *ngSwitchCase="'upload'" [nzDisabled]="readonly||config.readOnly"
+                           [(nzFileList)]="config.value" [nzBeforeUpload]="upload(config)">
+                    <button nz-button><i nz-icon [nzType]="'upload'"></i>点击上传</button>
+                </nz-upload>
+            </ng-container>
+        </nz-form-control>
+    </nz-form-item>
 </ng-template>
 <!-- 通用模板结束 -->
 
 <!-- 开始渲染表单 -->
 <div nz-form [nzLayout]="form.config?.layout">
-  <ng-container *ngFor="let item of form.children">
-    <ng-container [ngSwitch]="item.type">
-      <!-- 栅格布局配置开始 -->
-      <nz-row *ngSwitchCase="'row'" [nzGutter]="item.gutter"  nz-form [nzLayout]="item.layout">
-        <div nz-col *ngFor="let col of item.children" [nzSpan]="col.dyColSpan">
-          <!-- 栅格布局内的元素，其中configTemplate是最上面那个通用模板 -->
-          <!-- 其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
-          <ng-container [ngTemplateOutlet]="configTemplate"
-                        [ngTemplateOutletContext]="{$implicit:col}"></ng-container>
-        </div>
-      </nz-row>
-      <!-- 栅格布局配置结束 -->
+    <ng-container *ngFor="let item of form.children">
+        <ng-container [ngSwitch]="item.type">
+            <!-- 栅格布局配置开始 -->
+            <nz-row *ngSwitchCase="'row'" [nzGutter]="item.gutter" nz-form [nzLayout]="item.layout">
+                <div nz-col *ngFor="let col of item.children" [nzSpan]="col.dyColSpan">
+                    <!-- 栅格布局内的元素，其中configTemplate是最上面那个通用模板 -->
+                    <!-- 其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
+                    <ng-container [ngTemplateOutlet]="configTemplate"
+                                  [ngTemplateOutletContext]="{$implicit:col}"></ng-container>
+                </div>
+            </nz-row>
+            <!-- 栅格布局配置结束 -->
 
-      <!-- 其他普通表单元素 -->
-      <!-- 其中configTemplate是最上面那个通用模板 -->
-      <!-- 其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
-      <ng-container *ngSwitchDefault [ngTemplateOutlet]="configTemplate"
-                    [ngTemplateOutletContext]="{$implicit:item}"></ng-container>
+            <!-- 其他普通表单元素 -->
+            <!-- 其中configTemplate是最上面那个通用模板 -->
+            <!-- 其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
+            <ng-container *ngSwitchDefault [ngTemplateOutlet]="configTemplate"
+                          [ngTemplateOutletContext]="{$implicit:item}"></ng-container>
+        </ng-container>
     </ng-container>
-  </ng-container>
 
 </div>

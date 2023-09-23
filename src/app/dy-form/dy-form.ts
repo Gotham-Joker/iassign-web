@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {HttpBackend, HttpClient} from "@angular/common/http";
 import {mergeMap, of} from "rxjs";
 import {FormControl, Validators, FormsModule} from "@angular/forms";
@@ -42,7 +42,7 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
         NgSwitchDefault,
     ],
 })
-export class DyForm implements OnInit {
+export class DyForm implements OnInit, OnChanges {
     @Input()
     form: any = {};
     private http: HttpClient;
@@ -59,6 +59,8 @@ export class DyForm implements OnInit {
         return value.replaceAll(",", '');
     };
 
+    options: any = {};
+
     /**
      *
      * @param httpBackend
@@ -69,6 +71,20 @@ export class DyForm implements OnInit {
     }
 
     ngOnInit(): void {
+
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (!changes['form']?.firstChange) {
+            const children = this.form.children;
+            for (let i = 0; i < children.length; i++) {
+                const item = children[i];
+                if (item.type == 'select' || item.type == 'checkbox' || item.type == 'radio') {
+                    this.options[item.field] = [];
+                    this.fetchOptions(this.options[item.field], item);
+                }
+            }
+        }
     }
 
     upload(config: any) {
@@ -157,10 +173,30 @@ export class DyForm implements OnInit {
         }
     }
 
-    isCheck(value, item: any) {
+    isCheck(value, optionValue: any) {
         if (value == null || !Array.isArray(value) || value.length == 0) {
             return false;
         }
-        return value.indexOf(item) != -1;
+        return value.indexOf(optionValue) != -1;
+    }
+
+    fetchOptions(options: any[], config: any) {
+        if (config.url) {
+            this.httpClient.get(config.url).subscribe(res => {
+                const data = res[config.res]
+                if (data != null) {
+                    for (let i = 0; i < data.length; i++) {
+                        const option = data[i];
+                        options.push({label: option[config.resLabel], value: option[config.resValue]});
+                    }
+                }
+            })
+        } else {
+            const splits = config.options.split('\n');
+            for (let i = 0; i < splits.length; i++) {
+                const option = splits[i];
+                options.push({label: option, value: option})
+            }
+        }
     }
 }
