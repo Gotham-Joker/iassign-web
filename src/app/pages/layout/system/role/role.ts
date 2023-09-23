@@ -1,24 +1,25 @@
 import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from "ng-zorro-antd/message";
-import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RoleService} from "./role.service";
 import {MenuService} from "../menu/menu.service";
 import {PermissionService} from "../permission/permission.service";
-import {zip} from "rxjs";
-import { Transfer } from '../transfer/transfer';
-import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NgFor } from '@angular/common';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import {EMPTY, Observable, zip} from "rxjs";
+import {Transfer} from '../transfer/transfer';
+import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {NgFor} from '@angular/common';
+import {NzTableModule} from 'ng-zorro-antd/table';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {catchError} from "rxjs/operators";
 
 @Component({
     selector: 'app-role',
@@ -88,8 +89,14 @@ export class Role implements OnInit {
             return;
         }
         this.modal.loading = true;
-        const data = this.modal.form.value;
-        this.roleSvc.saveOrUpdate(data).subscribe(res => {
+        const data = this.modal.form.getRawValue();
+        let req: Observable<any>;
+        if (this.modal.title == "新增") {
+            req = this.roleSvc.save(data);
+        } else {
+            req = this.roleSvc.update(data);
+        }
+        req.subscribe(res => {
             this.modal.loading = false;
             this.modal.visible = false;
             this.query();
@@ -147,20 +154,25 @@ export class Role implements OnInit {
             this.modal.loading = true;
             this.modal.title = '编辑';
             // 查找详情
-            this.roleSvc.findDetails(obj.id).subscribe((res: any) => {
+            this.roleSvc.findDetails(obj.id).pipe(catchError(() => {
+                this.modal.loading = false;
+                return EMPTY;
+            })).subscribe((res: any) => {
                 // number数组转字符数组
                 res.data.menuIds = res.data.menuIds.map((e: any) => e + '');
                 res.data.permissionIds = res.data.permissionIds.map((e: any) => e + '');
-                this.modal.form.patchValue(res.data);
+                const data = res.data;
+                const id = data.id;
+                data.id = {value: id, disabled: true};
+                this.modal.form.reset(data);
                 this.modal.loading = false;
                 this.modal.visible = true;
-            }, error => this.modal.loading = false);
+            });
         } else {
             this.modal.title = '新增';
-            this.modal.form.reset({menuIds: [], permissionIds: []}); // 重置表单
+            this.modal.form.reset({id: {value: '', disabled: false}, menuIds: [], permissionIds: []}); // 重置表单
             this.modal.visible = true;
         }
     }
-
 
 }

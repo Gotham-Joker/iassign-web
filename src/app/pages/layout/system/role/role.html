@@ -57,6 +57,12 @@
         <ng-template #content>
             <div nz-form [nzLayout]="'horizontal'" [formGroup]="modal.form">
                 <nz-form-item>
+                    <nz-form-label>角色ID</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="id" placeholder="不填写，则系统会自动生成">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
                     <nz-form-label nzRequired>角色名</nz-form-label>
                     <nz-form-control nzErrorTip="必填项">
                         <input placeholder="e.g. 管理员" nz-input formControlName="name">
