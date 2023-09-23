@@ -182,6 +182,12 @@ export class DyForm implements OnInit, OnChanges {
 
     fetchOptions(options: any[], config: any) {
         if (config.url) {
+            if (this.form['context']) {
+                const context = this.form['context'];
+                Object.keys(context).forEach(key => {
+                    config.url = config.url.replaceAll("${" + key + "}", "" + context[key]);
+                })
+            }
             this.httpClient.get(config.url).subscribe(res => {
                 const data = res[config.res]
                 if (data != null) {

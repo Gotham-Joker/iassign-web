@@ -108,7 +108,8 @@ export class FormsDesigner implements OnInit {
         config: { // 全局配置
             layout: 'horizontal'
         },
-        children: []
+        children: [],
+        context: {}
     };
 
     cfgModal: any = {

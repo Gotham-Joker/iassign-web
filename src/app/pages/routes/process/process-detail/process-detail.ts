@@ -33,6 +33,7 @@ import {NzButtonModule} from 'ng-zorro-antd/button';
 import {AclDirective} from '../../../../core/acl/acl.directive';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {Backward} from '../../../../core/components/backward/backward';
+import {StartupService} from "../../../../core/startup.service";
 
 /**
  * 流程审批详情
@@ -105,7 +106,8 @@ export class ProcessDetail implements OnInit {
                 private message: NzMessageService,
                 private notification: NzNotificationService,
                 private userSvc: UserService,
-                private uploadSvc: UploadService) {
+                private uploadSvc: UploadService,
+                private startupSvc: StartupService) {
     }
 
     ngOnInit(): void {
@@ -288,6 +290,10 @@ export class ProcessDetail implements OnInit {
             this.processSvc.findFormDefinition(this.currentTask.formId).subscribe((res: any) => {
                 const definition = res.data.definition
                 this.auditForm = JSON.parse(definition);
+                const userInfo = this.startupSvc.userInfo;
+                this.auditForm.context = {}
+                this.auditForm.context['USER_ID'] = userInfo.id;
+                this.auditForm.context['DEPT_ID'] = userInfo.deptId;
                 this.needAuditForm = true;
             })
         } else {
