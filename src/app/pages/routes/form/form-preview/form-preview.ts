@@ -6,7 +6,6 @@ import {NzButtonModule} from 'ng-zorro-antd/button';
 import {DyForm} from '../../../../dy-form/dy-form';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {Backward} from '../../../../core/components/backward/backward';
-import {StartupService} from "../../../../core/startup.service";
 
 @Component({
     selector: 'app-form-preview',
