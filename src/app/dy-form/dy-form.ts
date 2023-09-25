@@ -82,6 +82,15 @@ export class DyForm implements OnInit, OnChanges {
                 if (item.type == 'select' || item.type == 'checkbox' || item.type == 'radio') {
                     this.options[item.field] = [];
                     this.fetchOptions(this.options[item.field], item);
+                }else if (item.type=='row'){
+                    const rowChildren = item.children;
+                    for (let j = 0; j < rowChildren.length; j++) {
+                        let rowChild = rowChildren[j];
+                        if (rowChild.type == 'select' || rowChild.type == 'checkbox' || rowChild.type == 'radio') {
+                            this.options[rowChild.field] = [];
+                            this.fetchOptions(this.options[rowChild.field], rowChild);
+                        }
+                    }
                 }
             }
         }
