@@ -27,10 +27,7 @@ export class ProcessStart implements OnInit {
         id: '',
         name: '',
         description: '',
-        children: [],
-        context: { // 上下文，可用于某些场景的取值需要值
-
-        }
+        children: []
     };
     @ViewChild("dynamicForm", {read: DyForm})
     dynamicForm: DyForm;
@@ -61,12 +58,8 @@ export class ProcessStart implements OnInit {
                 this.emails = [email];
             }
             if (this.formId) {
-                this.formSvc.queryById(this.formId).subscribe(res => {
+                this.formSvc.defContext(this.formId).subscribe(res => {
                     this.data = JSON.parse(res.data.definition);
-                    // 将当前登录用户的某些信息放进form的上下文中，以便取值
-                    this.data.context = {};
-                    this.data.context['USER_ID'] = userInfo?.id;
-                    this.data.context['DEPT_ID'] = userInfo?.deptId;
                 });
             }
         })

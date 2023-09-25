@@ -20,23 +20,18 @@ export class FormPreview implements OnInit {
         id: '',
         name: '',
         description: '',
-        children: [],
-        context: {}// 上下文，用来存放可以取值的变量
+        children: []
     };
 
-    constructor(protected formSvc: DyformService, protected startupSvc: StartupService,
+    constructor(protected formSvc: DyformService,
                 protected router: Router, protected route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
         this.route.queryParams.subscribe(params => {
             const id = params.id;
-            this.formSvc.queryById(id).subscribe(res => {
-                const userInfo = this.startupSvc.userInfo;
+            this.formSvc.defContext(id).subscribe(res => {
                 this.data = JSON.parse(res.data.definition);
-                this.data.context = {}
-                this.data.context['USER_ID'] = userInfo.id;
-                this.data.context['DEPT_ID'] = userInfo.deptId;
             })
         })
     }

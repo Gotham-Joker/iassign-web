@@ -12,12 +12,11 @@ export class DyformService extends BaseService {
     }
 
     /**
-     * 根据id查找表单
+     * 表单定义查找，并替换占位符
      * @param id
      */
-    override queryById(id: any): Observable<any> {
-        return this.http.get(`/api/forms/findById?id=${id}`);
+    defContext(id:any):Observable<any>{
+        return this.http.get(`${this.baseUrl}/def/context?id=${id}`);
     }
-
 
 }

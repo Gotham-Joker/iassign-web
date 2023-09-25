@@ -100,13 +100,6 @@ export class ProcessService extends BaseService {
     }
 
     /**
-     * 查找form定义
-     */
-    findFormDefinition(id: string): Observable<any> {
-        return this.http.get("/api/forms/findById", {params: {id: id}})
-    }
-
-    /**
      * 查找form实例
      */
     findFormInstance(id: string): Observable<any> {
