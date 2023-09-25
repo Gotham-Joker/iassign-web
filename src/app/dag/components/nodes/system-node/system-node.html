@@ -38,6 +38,29 @@
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
+                        <nz-form-label>method</nz-form-label>
+                        <nz-form-control>
+                            <nz-select [(ngModel)]="data.method">
+                                <nz-option nzLabel="GET" nzValue="GET"></nz-option>
+                                <nz-option nzLabel="POST" nzValue="POST"></nz-option>
+                                <nz-option nzLabel="DELETE" nzValue="DELETE"></nz-option>
+                                <nz-option nzLabel="PUT" nzValue="PUT"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>header</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input [(ngModel)]="data.header"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>body</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input [(ngModel)]="data.body"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
                         <nz-form-label>成功条件</nz-form-label>
                         <nz-form-control>
                             <input nz-input placeholder='"code":0' [(ngModel)]="data.condition">

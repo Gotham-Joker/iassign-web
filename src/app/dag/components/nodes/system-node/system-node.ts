@@ -2,17 +2,18 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, OnI
 import {IdWorker} from "../../../../core/snowflake-id/id-worker";
 import {DagNode} from "../../../interface/dag-node.interface";
 import {Cell} from "@antv/x6";
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { FormsModule } from '@angular/forms';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NgClass, NgIf } from '@angular/common';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzInputNumberModule} from 'ng-zorro-antd/input-number';
+import {FormsModule} from '@angular/forms';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzTabsModule} from 'ng-zorro-antd/tabs';
+import {NzDrawerModule} from 'ng-zorro-antd/drawer';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NgClass, NgIf} from '@angular/common';
+import {NzSelectModule} from "ng-zorro-antd/select";
 
 @Component({
     selector: 'app-system-node',
@@ -20,7 +21,7 @@ import { NgClass, NgIf } from '@angular/common';
     styleUrls: ['./system-node.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzInputNumberModule, NzWaveModule]
+    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzInputNumberModule, NzWaveModule, NzSelectModule]
 })
 export class SystemNode implements OnInit, DagNode {
     // 当前dag节点的数据
@@ -30,6 +31,9 @@ export class SystemNode implements OnInit, DagNode {
         url: '',
         condition: '',
         retry: 0,
+        method: 'POST',
+        header: '',
+        body: '',
         connectTimeout: 0,
         socketTimeout: 0,
         script: ''
