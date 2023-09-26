@@ -474,4 +474,20 @@ export class ProcessDetail implements OnInit {
         window.location.href = environment.SERVER_URL + "/api/process-instance/log?instanceId=" + this.instanceId + "&token="
             + localStorage.getItem("token");
     }
+
+    /**
+     * 恢复失败的作业
+     * @param task
+     */
+    recover(task: any) {
+        this.loading = true;
+        this.processSvc.recover(task.id).pipe(catchError(err => {
+            this.loading = false;
+            return EMPTY;
+        })).subscribe(res => {
+            this, this.pending = true;
+            this.appendTimelineNode(res.data);
+            this.loading = false;
+        })
+    }
 }

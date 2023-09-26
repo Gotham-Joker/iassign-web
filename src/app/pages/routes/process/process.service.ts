@@ -135,4 +135,12 @@ export class ProcessService extends BaseService {
     cancel(id): Observable<any> {
         return this.http.put("/api/process/cancel?id=" + id, null);
     }
+
+    /**
+     * 恢复失败的作业
+     * @param taskId
+     */
+    recover(taskId): Observable<any> {
+        return this.http.post(`/api/process-task/recover?taskId=${taskId}`, null);
+    }
 }

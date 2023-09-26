@@ -108,6 +108,11 @@
                             查看审批表
                         </span>
                     </ng-container>
+                    <ng-container *ngIf="task.status=='FAILED'">
+                        <div *acl="'rc'">
+                            <a (click)="recover(task)"><span nz-icon nzType="sync"></span> 恢复运行</a>
+                        </div>
+                    </ng-container>
                     <!-- 处理人内容区 -->
                     <div *ngIf="task.userNode && task.handlerId" class="time-line-card bg-gray-50">
                         <div class="px-2 py-1 flex justify-between items-center">
