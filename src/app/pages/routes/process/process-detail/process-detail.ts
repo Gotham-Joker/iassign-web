@@ -485,7 +485,7 @@ export class ProcessDetail implements OnInit {
             this.loading = false;
             return EMPTY;
         })).subscribe(res => {
-            this, this.pending = true;
+            this.pending = true;
             this.appendTimelineNode(res.data);
             this.loading = false;
         })
