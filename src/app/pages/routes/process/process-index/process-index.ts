@@ -58,7 +58,7 @@ export class ProcessIndex implements OnInit {
     }
     list: any = [];
     total: number = 0;
-    createTimeGe = dayjs().add(-1, 'month').toDate()
+    createTimeGe = dayjs().add(-6, 'month').toDate()
     createTimeLe = dayjs().toDate()
 
 
@@ -79,7 +79,7 @@ export class ProcessIndex implements OnInit {
             this.queryParams.page = page;
         }
         if (this.createTimeGe == null) {
-            this.createTimeGe = dayjs().add(-1, 'month').toDate()
+            this.createTimeGe = dayjs().add(-6, 'month').toDate()
         }
         if (this.createTimeLe == null) {
             this.createTimeLe = dayjs().toDate()
@@ -92,8 +92,8 @@ export class ProcessIndex implements OnInit {
             this.message.warning("日期开始时间不能超过结束时间");
             return;
         }
-        if (startDate.add(1, "month").endOf("day").isBefore(endDate)) {
-            this.message.warning("选择的日期范围不能超过一个月");
+        if (startDate.add(6, "month").endOf("day").isBefore(endDate)) {
+            this.message.warning("选择的日期范围不能超过6个月");
             return;
         }
         this.loading = true;
