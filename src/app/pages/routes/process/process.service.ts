@@ -143,4 +143,12 @@ export class ProcessService extends BaseService {
     recover(taskId): Observable<any> {
         return this.http.post(`/api/process-task/recover?taskId=${taskId}`, null);
     }
+
+    /**
+     * 查看流程定义
+     * @param defId
+     */
+    dag(defId: string):Observable<any> {
+        return this.http.get(`/api/process-definition/dag?id=${defId}`);
+    }
 }

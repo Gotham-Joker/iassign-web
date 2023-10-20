@@ -14,13 +14,16 @@ import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzStepsModule} from 'ng-zorro-antd/steps';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {Backward} from '../../../../core/components/backward/backward';
+import {NzModalModule} from "ng-zorro-antd/modal";
+import {DagContainer} from "../../../../dag/components/dag-container/dag-container";
+import {timer} from "rxjs";
 
 @Component({
     selector: 'app-process-start',
     templateUrl: './process-start.html',
     styleUrls: ['./process-start.scss'],
     standalone: true,
-    imports: [Backward, NzCardModule, NzStepsModule, NzSpinModule, NgIf, MailSelect, DyForm, NzButtonModule, NzWaveModule, NzResultModule, RouterLink]
+    imports: [Backward, NzCardModule, NzStepsModule, NzSpinModule, NgIf, MailSelect, DyForm, NzButtonModule, NzWaveModule, NzResultModule, RouterLink, NzModalModule, DagContainer]
 })
 export class ProcessStart implements OnInit {
     data: any = {
@@ -31,6 +34,8 @@ export class ProcessStart implements OnInit {
     };
     @ViewChild("dynamicForm", {read: DyForm})
     dynamicForm: DyForm;
+    @ViewChild("dagContainer", {read: DagContainer})
+    dagContainer: DagContainer;
     emails: string[] = []; // 邮件接收人
     definitionId: string = '';
     formId: string = '';
@@ -38,6 +43,8 @@ export class ProcessStart implements OnInit {
     current: number = 0;
     instanceId: string = ""; // 申请单号
     userList: any[] = []
+    visible: boolean = false;
+    dag: any;
 
     constructor(protected formSvc: DyformService,
                 protected processSvc: ProcessService,
@@ -93,4 +100,22 @@ export class ProcessStart implements OnInit {
         this.current = 0;
     }
 
+    /**
+     * 流程预览
+     */
+    viewGraph() {
+        this.visible = true;
+        if (this.dag == null) {
+            this.processSvc.dag(this.definitionId).subscribe(res => {
+                this.dag = JSON.parse(res.data);
+                this.dagContainer.resetCells(this.dag);
+                this.dagContainer.getGraph().center();
+            })
+        } else {
+            timer(0).subscribe(res => {
+                this.dagContainer.resetCells(this.dag);
+                this.dagContainer.getGraph().center();
+            })
+        }
+    }
 }

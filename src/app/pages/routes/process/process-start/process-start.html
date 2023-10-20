@@ -12,7 +12,7 @@
 <nz-spin [nzSpinning]="loading">
     <nz-card class="card-shadow card-radius important-mt-3" *ngIf="current==0">
         <div class="card-content-responsive">
-            <div>
+            <div class="mt-4">
                 <p>设置邮件接收人: 将会持续关注审批变动，建议申请人必选</p>
                 <app-mail-select [list]="userList" [(emails)]="emails"></app-mail-select>
             </div>
@@ -21,8 +21,9 @@
 
             <dy-form [form]="data" #dynamicForm></dy-form>
 
-            <div class="flex justify-center">
-                <button class="mt-2" nzBlock nzShape="round" nz-button nzType="primary" (click)="startProcess()">
+            <div class="flex justify-center items-center mt-4">
+                <button nz-button nzType="primary" nzGhost (click)="viewGraph()"></button>
+                <button class="ml-4" nz-button nzType="primary" (click)="startProcess()">
                     提交申请表
                 </button>
             </div>
@@ -43,7 +44,8 @@
                 </div>
             </nz-result>
             <ng-template #subTitle>
-                <div class="text-center">您的申请单号为: <span class="fw-bold text-gradient bg-gradient-danger">{{this.instanceId}}</span>，
+                <div class="text-center">您的申请单号为: <span
+                        class="fw-bold text-gradient bg-gradient-danger">{{this.instanceId}}</span>，
                     审批可能需要花一些时间，请您耐心等待结果
                 </div>
             </ng-template>
@@ -51,3 +53,16 @@
     </nz-card>
 
 </nz-spin>
+
+<nz-modal [nzCloseIcon]="closeTpl" [(nzVisible)]="visible" [nzContent]="content"
+          [nzFooter]="null" [nzCentered]="true" (nzOnCancel)="visible=false" nzWidth="100%" (nzOnOk)="visible=false"
+          [nzBodyStyle]="{'padding':'24px'}">
+    <ng-template #content>
+        <div class="relative h-90vh">
+            <dag-container #dagContainer [interacting]="false"></dag-container>
+        </div>
+    </ng-template>
+    <ng-template #closeTpl>
+        <span nz-icon nzType="svg:close" class="mr-6 mt-8"></span>
+    </ng-template>
+</nz-modal>
