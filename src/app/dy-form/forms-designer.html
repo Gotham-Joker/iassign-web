@@ -1,123 +1,119 @@
 <nz-layout>
-  <div class="app-header flex items-center">
-    <div class="w-full text-xl font-bold pl-3 text-primary text-start">表单设计器</div>
-  </div>
-  <div class="inner-content">
-    <div class="experiment">
+    <div class="form-design-header">
+        <div class="w-full text-xl font-bold pl-3 text-primary text-start">表单设计器</div>
+    </div>
+    <div class="inner-content">
+        <div class="experiment">
 
-      <!--组件库面板-->
-      <div class="component-sider">
-        <div class="component-siderTop">
-          <div class="tabActive">组件库</div>
-        </div>
-        <div class="component-content">
-          <ul nz-menu nzMode="inline">
-            <!-- 组件列表 -->
-            <li nz-submenu nzOpen *ngFor="let dragGroup of dragGroups" [nzTitle]="dragGroup.title"
-                [nzIcon]="dragGroup.icon">
-              <ul cdkDropList *ngIf="dragGroup.items" [cdkDropListConnectedTo]="dropListConnectedTo"
-                  [cdkDropListSortingDisabled]="true">
-                <li nz-menu-item cdkDrag *ngFor="let item of dragGroup.items" [cdkDragData]="item">
-                  <a>{{item.name}}</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!--组件库面板结束-->
-
-      <!--编辑面板，包含工具栏、表单面板和配置面板-->
-      <div class="editPanel">
-        <div class="dagContainer">
-          <!-- 工具栏 -->
-          <div class="toolbar">
-            <div class="x6-toolbar">
-              <div class="x6-toolbar-content">
-                <div class="x6-toolbar-inner">
-                  <div class="x6-toolbar-group">
-                    <button nz-button nz-popover nzPopoverPlacement="bottom" nzPopoverContent="保存"
-                            nzType="text" (click)="visible=true">
-                      <i nz-icon nzType="save" nzTheme="outline"></i>
-                    </button>
-                    <button nz-button nz-popover nzPopoverPlacement="bottom" nzPopoverContent="基本配置"
-                            nzType="text" (click)="openModal()">
-                      <i nz-icon nzType="layout" nzTheme="outline"></i>
-                    </button>
-                  </div>
+            <!--组件库面板-->
+            <div class="component-sider">
+                <div class="component-siderTop">
+                    <div class="tabActive">组件库</div>
                 </div>
-              </div>
+                <div class="component-content">
+                    <ul nz-menu nzMode="inline">
+                        <!-- 组件列表 -->
+                        <li nz-submenu nzOpen *ngFor="let dragGroup of dragGroups" [nzTitle]="dragGroup.title"
+                            [nzIcon]="dragGroup.icon">
+                            <ul cdkDropList *ngIf="dragGroup.items" [cdkDropListConnectedTo]="dropListConnectedTo"
+                                [cdkDropListSortingDisabled]="true">
+                                <li nz-menu-item cdkDrag *ngFor="let item of dragGroup.items" [cdkDragData]="item">
+                                    <a>{{item.name}}</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
-          </div>
+            <!--组件库面板结束-->
 
-          <!-- 表单面板 -->
-          <div class="formContainer" cdkDropList #formContainer="cdkDropList"
-               (cdkDropListDropped)="drop($event)">
-            <div nz-form [nzLayout]="form.config.layout">
-              <ng-container #formItemContainer></ng-container>
+            <!--编辑面板，包含工具栏、表单面板和配置面板-->
+            <div class="editPanel">
+                <div class="dagContainer">
+                    <!-- 工具栏 -->
+                    <div class="toolbar">
+                        <div class="x6-toolbar">
+                            <div class="flex items-center">
+                                <button nz-button nz-popover nzPopoverPlacement="bottom" nzPopoverContent="基本配置"
+                                        nzType="text" (click)="openModal()">
+                                    <span nz-icon nzType="layout" nzTheme="outline"></span>
+                                </button>
+                                <button nz-button nz-popover nzPopoverPlacement="bottom" nzPopoverContent="保存"
+                                        nzType="text" (click)="visible=true" style="color: #1890ff">
+                                    <span nz-icon nzType="save" nzTheme="outline"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 表单面板 -->
+                    <div class="formContainer" cdkDropList #formContainer="cdkDropList"
+                         (cdkDropListDropped)="drop($event)">
+                        <div nz-form [nzLayout]="form.config.layout">
+                            <ng-container #formItemContainer></ng-container>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--配置面板-->
+                <div class="configPanel">
+                    <div class="component-siderTop">
+                        <div class="tabActive">配置面板</div>
+                    </div>
+                    <div style="padding: 0 15px">
+                        <ng-container #configPanelContainer></ng-container>
+                    </div>
+                </div>
+
             </div>
-          </div>
+            <!--编辑面板结束-->
 
         </div>
-
-        <!--配置面板-->
-        <div class="configPanel">
-          <div class="component-siderTop">
-            <div class="tabActive">配置面板</div>
-          </div>
-          <div style="padding: 0 15px">
-            <ng-container #configPanelContainer></ng-container>
-          </div>
-        </div>
-
-      </div>
-      <!--编辑面板结束-->
 
     </div>
 
-  </div>
+    <nz-modal [(nzVisible)]="cfgModal.visible" nzTitle="基本配置" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <ng-template nzModalContent>
+            <nz-form-item>
+                <nz-form-label>表单布局</nz-form-label>
+                <nz-form-control>
+                    <nz-radio-group [(ngModel)]="cfgModal.data.layout">
+                        <label nz-radio-button [nzValue]="'horizontal'">水平</label>
+                        <label nz-radio-button [nzValue]="'vertical'">垂直</label>
+                        <label nz-radio-button [nzValue]="'inline'">内联</label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+        </ng-template>
+    </nz-modal>
 
-  <nz-modal [(nzVisible)]="cfgModal.visible" nzTitle="基本配置" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-    <ng-template nzModalContent>
-      <nz-form-item>
-        <nz-form-label>表单布局</nz-form-label>
-        <nz-form-control>
-          <nz-radio-group [(ngModel)]="cfgModal.data.layout">
-            <label nz-radio-button [nzValue]="'horizontal'">水平</label>
-            <label nz-radio-button [nzValue]="'vertical'">垂直</label>
-            <label nz-radio-button [nzValue]="'inline'">内联</label>
-          </nz-radio-group>
-        </nz-form-control>
-      </nz-form-item>
-    </ng-template>
-  </nz-modal>
-
-  <nz-modal [(nzVisible)]="visible" nzTitle="保存" (nzOnCancel)="visible=false" (nzOnOk)="save()">
-    <ng-template nzModalContent>
-      <div nz-form>
-        <nz-form-item>
-          <nz-form-label [nzRequired]="true">表单名称</nz-form-label>
-          <nz-form-control>
-            <input nz-input [(ngModel)]="form.name">
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-label [nzRequired]="true">表单描述</nz-form-label>
-          <nz-form-control>
-            <input nz-input [(ngModel)]="form.description">
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </ng-template>
-  </nz-modal>
+    <nz-modal [(nzVisible)]="visible" nzTitle="保存" (nzOnCancel)="visible=false" (nzOnOk)="save()">
+        <ng-template nzModalContent>
+            <div nz-form>
+                <nz-form-item>
+                    <nz-form-label [nzRequired]="true">表单名称</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [(ngModel)]="form.name">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzRequired]="true">表单描述</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [(ngModel)]="form.description">
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </ng-template>
+    </nz-modal>
 
 
-  <!--右键菜单样式-->
-  <nz-dropdown-menu #contextMenu="nzDropdownMenu">
-    <ul nz-menu>
-      <li nz-menu-item (click)="removeFormItem(formItemId)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除
-      </li>
-    </ul>
-  </nz-dropdown-menu>
+    <!--右键菜单样式-->
+    <nz-dropdown-menu #contextMenu="nzDropdownMenu">
+        <ul nz-menu>
+            <li nz-menu-item (click)="removeFormItem(formItemId)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除
+            </li>
+        </ul>
+    </nz-dropdown-menu>
 
 </nz-layout>
