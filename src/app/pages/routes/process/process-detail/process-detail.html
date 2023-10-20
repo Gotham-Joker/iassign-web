@@ -177,7 +177,7 @@
                         <ng-container *ngIf="task.roles&&task.roles.length>0">
                             <div class="fw-bold text-danger my-2">可审批角色</div>
                             <div class="px-3">
-                                <span *ngFor="let item of task.roles" class="mt-2 mx-2">
+                                <span *ngFor="let item of task.roles" class="mt-2 mx-2" (click)="showRoleUser(item)">
                                     <span nz-icon nzType="team" class="text-lg"></span>
                                     {{item.name}}
                                 </span>
@@ -189,6 +189,16 @@
         </nz-card>
     </div>
 </div>
+
+<nz-modal [nzCloseIcon]="'svg:close'" [(nzVisible)]="roleModal.visible" [nzContent]="roleUserContent"
+[nzFooter]="null" [nzCentered]="true" (nzOnCancel)="roleModal.visible=false"
+nzWidth="768px" (nzOnOk)="roleModal.visible=false">
+    <ng-template #roleUserContent>
+        <div class="px-4 pt-3">
+            <role-user [roleId]="roleModal.roleId"></role-user>
+        </div>
+    </ng-template>
+</nz-modal>
 
 <!-- DAG流程图 -->
 <nz-modal [nzCloseIcon]="closeTpl" [(nzVisible)]="visible" [nzContent]="content"

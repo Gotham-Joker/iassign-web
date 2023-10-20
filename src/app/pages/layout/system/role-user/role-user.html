@@ -1,0 +1,41 @@
+<div nz-form nzLayout="inline">
+    <nz-form-item>
+        <nz-form-control>
+            <input nz-input placeholder="ID" [(ngModel)]="queryParams.id" (keydown.enter)="query()">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <input nz-input placeholder="用户名" [(ngModel)]="queryParams.username" (keydown.enter)="query()">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <input nz-input placeholder="邮箱" [(ngModel)]="queryParams.email" (keydown.enter)="query()">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <button nz-button nzType="primary" (click)="query()">查询</button>
+    </nz-form-item>
+</div>
+<br>
+<nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
+          [nzTotal]="total"
+          [(nzPageIndex)]="queryParams.page"
+          [(nzPageSize)]="queryParams.size"
+          (nzPageIndexChange)="query($event)" [nzLoading]="loading">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>用户名</th>
+        <th>邮箱</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of basicTable.data">
+        <td>{{item.id}}</td>
+        <td>{{item.username}}</td>
+        <td>{{item.email}}</td>
+    </tr>
+    </tbody>
+</nz-table>

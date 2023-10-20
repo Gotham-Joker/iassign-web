@@ -34,6 +34,7 @@ import {AclDirective} from '../../../../core/acl/acl.directive';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {Backward} from '../../../../core/components/backward/backward';
 import {DyformService} from "../../form/dyform.service";
+import {RoleUser} from "../../../layout/system/role-user/role-user";
 
 /**
  * 流程审批详情
@@ -46,7 +47,7 @@ import {DyformService} from "../../form/dyform.service";
     styleUrls: ['./process-detail.scss', '../../../../core/components/rich-text/colors.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [Backward, NzCardModule, AclDirective, NzButtonModule, NzWaveModule, NgIf, NzGridModule, NzIconModule, DyForm, NzTimelineModule, NgFor, NzTagModule, NzAvatarModule, NzModalModule, DagContainer, ProcessAssign, ShotOverlay, FormsModule, NzSpinModule, NzFormModule, MailSelect, RichText, NzUploadModule, NzSelectModule, DictPipe, DiffTimePipe]
+    imports: [Backward, NzCardModule, AclDirective, NzButtonModule, NzWaveModule, NgIf, NzGridModule, NzIconModule, DyForm, NzTimelineModule, NgFor, NzTagModule, NzAvatarModule, NzModalModule, DagContainer, ProcessAssign, ShotOverlay, FormsModule, NzSpinModule, NzFormModule, MailSelect, RichText, NzUploadModule, NzSelectModule, DictPipe, DiffTimePipe, RoleUser]
 })
 export class ProcessDetail implements OnInit {
     form: any = {
@@ -100,6 +101,12 @@ export class ProcessDetail implements OnInit {
 
     // 指派弹窗可见
     assignVisible: boolean = false;
+
+    // 角色-用户清单弹窗
+    roleModal: any = {
+        visible: false,
+        roleId: ''
+    }
 
     constructor(private processSvc: ProcessService,
                 private route: ActivatedRoute,
@@ -489,5 +496,10 @@ export class ProcessDetail implements OnInit {
             this.appendTimelineNode(res.data);
             this.loading = false;
         })
+    }
+
+    showRoleUser(role: any) {
+        this.roleModal.roleId = role.referenceId;
+        this.roleModal.visible = true;
     }
 }

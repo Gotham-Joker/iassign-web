@@ -20,12 +20,13 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {catchError} from "rxjs/operators";
+import {RoleUser} from "../role-user/role-user";
 
 @Component({
     selector: 'app-role',
     templateUrl: './role.html',
     standalone: true,
-    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzDividerModule, NzPopconfirmModule, NzModalModule, ReactiveFormsModule, Transfer]
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzDividerModule, NzPopconfirmModule, NzModalModule, ReactiveFormsModule, Transfer, RoleUser]
 })
 export class Role implements OnInit {
     queryParams: any = {
@@ -45,6 +46,10 @@ export class Role implements OnInit {
         form: null
     };
 
+    roleModal: any = {
+        visible: false,
+        roleId: ''
+    }
 
     constructor(private roleSvc: RoleService,
                 private menuSvc: MenuService,
@@ -175,4 +180,8 @@ export class Role implements OnInit {
         }
     }
 
+    showRoleUser(role: any) {
+        this.roleModal.roleId = role.id;
+        this.roleModal.visible = true;
+    }
 }
