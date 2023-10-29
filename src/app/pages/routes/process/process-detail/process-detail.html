@@ -168,7 +168,7 @@
                             <div class="px-3 flex flex-wrap">
                                 <div *ngFor="let item of task.users" class="flex items-center mt-2">
                                     <nz-avatar [nzSrc]="item.avatar"></nz-avatar>
-                                    <div class="truncate mx-2" style="width:62px">
+                                    <div class="mx-2">
                                         {{item.name}}
                                     </div>
                                 </div>
@@ -177,10 +177,10 @@
                         <ng-container *ngIf="task.roles&&task.roles.length>0">
                             <div class="fw-bold text-danger my-2">可审批角色</div>
                             <div class="px-3">
-                                <span *ngFor="let item of task.roles" class="mt-2 mx-2" (click)="showRoleUser(item)">
+                                <a *ngFor="let item of task.roles" class="mt-2 mx-2" (click)="showRoleUser(item)">
                                     <span nz-icon nzType="team" class="text-lg"></span>
                                     {{item.name}}
-                                </span>
+                                </a>
                             </div>
                         </ng-container>
                     </ng-container>

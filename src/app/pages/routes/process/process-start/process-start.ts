@@ -17,13 +17,14 @@ import {Backward} from '../../../../core/components/backward/backward';
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {DagContainer} from "../../../../dag/components/dag-container/dag-container";
 import {timer} from "rxjs";
+import {IconsProviderModule} from "../../../../core/ng-zorro/icons-provider.module";
 
 @Component({
     selector: 'app-process-start',
     templateUrl: './process-start.html',
     styleUrls: ['./process-start.scss'],
     standalone: true,
-    imports: [Backward, NzCardModule, NzStepsModule, NzSpinModule, NgIf, MailSelect, DyForm, NzButtonModule, NzWaveModule, NzResultModule, RouterLink, NzModalModule, DagContainer]
+    imports: [Backward, NzCardModule, NzStepsModule, NzSpinModule, NgIf, MailSelect, DyForm, NzButtonModule, NzWaveModule, NzResultModule, RouterLink, NzModalModule, DagContainer, IconsProviderModule]
 })
 export class ProcessStart implements OnInit {
     data: any = {
