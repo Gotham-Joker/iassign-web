@@ -6,24 +6,29 @@
         <nz-form-control [nzErrorTip]="config.msg" [nzValidateStatus]="config.status">
             <ng-container [ngSwitch]="config.type">
                 <!--输入框-->
-                <input *ngSwitchCase="'input'" nz-input [(ngModel)]="config.value" [disabled]="readonly"
+                <input *ngSwitchCase="'input'" nz-input [(ngModel)]="config.value"
+                       [disabled]="readonly||config.readOnly"
                        [placeholder]="config.placeholder">
                 <nz-input-number style="width: 100%;" *ngSwitchCase="'number'" [(ngModel)]="config.value"
-                                 [nzDisabled]="readonly"
+                                 [nzDisabled]="readonly||config.readOnly"
                                  [nzPlaceHolder]="config.placeholder"
+                                 [nzMax]="config.max"
+                                 [nzMin]="config.min"
                                  [nzParser]="numberParser"
                                  [nzFormatter]="numberFormatter"></nz-input-number>
+                <!-- 文本框 -->
+                <textarea *ngSwitchCase="'textarea'" nz-input [(ngModel)]="config.value"
+                          [disabled]="readonly||config.readOnly"
+                          [placeholder]="config.placeholder"></textarea>
                 <!--日期选择器-->
                 <nz-date-picker *ngSwitchCase="'datepicker'"
-                                [nzDisabled]="readonly"
-                                [nzShowTime]="config.showTime"
+                                [nzDisabled]="readonly||config.readOnly"
+                                [nzShowTime]="config.showTime" (ngModelChange)="formatDate($event,config)"
                                 [nzFormat]="config.showTime?dateTimeFormat:dateFormat"
-                                [(ngModel)]="config.value"></nz-date-picker>
-                <textarea *ngSwitchCase="'textarea'" nz-input [(ngModel)]="config.value" [disabled]="readonly"
-                          [placeholder]="config.placeholder"></textarea>
+                                [(ngModel)]="config.val"></nz-date-picker>
                 <!--下拉框-->
-                <nz-select *ngSwitchCase="'select'" [(ngModel)]="config.value" [nzDisabled]="readonly" nzShowSearch
-                           nzAllowClear [nzMode]="config.mode??'default'">
+                <nz-select *ngSwitchCase="'select'" [(ngModel)]="config.value" [nzDisabled]="readonly||config.readOnly"
+                           nzShowSearch [nzMode]="config.mode??'default'" [nzAllowClear]="config.allowClear">
                     <nz-option *ngFor="let option of options[config.field]"
                                [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
                 </nz-select>
@@ -42,10 +47,22 @@
                                [nzDisabled]="readonly||config.readOnly">{{option.label}}</label>
                     </nz-radio-group>
                 </ng-container>
+                <!-- 富文本 -->
+                <ng-container *ngSwitchCase="'richtext'">
+                    <ng-container *ngIf="readonly||config.readOnly;else richTextTpl">
+                        <div class="remark-p b-1 b-gray-300 b-solid b-rd-t-8px"
+                             [innerHTML]="richText[config.field]"></div>
+                    </ng-container>
+                    <ng-template #richTextTpl>
+                        <app-rich-text [(ngModel)]="config.value"
+                                       [disabled]="readonly||config.readOnly"></app-rich-text>
+                    </ng-template>
+                </ng-container>
                 <!-- 上传组件 -->
                 <nz-upload *ngSwitchCase="'upload'" [nzDisabled]="readonly||config.readOnly"
                            [(nzFileList)]="config.value" [nzBeforeUpload]="upload(config)">
-                    <button nz-button><i nz-icon [nzType]="'upload'"></i>点击上传</button>
+                    <button nz-button><span nz-icon [nzType]="'upload'"></span>点击上传
+                    </button>
                 </nz-upload>
             </ng-container>
         </nz-form-control>

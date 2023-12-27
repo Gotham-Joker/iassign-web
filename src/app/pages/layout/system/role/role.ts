@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {NzMessageService} from "ng-zorro-antd/message";
+import {NzMessageModule, NzMessageService} from "ng-zorro-antd/message";
 import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RoleService} from "./role.service";
 import {MenuService} from "../menu/menu.service";
 import {PermissionService} from "../permission/permission.service";
-import {EMPTY, Observable, zip} from "rxjs";
+import {EMPTY, zip} from "rxjs";
+import {catchError} from "rxjs/operators";
 import {Transfer} from '../transfer/transfer';
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
@@ -19,14 +20,16 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
-import {catchError} from "rxjs/operators";
 import {RoleUser} from "../role-user/role-user";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-role',
     templateUrl: './role.html',
     standalone: true,
-    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzDividerModule, NzPopconfirmModule, NzModalModule, ReactiveFormsModule, Transfer, RoleUser]
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule,
+        NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzDividerModule, NzPopconfirmModule,
+        NzModalModule, ReactiveFormsModule, Transfer, NzMessageModule, RoleUser]
 })
 export class Role implements OnInit {
     queryParams: any = {
@@ -46,16 +49,12 @@ export class Role implements OnInit {
         form: null
     };
 
-    roleModal: any = {
-        visible: false,
-        roleId: ''
-    }
-
     constructor(private roleSvc: RoleService,
                 private menuSvc: MenuService,
                 private pmSvc: PermissionService,
                 private message: NzMessageService,
-                private fb: FormBuilder) {
+                private fb: FormBuilder,
+                private router: Router) {
     }
 
     ngOnInit(): void {
@@ -95,7 +94,7 @@ export class Role implements OnInit {
         }
         this.modal.loading = true;
         const data = this.modal.form.getRawValue();
-        let req: Observable<any>;
+        let req;
         if (this.modal.title == "新增") {
             req = this.roleSvc.save(data);
         } else {
@@ -159,7 +158,7 @@ export class Role implements OnInit {
             this.modal.loading = true;
             this.modal.title = '编辑';
             // 查找详情
-            this.roleSvc.findDetails(obj.id).pipe(catchError(() => {
+            this.roleSvc.findDetails(obj.id).pipe(catchError(err => {
                 this.modal.loading = false;
                 return EMPTY;
             })).subscribe((res: any) => {
@@ -168,20 +167,25 @@ export class Role implements OnInit {
                 res.data.permissionIds = res.data.permissionIds.map((e: any) => e + '');
                 const data = res.data;
                 const id = data.id;
-                data.id = {value: id, disabled: true};
+                data.id = {value: id, disabled: true}; // 禁用ID修改
                 this.modal.form.reset(data);
                 this.modal.loading = false;
                 this.modal.visible = true;
             });
         } else {
             this.modal.title = '新增';
-            this.modal.form.reset({id: {value: '', disabled: false}, menuIds: [], permissionIds: []}); // 重置表单
+            this.modal.form.reset({id: {value: null, disabled: false}, menuIds: [], permissionIds: []}); // 重置表单
             this.modal.visible = true;
         }
     }
 
-    showRoleUser(role: any) {
-        this.roleModal.roleId = role.id;
-        this.roleModal.visible = true;
+
+    /**
+     * 展示某个角色的用户列表
+     * @param role
+     */
+    navigateToUserRole(role) {
+        this.router.navigate(['/system/role-user'], {queryParams: {roleId: role.id, roleName: role.name}})
     }
+
 }

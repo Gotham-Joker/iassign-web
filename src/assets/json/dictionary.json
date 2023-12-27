@@ -1,5 +1,5 @@
 {
-  "processInstance": {
+  "instanceStatus": {
     "NONE": {
       "status": "无",
       "color": "default",
@@ -49,6 +49,24 @@
       "status": "已撤销",
       "color": "error",
       "timelineColor": "red"
+    }
+  },
+  "opinionOperation": {
+    "REJECT": {
+      "label": "拒绝",
+      "color": "red"
+    },
+    "APPROVE": {
+      "label": "同意",
+      "color": "green"
+    },
+    "BACK": {
+      "label": "退回",
+      "color": "red"
+    },
+    "ASSIGN": {
+      "label": "指派",
+      "color": "magenta"
     }
   }
 }

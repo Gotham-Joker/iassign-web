@@ -1,5 +1,5 @@
 <nz-spin [nzSpinning]="loading">
-    <nz-card class="card-shadow search-card">
+    <nz-card class="card-shadow card-radius search-card">
         <div nz-form [nzLayout]="'inline'">
             <nz-form-item>
                 <nz-form-label>ID</nz-form-label>
@@ -21,15 +21,22 @@
             </nz-form-item>
             <nz-form-item>
                 <button nz-button [nzType]="'primary'" (click)="query(true)">
-                    <i nz-icon [nzType]="'search'"></i>查询
+                    <span nz-icon [nzType]="'search'"></span>查询
                 </button>
             </nz-form-item>
+            <ng-container *acl="'sync'">
+                <nz-form-item>
+                    <button nz-button [nzType]="'primary'" (click)="sync()">
+                        <span nz-icon [nzType]="'sync'"></span>更新
+                    </button>
+                </nz-form-item>
+            </ng-container>
         </div>
     </nz-card>
 
     <br>
 
-    <nz-card class="card-shadow">
+    <nz-card class="card-shadow card-radius">
         <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
                   [nzTotal]="total"
                   [(nzPageIndex)]="queryParams.page"

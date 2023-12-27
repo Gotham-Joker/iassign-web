@@ -66,8 +66,8 @@
                 <td><span class="text-gradient bg-gradient-danger fw-bold">{{item.id}}</span></td>
                 <td>{{item.name}}</td>
                 <td>
-                    <nz-tag [nzColor]="item.status|dict:'processInstance':'color'">
-                        {{item.status|dict:'processInstance':'status'}}
+                    <nz-tag [nzColor]="item.status|dict:'instanceStatus':'color'">
+                        {{item.status|dict:'instanceStatus':'status'}}
                     </nz-tag>
                 </td>
                 <td>{{item.handlerName}}</td>
@@ -80,7 +80,7 @@
                     </a>
                     <ng-container *ngIf="item.status=='RUNNING'">
                         <nz-divider nzType="vertical"></nz-divider>
-                        <a nz-popconfirm nzPopconfirmTitle="确定撤销吗？" nzOkDanger
+                        <a nz-popconfirm nzPopconfirmTitle="撤销之前请自行通知相关审批人，以免造成损失，确定撤销吗？" nzOkDanger
                            (nzOnConfirm)="cancel(item.id)" class="text-red-500  hover:text-red-400">
                             <span nz-icon nzType="rollback"></span>
                             撤销

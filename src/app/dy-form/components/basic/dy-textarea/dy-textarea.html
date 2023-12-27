@@ -1,5 +1,5 @@
 <nz-form-item>
-    <nz-form-label *ngIf="config.label??false" [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
+    <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
                    [nzRequired]="config.required">{{config.label}}</nz-form-label>
     <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
         <textarea nz-input [disabled]="config.readOnly" [(ngModel)]="config.value" [placeholder]="config.placeholder"></textarea>

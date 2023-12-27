@@ -26,11 +26,11 @@ import {DyDatepicker} from "./components/basic/dy-datepicker/dy-datepicker";
 import {DyUpload} from "./components/basic/dy-upload/dy-upload";
 import {DyRow} from "./components/layout/dy-row/dy-row";
 import {DyRowConfig} from "./components/layout/dy-row/dy-row-config";
+import {IdWorker} from "../core/snowflake-id/id-worker";
 import {DyTextarea} from "./components/basic/dy-textarea/dy-textarea";
 import {DyTextareaConfig} from "./components/basic/dy-textarea/dy-textarea-config";
 import {DyInputNumber} from "./components/basic/dy-input-number/dy-input-number";
 import {DyInputNumberConfig} from "./components/basic/dy-input-number/dy-input-number-config";
-import {IdWorker} from "../core/snowflake-id/id-worker";
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {FormsModule} from '@angular/forms';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
@@ -44,6 +44,8 @@ import {NgFor, NgIf} from '@angular/common';
 import {NzMenuModule} from 'ng-zorro-antd/menu';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzMessageModule} from "ng-zorro-antd/message";
+import {DyRichtext} from "./components/basic/dy-richtext/dy-richtext";
+import {DyRichtextConfig} from "./components/basic/dy-richtext/dy-richtext-config";
 
 export declare interface FormConfig {
     id?: string, // 表单编辑的话应该要填id
@@ -60,9 +62,9 @@ export declare interface FormConfig {
     templateUrl: './forms-designer.html',
     styleUrls: ['./forms-designer.scss'],
     standalone: true,
-    imports: [NzLayoutModule, NzMenuModule, NgFor, NzButtonModule, NgIf, CdkDropList, CdkDrag,
-        NzPopoverModule, NzIconModule, NzFormModule, NzModalModule, NzGridModule, NzRadioModule, FormsModule,
-        NzInputModule, NzDropDownModule, NzMessageModule]
+    imports: [NzLayoutModule, NzMenuModule, NgFor, NzButtonModule, NgIf, CdkDropList, CdkDrag, NzPopoverModule,
+        NzIconModule, NzFormModule, NzModalModule, NzGridModule, NzRadioModule, FormsModule, NzInputModule,
+        NzDropDownModule, NzMessageModule]
 })
 export class FormsDesigner implements OnInit {
     // 左侧可拖动的组
@@ -79,6 +81,7 @@ export class FormsDesigner implements OnInit {
                 {name: '下拉框', type: 'select', itemComponent: DySelect, configComponent: DySelectConfig},
                 {name: '日期', type: 'datepicker', itemComponent: DyDatepicker, configComponent: DyDatepickerConfig},
                 {name: '上传', type: 'upload', itemComponent: DyUpload, configComponent: DyUploadConfig},
+                {name: '富文本', type: 'richtext', itemComponent: DyRichtext, configComponent: DyRichtextConfig}
             ]
         }, {
             title: '布局组件',
@@ -108,8 +111,7 @@ export class FormsDesigner implements OnInit {
         config: { // 全局配置
             layout: 'horizontal'
         },
-        children: [],
-        context: {}
+        children: []
     };
 
     cfgModal: any = {

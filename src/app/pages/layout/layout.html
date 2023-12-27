@@ -1,8 +1,8 @@
-<app-sidebar [collapsed]="isCollapsed" (collapsedChange)="collapsedChange($event)"></app-sidebar>
+<app-sidebar [(collapsed)]="isCollapsed"></app-sidebar>
 
 <div class="app-wrap" [ngClass]="{'app-collapsed':isCollapsed}">
     <nz-header>
-        <app-header></app-header>
+        <app-header (collapsedChange)="collapsedChange()"></app-header>
     </nz-header>
     <div class="app-content" [@routeAnimations]="prepareRoute(outlet)">
         <router-outlet #outlet="outlet"></router-outlet>

@@ -13,8 +13,6 @@
             </div>
         </div>
         <div class="text-end py-2 px-3 flex items-center flex-wrap">
-            <label class="text-base fw-bold mr-2">流程申请单号:</label>
-            <span class="text-base fw-bold mr-1 id-fc">{{instanceId}}</span>
             <button *acl="'pi_log'" nz-button nzType="primary" class="ml-2" (click)="downloadLog()">下载日志</button>
             <button nz-button nzType="primary" class="ml-2" (click)="viewGraph()">查看流程图</button>
             <ng-container *ngIf="canAudit">
@@ -23,12 +21,13 @@
                     <button nz-button class="ml-2" (click)="openAudit()">审批</button>
                 </ng-container>
                 <ng-container *ngIf="currentTask.status=='CLAIMED'">
+                    <!-- 注意：“指派”操作是需要有“指派接口权限”的 acl -->
                     <button nz-button class="ml-2" (click)="openAssign()" *acl="'assign'">指派</button>
                 </ng-container>
             </ng-container>
         </div>
     </div>
-    <div class="p-3 pb-0">
+    <div class="p-3">
         <div nz-row nzGutter="24">
             <p nz-col [nzXs]="12" [nzSm]="12" [nzMd]="8" [nzLg]="8" [nzXl]="8" [nzXXl]="8">
                 <span nz-icon nzType="idcard"></span>
@@ -56,14 +55,17 @@
             </p>
         </div>
     </div>
-</nz-card>
-<div nz-row nzGutter="16">
-
-    <div nz-col [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="15" [nzXXl]="15" class="mt-3">
-        <nz-card nzBorderless class="card-shadow card-radius" [nzLoading]="loading">
+    <div class="mt-2">
+        <label class="fs-6 fw-bold mr-2">申请单号:</label>
+        <span class="fs-6 fw-bold mr-1 id-fc">{{instanceId}}</span>
+        <label class="fs-6 fw-bold mx-2">流程名称:</label>
+        <span class="fs-6 fw-bold mr-1">{{instanceName}}</span>
+    </div>
+    <div class="mt-4">
+        <nz-card [nzLoading]="loading">
             <div style="max-width: 950px;margin: 0 auto">
                 <div class="my-4">
-                    <span class="text-base fw-bold text-gradient bg-gradient-info">申请人提交的申请表</span>
+                    <span class="fs-6 fw-bold text-gradient bg-gradient-info">申请人提交的申请表</span>
                 </div>
                 <div>
                     <h1 class="text-center">{{form.name}}</h1>
@@ -75,134 +77,133 @@
             </div>
         </nz-card>
     </div>
+</nz-card>
+<br>
+<nz-card nzBorderless class="card-shadow card-radius" [nzLoading]="loading">
+    <div class="mt-4 mb-5">
+        <span class="fs-6 fw-bold text-gradient bg-gradient-purple">审批时间轴</span>
+    </div>
 
-    <div nz-col [nzSm]="24" [nzMd]="24" [nzLg]="24" [nzXl]="9" [nzXXl]="9" class="process-timeline mt-3">
-        <nz-card nzBorderless class="card-shadow card-radius" [nzLoading]="loading">
-            <div class="mt-4 mb-5">
-                <span class="text-base fw-bold text-gradient bg-gradient-purple">审批时间轴</span>
-            </div>
-
-            <!--自带的loading不好看，替换成自定义的loading-->
-            <ng-template #loadingTpl>
-                <span nz-icon nzType="svg:loading" [nzSpin]="true"></span>
-            </ng-template>
-            <nz-timeline [nzPendingDot]="loadingTpl" [nzReverse]="true">
-                <nz-timeline-item *ngFor="let task of taskList;let idx = index"
-                                  [nzColor]="task.status|dict:'processInstance':'timelineColor'"
-                                  [nzDot]="idx==taskList.length-1&&pending?loadingTpl:''">
-                    <!-- 标题区 -->
-                    <div class="time-line-title">
-                        <!-- 审批环节名称 -->
-                        <div class="flex items-center">
-                            <span class="text-base fw-bold mr-1">{{task.name}}</span>
-                            <nz-tag [nzColor]="task.status|dict:'processInstance':'color'">
-                                {{task.status|dict:'processInstance':'status'}}
-                            </nz-tag>
-                        </div>
-                        <span class="text-indigo-800">{{task.createTime}}</span>
+    <!--自带的loading不好看，替换成自定义的loading-->
+    <ng-template #loadingTpl>
+        <span nz-icon nzType="svg:loading" [nzSpin]="true"></span>
+    </ng-template>
+    <nz-timeline [nzPendingDot]="loadingTpl" [nzReverse]="true">
+        <nz-timeline-item *ngFor="let task of taskList;let idx = index"
+                          [nzColor]="task.status|dict:'instanceStatus':'timelineColor'"
+                          [nzDot]="idx==taskList.length-1&&pending?loadingTpl:''">
+            <div class="process-timeline">
+                <!-- 标题区 -->
+                <div class="time-line-title">
+                    <!-- 审批环节名称 -->
+                    <div class="flex items-center">
+                        <span class="fs-6 fw-bold mr-1">{{task.name}}</span>
+                        <nz-tag [nzColor]="task.status|dict:'instanceStatus':'color'">
+                            {{task.status|dict:'instanceStatus':'status'}}
+                        </nz-tag>
+                        <nz-tag nzColor="gold" *ngIf="task.countersign">会签</nz-tag>
                     </div>
-                    <ng-container *ngIf="task.formInstanceId!=null&&task.formInstanceId!=''">
+                    <span class="text-indigo-800">{{task.createTime}}</span>
+                </div>
+                <ng-container *ngIf="task.formInstanceId!=null&&task.formInstanceId!=''">
                         <span (click)="viewTaskHistoryForm(task.formInstanceId)"
                               class="text-violet-600 cursor-pointer">
                             <span nz-icon nzType="form"></span>
                             查看审批表
                         </span>
-                    </ng-container>
-                    <ng-container *ngIf="task.status=='FAILED'">
-                        <div *acl="'rc'">
-                            <a (click)="recover(task)"><span nz-icon nzType="sync"></span> 恢复运行</a>
-                        </div>
-                    </ng-container>
-                    <!-- 处理人内容区 -->
-                    <div *ngIf="task.userNode && task.handlerId" class="time-line-card bg-gray-50">
-                        <div class="px-2 py-1 flex justify-between items-center">
-                            <span class="flex items-center">
-                                <nz-avatar nzSize="small" [nzSrc]="task.handlerAvatar"
-                                           class="flex-shrink-0"></nz-avatar>
-                                <span class="text-base fw-bold px-2">{{task.handlerName}}</span>
-                                <span>{{task.handlerEmail ?? '邮件地址未知'}}</span>
-                            </span>
-                            <span>{{task.updateTime|diffTime}}</span>
-                        </div>
-                        <p class="remark-p" [innerHTML]="task.remark">
-                        </p>
+                </ng-container>
+                <ng-container *ngIf="task.status=='FAILED'&&!task.userNode">
+                    <div *acl="'recover'">
+                        <a (click)="recover(task)"><span nz-icon nzType="sync"></span> 恢复运行</a>
                     </div>
-                    <!-- 指派区 -->
-                    <div class="flex items-center px-3"
-                         *ngIf="task.userNode && task.assignId">
-                        <div>
-                            <p class="mb-0 text-danger px-3 flex flex-wrap items-center">
-                                <span nz-icon nzType="svg:link"></span>指派给:
-                                <strong class="px-2">@{{task.assignName}}</strong>
-                            </p>
-                        </div>
-                    </div>
-                    <!-- 指派人内容区 -->
-                    <div *ngIf="task.userNode && task.assignId" class="time-line-card bg-purple-50">
-                        <div class="px-2 py-1 flex justify-between items-center">
-                            <span class="flex items-center">
-                                <nz-avatar nzSize="small" [nzSrc]="task.assignAvatar" class="flex-shrink-0"></nz-avatar>
-                                <span class="fw-bold px-2 text-gray-800">{{task.assignName}}</span>
-                                <span>{{task.assignEmail ?? '邮件地址未知'}}</span>
-                            </span>
-                            <span>{{task.assignTime|diffTime}}</span>
-                        </div>
-                        <p class="remark-p" [innerHTML]="task.assignRemark">
-                        </p>
-                    </div>
-                    <!-- 附件区 -->
-                    <ul class="px-4 py-1" *ngIf="task.attachments!=null&&task.attachments.length>0">
-                        <li><span class="fw-bold">附件区：</span></li>
-                        <li *ngFor="let attach of task.attachments">
-                            <a [href]="attach.url" target="_blank">
-                                <span nz-icon nzType="paper-clip" class="mr-2"></span>
-                                {{attach.name}}
-                            </a>
-                        </li>
-                    </ul>
-
-                    <!-- 可审批人员和角色清单 -->
-                    <ng-container *ngIf="task.userNode && task.status=='PENDING'">
-                        <ng-container *ngIf="task.users&&task.users.length>0">
-                            <div class="fw-bold text-danger">可审批人员</div>
-                            <div class="px-3 flex flex-wrap">
-                                <div *ngFor="let item of task.users" class="flex items-center mt-2">
-                                    <nz-avatar [nzSrc]="item.avatar"></nz-avatar>
-                                    <div class="mx-2">
-                                        {{item.name}}
-                                    </div>
+                </ng-container>
+                <!-- 可审批人员和角色清单 -->
+                <ng-container
+                        *ngIf="task.userNode && (task.status=='PENDING'||(task.countersign&&task.status=='CLAIMED'))">
+                    <ng-container *ngIf="task.users&&task.users.length>0">
+                        <div class="fw-bold text-danger">可审批人员</div>
+                        <div class="px-3 flex flex-wrap">
+                            <div *ngFor="let item of task.users" class="flex items-center mt-2">
+                                <nz-avatar [nzSrc]="item.avatar"></nz-avatar>
+                                <div class="truncate mx-2" style="width:62px">
+                                    {{item.name}}
                                 </div>
                             </div>
-                        </ng-container>
-                        <ng-container *ngIf="task.roles&&task.roles.length>0">
-                            <div class="fw-bold text-danger my-2">可审批角色</div>
-                            <div class="px-3">
-                                <a *ngFor="let item of task.roles" class="mt-2 mx-2" (click)="showRoleUser(item)">
-                                    <span nz-icon nzType="team" class="text-lg"></span>
-                                    {{item.name}}
-                                </a>
-                            </div>
-                        </ng-container>
+                        </div>
                     </ng-container>
-                </nz-timeline-item>
-            </nz-timeline>
-        </nz-card>
-    </div>
-</div>
+                    <ng-container *ngIf="task.roles&&task.roles.length>0">
+                        <div class="fw-bold text-danger my-2">可审批角色</div>
+                        <div class="px-3">
+                            <a *ngFor="let item of task.roles" class="mt-2 mx-2" (click)="showRoleUser(item)">
+                                <span nz-icon nzType="team" class="text-lg"></span>
+                                {{item.name}}
+                            </a>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <!-- 审批意见区 -->
+                <ng-container *ngIf="task.userNode && task.opinions!=null && task.opinions.length>0">
 
+                    <div *ngFor="let opinion of task.opinions" class="time-line-card">
+                        <div class="px-2 py-1 flex justify-between items-center bg-neutral-50 b-rd-t-8px">
+                                <span class="flex items-center">
+                                    <nz-avatar nzSize="small" [nzSrc]="opinion.avatar"
+                                               class="flex-shrink-0"></nz-avatar>
+                                    <span class="px-2">{{opinion.username}}</span>
+                                    <span>{{opinion.email ?? '邮件地址未知'}}</span>
+                                    <span class="ml-2">
+                                        <nz-tag [nzColor]="opinion.operation|dict:'opinionOperation':'color'">
+                                        {{opinion.operation|dict:'opinionOperation':'label'}}
+                                        </nz-tag>
+                                    </span>
+                                </span>
+                            <span>{{opinion.createTime|diffTime}}</span>
+                        </div>
+                        <!-- 指派 -->
+                        <div class="flex items-center px-3" *ngIf="opinion.operation=='ASSIGN'">
+                            <div>
+                                <p class="mb-0 text-#c41d7f px-3 flex flex-wrap items-center">
+                                    <span nz-icon nzType="svg:link"></span>指派给:
+                                    <strong class="px-2">@{{opinion.assignName}}</strong>
+                                    <span>{{opinion.assignMail}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <p class="remark-p" [innerHTML]="opinion.remark">
+                        </p>
+
+                        <!-- 附件区 -->
+                        <ul class="px-4 py-1 bg-neutral-50 b-rd-b-8px"
+                            *ngIf="opinion.attachments!=null&&opinion.attachments.length>0">
+                            <li><span class="fw-bold">附件区：</span></li>
+                            <li *ngFor="let attach of opinion.attachments">
+                                <a [href]="attach.url" target="_blank">
+                                    <span nz-icon nzType="paper-clip" class="mr-2"></span>
+                                    {{attach.name}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </ng-container>
+            </div>
+        </nz-timeline-item>
+    </nz-timeline>
+</nz-card>
+
+<!-- 角色-用户清单 -->
 <nz-modal [nzCloseIcon]="'svg:close'" [(nzVisible)]="roleModal.visible" [nzContent]="roleUserContent"
-[nzFooter]="null" [nzCentered]="true" (nzOnCancel)="roleModal.visible=false"
-nzWidth="768px" (nzOnOk)="roleModal.visible=false">
+          [nzFooter]="null" [nzCentered]="true"
+          (nzOnCancel)="roleModal.visible=false" nzWidth="768px" (nzOnOk)="roleModal.visible=false">
     <ng-template #roleUserContent>
         <div class="px-4 pt-3">
-            <role-user [roleId]="roleModal.roleId"></role-user>
+            <role-user-list [roleId]="roleModal.roleId"></role-user-list>
         </div>
     </ng-template>
 </nz-modal>
 
 <!-- DAG流程图 -->
 <nz-modal [nzCloseIcon]="closeTpl" [(nzVisible)]="visible" [nzContent]="content"
-          [nzFooter]="null" [nzCentered]="true"
+          [nzOkLoading]="modalLoading" [nzFooter]="null" [nzCentered]="true"
           (nzOnCancel)="visible=false" nzWidth="100%" (nzOnOk)="visible=false" [nzBodyStyle]="{'padding':'24px'}">
     <ng-template #content>
         <div class="relative h-90vh">
@@ -228,7 +229,7 @@ nzWidth="768px" (nzOnOk)="roleModal.visible=false">
                 <ng-container *ngIf="canAudit && needAuditForm">
                     <div class="pt-3">
                         <div>
-                            <span class="text-base fw-bold text-gradient bg-gradient-success">当前审批人需要填写的审批表</span>
+                            <span class="fs-6 fw-bold text-gradient bg-gradient-success">当前审批人需要填写的审批表</span>
                         </div>
                         <div>
                             <h1 class="text-center">{{auditForm.name}}</h1>

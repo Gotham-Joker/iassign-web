@@ -46,6 +46,14 @@
 .cdk-overlay-container {
   top: 8px;
 }
+// 菜单收缩时分组标签居中
+.ant-menu.ant-menu-inline-collapsed .ant-menu-item-group-title {
+  text-align: center;
+}
+.ant-layout-header {
+  padding: 0;
+  background-color: transparent;
+}
 
 .ant-segmented {
   background-color: rgba(248, 250, 253, 1);
@@ -79,9 +87,16 @@
 .ant-btn-success {
   .button-variant-primary(@btn-primary-color; @success-color; @success-color-hover; @success-color-active);
 }
-.ant-notification-notice{
+
+.ant-notification-notice {
   border-radius: .5rem;
 }
-.ant-form-vertical .ant-form-item-control{
+
+.ant-form-vertical .ant-form-item-control {
   flex: 1 1 auto;
+}
+
+.ant-select-disabled.ant-select-multiple .ant-select-selection-item {
+  color: rgba(0, 0, 0, 0.7);
+  user-select: text;
 }

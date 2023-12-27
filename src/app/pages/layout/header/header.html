@@ -1,5 +1,11 @@
 <div class="app-header-bar shadow-blur">
     <div class="app-header-wrap">
+        <div class="nav-btn" (click)="collapsedChange.emit('')">
+            <div class="nav-btn-item"></div>
+            <div class="nav-btn-item"></div>
+            <div class="nav-btn-item"></div>
+        </div>
+
         <div class="app-breadcrumb-responsive">
             <div class="app-breadcrumb">
                 <nz-breadcrumb [nzAutoGenerate]="true">
@@ -72,7 +78,8 @@
                                   </div>
                               </nz-tab>-->
                         </nz-tabset>
-                        <div *ngIf="showAll" class="absolute right-4 top-4 py-1.4"><a>查看所有</a></div>
+                        <div class="absolute right-4 top-4 py-1.4"><a [routerLink]="'/system/message'">查看所有</a>
+                        </div>
                     </div>
                 </nz-dropdown-menu>
                 <nz-dropdown-menu #menu="nzDropdownMenu">

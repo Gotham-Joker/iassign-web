@@ -1,0 +1,44 @@
+<nz-spin [nzSpinning]="loading">
+
+    <div class="flex justify-between items-center">
+        <div>
+            <app-backward></app-backward>
+        </div>
+        <div>
+            <span class="text-base text-gray-500 font-bold mr-3">NOTIFICATION / 通知提醒</span>
+            <button nz-button class="mr-3" nzDanger nzGhost (nzOnConfirm)="remove(null)"
+                    nz-popconfirm
+                    nzPopconfirmTitle="确定清空吗？">
+                <span nz-icon nzType="delete"></span>
+                清空
+            </button>
+        </div>
+    </div>
+    <nz-card class="card-shadow card-radius important-mt-3">
+
+        <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
+                  [nzTotal]="total"
+                  [(nzPageIndex)]="queryParams.page"
+                  [(nzPageSize)]="queryParams.size"
+                  (nzPageIndexChange)="query($event)">
+            <tbody>
+            <tr *ngFor="let item of basicTable.data">
+                <td>
+                    <nz-avatar [nzSrc]="item.fromUserAvatar"></nz-avatar>
+                    <span class="pl-3">{{item.fromUsername}}</span>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    {{item.createTime|diffTime}}
+                </td>
+                <td><strong>{{item.subject}}</strong></td>
+                <td>{{item.content}}</td>
+                <td>
+                    <a (click)="routeToLink(item.link)"><span nz-icon nzType="edit"></span> 详情</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
+                       (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+    </nz-card>
+</nz-spin>

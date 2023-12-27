@@ -1,0 +1,16 @@
+.search-result {
+  padding-bottom: 25px;
+  //height: 650px;
+  //overflow-y: scroll;
+
+  .scroll-item {
+    &:not(:first-child) {
+      margin-top: 24px;
+    }
+  }
+}
+
+.highlight span {
+  font-weight: bold;
+  color: rgba(220, 38, 38);
+}

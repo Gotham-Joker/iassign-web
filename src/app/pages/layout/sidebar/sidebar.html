@@ -1,65 +1,58 @@
 <nz-sider nzCollapsible [(nzCollapsed)]="collapsed" [nzTrigger]="null" [nzCollapsedWidth]="64" nzTheme="light"
           class="app-sidebar">
-    <div>
-        <div class="nav-btn" (click)="toggleExpand()">
-            <div class="nav-btn-item"></div>
-            <div class="nav-btn-item"></div>
-            <div class="nav-btn-item"></div>
+    <div class="bg-white">
+        <div class="nav-user">
+            <div class="nav-avatar" (click)="toggleCollapsed()">
+                <img [src]="userInfo.avatar" alt="">
+            </div>
+            <div class="nav-user-info">
+                <strong>{{userInfo.username}}</strong>
+                <p class="mb-0 text-gray-700 text-ellipsis" nz-tooltip
+                   [nzTooltipTitle]="userInfo.email">{{userInfo.email}}</p>
+            </div>
         </div>
-    </div>
-    <div class="nav-user">
-        <div class="nav-avatar" (click)="toggleExpand()">
-            <img *ngIf="userInfo.avatar;else defaultAvatar" [src]="userInfo.avatar" alt="">
-            <ng-template #defaultAvatar>
-                <img src="assets/logo128.png" alt="">
-            </ng-template>
-        </div>
-        <div class="nav-user-info">
-            <strong>{{userInfo.username}}</strong>
-            <p class="mb-0 text-gray-700 text-ellipsis" nz-tooltip [nzTooltipTitle]="userInfo.email">{{userInfo.email}}</p>
-        </div>
-    </div>
-    <div class="nav-line"></div>
-    <!-- 菜单栏 -->
-    <ul nz-menu nzTheme="light" nzMode="inline">
-        <ng-container *ngFor="let item of menus;let idx=index">
-            <!-- 第一层是菜单组 -->
-            <li nz-menu-group [nzTitle]="item.text"></li>
+        <div class="nav-line"></div>
+        <!-- 菜单栏 -->
+        <ul nz-menu nzTheme="light" nzMode="inline">
+            <ng-container *ngFor="let item of menus;let idx=index">
+                <!-- 第一层是菜单组 -->
+                <li nz-menu-group [nzTitle]="item.text"></li>
 
-            <!-- 默认第一个菜单组的第一个子菜单是展开的 -->
-            <li *ngFor="let subMenu of item.children;let subIdx=index" nz-submenu
-                [nzOpen]="idx==0&&subIdx==0"
-                [nzTitle]="subMenu.text"
-                [nzIcon]="subMenu.icon">
-                <ul>
-                    <li *ngFor="let subMenuItem of subMenu.children" nz-menu-item nzMatchRouter>
-                        <a [routerLink]="subMenuItem.link">{{subMenuItem.text}}</a>
-                    </li>
-                </ul>
-            </li>
+                <!-- 默认第一个菜单组的第一个子菜单是展开的 -->
+                <li *ngFor="let subMenu of item.children;let subIdx=index" nz-submenu
+                    [nzOpen]="idx==0&&subIdx==0"
+                    [nzTitle]="subMenu.text"
+                    [nzIcon]="subMenu.icon">
+                    <ul>
+                        <li *ngFor="let subMenuItem of subMenu.children" nz-menu-item nzMatchRouter>
+                            <a [routerLink]="subMenuItem.link">{{subMenuItem.text}}</a>
+                        </li>
+                    </ul>
+                </li>
 
-        </ng-container>
-        <!--<li nz-menu-group nzTitle="菜单"></li>
-        <li nz-submenu nzTitle="仪表盘" nzIcon="_workbench_ao">
-          <ul>
-            <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="['/layout/_workbench_ao']">仪表盘</a>
+            </ng-container>
+            <!--<li nz-menu-group nzTitle="菜单"></li>
+            <li nz-submenu nzTitle="仪表盘" nzIcon="_workbench_ao">
+              <ul>
+                <li nz-menu-item nzMatchRouter>
+                  <a [routerLink]="['/layout/_workbench_ao']">仪表盘</a>
+                </li>
+                <li nz-menu-item nzMatchRouter>test
+                  &lt;!&ndash;<a [routerLink]="['/layout/test']">test</a>&ndash;&gt;
+                </li>
+                <li nz-menu-item>Alex</li>
+              </ul>
             </li>
-            <li nz-menu-item nzMatchRouter>test
-              &lt;!&ndash;<a [routerLink]="['/layout/test']">test</a>&ndash;&gt;
+            <li nz-submenu nzTitle="Team" nzIcon="team">
+              <ul>
+                <li nz-menu-item>Team 1</li>
+                <li nz-menu-item>Team 2</li>
+              </ul>
             </li>
-            <li nz-menu-item>Alex</li>
-          </ul>
-        </li>
-        <li nz-submenu nzTitle="Team" nzIcon="team">
-          <ul>
-            <li nz-menu-item>Team 1</li>
-            <li nz-menu-item>Team 2</li>
-          </ul>
-        </li>
-        <li nz-menu-item>
-          <i nz-icon nzType="file"></i>
-          <span>File</span>
-        </li>-->
-    </ul>
+            <li nz-menu-item>
+              <i nz-icon nzType="file"></i>
+              <span>File</span>
+            </li>-->
+        </ul>
+    </div>
 </nz-sider>

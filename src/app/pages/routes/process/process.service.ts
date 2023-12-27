@@ -24,8 +24,8 @@ export class ProcessService extends BaseService {
      * 查询工作流的权限
      * @param id
      */
-    findPermission(id): Observable<any> {
-        return this.http.get(`/api/process-definition/detail/permission?id=${id}`);
+    findDefinitionDetail(id): Observable<any> {
+        return this.http.get(`/api/process-definition/detail?id=${id}`);
     }
 
     /**
@@ -71,7 +71,7 @@ export class ProcessService extends BaseService {
      * 查找流程实例的详情
      * @param id
      */
-    findInstanceDetail(id: any) {
+    findInstanceDetail(id: any): Observable<any> {
         return this.http.get("/api/process-instance/detail", {params: {id: id}})
     }
 
@@ -112,12 +112,13 @@ export class ProcessService extends BaseService {
 
     /**
      * es索引查询
-     * @param page
+     * @param lastId
+     * @param score
      * @param size
      * @param params
      */
-    queryIndex(page: any, size: any, params: any): Observable<any> {
-        return this.http.post(`/api/process-instance-index/query?page=${page}&size=${size}`, params);
+    queryIndex(lastId: string, score: string, size: any, params: any): Observable<any> {
+        return this.http.post(`/api/process-instance-index/query?lastId=${lastId}&score=${score}&size=${size}`, params);
     }
 
     /**
@@ -137,7 +138,7 @@ export class ProcessService extends BaseService {
     }
 
     /**
-     * 恢复失败的作业
+     * 恢复失败节点
      * @param taskId
      */
     recover(taskId): Observable<any> {
@@ -145,10 +146,27 @@ export class ProcessService extends BaseService {
     }
 
     /**
-     * 查看流程定义
+     * 查看流程图定义
      * @param defId
      */
-    dag(defId: string):Observable<any> {
+    dag(defId: any): Observable<any> {
         return this.http.get(`/api/process-definition/dag?id=${defId}`);
+    }
+
+    /**
+     * 查询已办事项
+     */
+    checkedList(queryParams: any): Observable<any> {
+        return this.http.get('/api/process-task/checked-list', {params: queryParams});
+    }
+
+    /**
+     * 上传流程定义
+     * @param file
+     */
+    upload(file):Observable<any> {
+        const form = new FormData();
+        form.append('file', file);
+        return this.http.post("/api/process-definition/in", form);
     }
 }

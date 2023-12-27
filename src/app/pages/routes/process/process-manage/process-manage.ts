@@ -2,33 +2,37 @@ import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from "ng-zorro-antd/message";
 import {ProcessService} from "../process.service";
 import {DeptService} from "../../../layout/system/dept/dept.service";
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { AclDirective } from '../../../../core/acl/acl.directive';
-import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NgFor } from '@angular/common';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { RouterLink } from '@angular/router';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { FormsModule } from '@angular/forms';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import {NzSelectModule} from 'ng-zorro-antd/select';
+import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {AclDirective} from '../../../../core/acl/acl.directive';
+import {NzSwitchModule} from 'ng-zorro-antd/switch';
+import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import {NgFor, NgIf} from '@angular/common';
+import {NzTableModule} from 'ng-zorro-antd/table';
+import {RouterLink} from '@angular/router';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {FormsModule} from '@angular/forms';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {StartupService} from "../../../../core/startup.service";
+import {NzUploadModule} from "ng-zorro-antd/upload";
+import {mergeMap, Observable, of} from "rxjs";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
     selector: 'app-process-manage',
     templateUrl: './process-manage.html',
     styleUrls: ['./process-manage.scss'],
     standalone: true,
-    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, RouterLink, NzTableModule, NgFor, NzAvatarModule, NzToolTipModule, NzSwitchModule, AclDirective, NzDividerModule, NzPopconfirmModule, NzModalModule, NzSelectModule]
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, RouterLink, NzTableModule, NgFor, NzAvatarModule, NzToolTipModule, NzSwitchModule, AclDirective, NzDividerModule, NzPopconfirmModule, NzModalModule, NzSelectModule, NgIf, NzUploadModule]
 })
 export class ProcessManage implements OnInit {
 
@@ -50,12 +54,26 @@ export class ProcessManage implements OnInit {
     }
     // 部门清单
     deptList: any[] = [];
+    // 当前登录用户id
+    private currentUserId: string;
+    // 当前登录用户是否是管理员
+    private isAdmin: boolean = false;
+    upload = (file, fileList): Observable<boolean> => {
+        return this.processSvc.upload(file).pipe(mergeMap(res => {
+            this.message.success("导入成功");
+            this.query();
+            return of(false);
+        }))
+    };
+
 
     constructor(private processSvc: ProcessService, private message: NzMessageService,
-                private deptSvc: DeptService) {
+                private deptSvc: DeptService, private startupSvc: StartupService) {
     }
 
     ngOnInit(): void {
+        this.currentUserId = this.startupSvc.userInfo.id;
+        this.isAdmin = this.startupSvc.userInfo.admin;
         this.deptSvc.query({page: 1, size: 1000}).subscribe(res => {
             this.deptList = res.data.list;
         })
@@ -65,7 +83,7 @@ export class ProcessManage implements OnInit {
     query(page?: any) {
         this.loading = true;
         if (page) { // 是否从第一页开始查询
-            this.queryParams.page = 1;
+            this.queryParams.page = page;
         }
         // 查询
         this.processSvc.query(this.queryParams).subscribe(res => {
@@ -81,20 +99,19 @@ export class ProcessManage implements OnInit {
         this.processSvc.remove(id).subscribe(() => this.query())
     }
 
-    deploy() {
-        this.processSvc.deploy(this.modal.data).subscribe(res => {
-            this.modal.visible = false;
-            this.message.success("操作成功")
-            this.query();
-        })
+    canQueryData(item: any) {
+        if (this.isAdmin) {
+            return true;
+        }
+        return item.managers == null || item.managers == '' || item.managers.includes(this.currentUserId);
     }
 
-    openDeploy(item: any) {
-        this.modal.data.id = item.id;
-        this.modal.data.status = item.status;
-        this.modal.visible = true;
-        this.processSvc.findPermission(item.id).subscribe(res => {
-            this.modal.data.deptIds = res.data;
-        });
+    /**
+     * 导出流程定义
+     * @param id
+     */
+    exportDef(id) {
+        window.location.href = environment.SERVER_URL + "/api/process-definition/out?id=" + id + "&token=" + localStorage.getItem("token");
     }
+
 }

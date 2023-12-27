@@ -4,16 +4,16 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {UserService} from "../../../layout/system/user/user.service";
 import {BehaviorSubject, Subject, switchMap} from "rxjs";
 import {debounceTime} from "rxjs/operators";
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { FormsModule } from '@angular/forms';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NgIf, NgFor } from '@angular/common';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzModalModule } from 'ng-zorro-antd/modal';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzAvatarModule} from 'ng-zorro-antd/avatar';
+import {FormsModule} from '@angular/forms';
+import {NzSelectModule} from 'ng-zorro-antd/select';
+import {NgIf, NgFor} from '@angular/common';
+import {NzTagModule} from 'ng-zorro-antd/tag';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzModalModule} from 'ng-zorro-antd/modal';
 
 /**
  * 流程指派
@@ -108,6 +108,8 @@ export class ProcessAssign implements OnInit {
         } else {
             params['username_like'] = $event;
         }
+        // 只能查询自己部门的
+        params['deptId'] = this.startupSvc.userInfo['deptId'];
         this.$searchChange.next(params);
     }
 

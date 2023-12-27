@@ -8,8 +8,8 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <button nz-button [nzType]="'primary'" (click)="query(true)">
-                    <span nz-icon [nzType]="'search'"></span>查询
+                <button nz-button [nzType]="'primary'" (click)="query(1)">
+                    <i nz-icon [nzType]="'search'"></i>查询
                 </button>
             </nz-form-item>
             <nz-form-item>
@@ -18,6 +18,17 @@
                     添加表单
                 </button>
             </nz-form-item>
+            <ng-container *acl="'inForm'">
+                <nz-form-item>
+                    <nz-upload [nzBeforeUpload]="upload" [nzShowUploadList]="false"
+                               [nzAccept]="['.json']">
+                        <button nz-button>
+                            <span nz-icon nzType="upload"></span>
+                            导入
+                        </button>
+                    </nz-upload>
+                </nz-form-item>
+            </ng-container>
         </div>
     </nz-card>
 
@@ -28,7 +39,7 @@
                   [nzTotal]="total"
                   [(nzPageIndex)]="queryParams.page"
                   [(nzPageSize)]="queryParams.size"
-                  (nzPageIndexChange)="pageChange($event)">
+                  (nzPageIndexChange)="query($event)">
             <thead>
             <tr>
                 <th>ID</th>
@@ -51,13 +62,19 @@
                 <td>{{item.createTime}}</td>
                 <td>{{item.updateTime}}</td>
                 <td>
-                    <a [routerLink]="'../form-preview'" [queryParams]="{id:item.id}"><i nz-icon [nzType]="'eye'"></i> 预览</a>
+                    <a [routerLink]="'../form-preview'" [queryParams]="{id:item.id}">
+                        <span nz-icon [nzType]="'eye'"></span> 预览</a>
                     <nz-divider [nzType]="'vertical'"></nz-divider>
-                    <a [routerLink]="'/form-designer'" [queryParams]="{id:item.id}"><i nz-icon [nzType]="'edit'"></i>
+                    <a [routerLink]="'/form-designer'" [queryParams]="{id:item.id}">
+                        <span nz-icon [nzType]="'edit'"></span>
                         修改</a>
+                    <ng-container *acl="'outForm'">
+                        <nz-divider [nzType]="'vertical'"></nz-divider>
+                        <a (click)="exportForm(item.id)"><span nz-icon nzType="download"></span> 导出</a>
+                    </ng-container>
                     <nz-divider [nzType]="'vertical'"></nz-divider>
                     <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                       (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'delete'"></span> 删除</a>
+                       (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'user-delete'"></span> 删除</a>
                 </td>
             </tr>
             </tbody>

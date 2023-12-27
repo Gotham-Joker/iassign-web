@@ -24,7 +24,7 @@ export class DagDataService implements DagDataServiceInterface {
             .subscribe(([userResp, roleResp]) => {
                 const userList = (userResp as any).data;
                 const userCaches = [];
-                userCaches.push({label:"{申请人}", value: '{starter}'})
+                userCaches.push({label: "{申请人}", value: '{starter}'})
                 for (let i = 0; i < userList.length; i++) {
                     const user = userList[i];
                     userCaches.push({label: user.username + '(' + user.id + ')', value: user.id})
@@ -32,7 +32,10 @@ export class DagDataService implements DagDataServiceInterface {
                 this.userCaches = userCaches;
                 const roleList = (roleResp as any).data;
                 const roleCaches = [];
-                roleCaches.push({label:'{上一处理人的主管}', value: '{master}'})
+                roleCaches.push({label: '{上一处理人的主管}', value: '{master}'})
+                roleCaches.push({label: '{上一处理人的副主管}', value: '{vMaster}'})
+                roleCaches.push({label: '{上一处理人的分管}', value: '{leader}'})
+                roleCaches.push({label: '{上一处理人的副分管}', value: '{vLeader}'})
                 for (let i = 0; i < roleList.length; i++) {
                     const role = roleList[i];
                     roleCaches.push({label: role.name, value: role.id})

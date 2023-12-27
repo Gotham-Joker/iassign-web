@@ -53,10 +53,6 @@
   background-image: linear-gradient(310deg, #627594, #8ca1cb);
 }
 
-.ant-layout-sider-children {
-  overflow-x: hidden;
-}
-
 .text-gradient {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -76,11 +72,11 @@
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
   0 8px 10px 1px rgba(0, 0, 0, 0.14),
   0 3px 14px 2px rgba(0, 0, 0, 0.12);
-  border: 1px solid #3b82f6;
-  padding: 4px;
+  border: 1px solid #1890ff;
+  padding: 5px;
 }
 
-.cdk-drop-list-dragging .cdk-drag {
+.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
   transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 }
 
@@ -89,10 +85,82 @@
 }
 
 .cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-// dag
+/* You can add global styles to this file, and also import other style files */
+.fs-1 {
+  font-size: calc(1.375rem + 1.5vw);
+}
+
+.fs-2 {
+  font-size: calc(1.325rem + 0.9vw);
+}
+
+.fs-3 {
+  font-size: calc(1.3rem + 0.6vw);
+}
+
+.fs-4 {
+  font-size: calc(1.275rem + 0.3vw);
+}
+
+.fs-5 {
+  font-size: 1.25rem;
+}
+
+.fs-6 {
+  font-size: 1rem;
+}
+
+.vh-100 {
+  height: 100vh;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.d-none {
+  display: none;
+}
+
+.me-1 {
+  margin-right: 0.25rem;
+}
+
+.ms-1 {
+  margin-left: 0.25rem;
+}
+
+.text-gray-600 {
+  color: #6c757d;
+}
+
 .node {
   display: flex;
   align-items: center;
@@ -197,5 +265,107 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+// 富文本 处理之后的数据
+.remark-p {
+  background-color: white;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  margin-bottom: 0;
+  padding: 1rem 0.75rem 1rem 1rem;
+
+  img {
+    max-width: 100%;
+  }
+
+  .w-30p {
+    width: 30%;
+  }
+
+  .w-50p {
+    width: 50%;
+  }
+
+  .w-100p {
+    width: 100%;
+  }
+
+  ol {
+    li {
+      margin-left: 15px;
+      list-style-type: decimal;
+    }
+  }
+
+  ul {
+    li {
+      margin-left: 15px;
+      list-style-type: disc;
+    }
+  }
+
+  blockquote {
+    background-color: #f5f2f0;
+    border-left: 8px solid #B4D5FF;
+    display: block;
+    font-size: 100%;
+    line-height: 1.5;
+    margin: 10px 0;
+    padding: 10px;
+  }
+
+  table {
+    width: 100%;
+    text-align: center;
+    border-radius: 0.25rem 0.25rem 0 0;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    th {
+      width: auto !important;
+      position: relative;
+      color: #394161;
+      font-weight: 500;
+      background: #eceef4;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.3s ease;
+      padding: 8px 16px;
+
+      &:first-child {
+        border-top-left-radius: 0.25rem;
+      }
+
+      &:last-child {
+        border-top-right-radius: 0.25rem;
+      }
+
+      &:not(:last-child)::before {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 1px;
+        height: 1.6em;
+        background-color: rgba(0, 0, 0, 0.06);
+        transform: translateY(-50%);
+        transition: background-color 0.3s;
+        content: '';
+      }
+    }
+
+    td {
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.3s;
+      padding: 16px;
+      overflow-wrap: break-word;
+    }
+  }
+
+  .emo-i {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
   }
 }

@@ -1,16 +1,16 @@
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component, NgZone,
+    Component, EventEmitter, Input, NgZone,
     OnDestroy,
-    OnInit, TemplateRef, ViewChild,
+    OnInit, Output, TemplateRef, ViewChild,
     ViewEncapsulation
 } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {StartupService} from "../../../core/startup.service";
 import {animate, style, transition, trigger} from "@angular/animations";
-import {SysMessageService} from "../sys-message.service";
+import {SysMessageService} from "../system/message/sys-message.service";
 import {environment} from "../../../../environments/environment";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {Observable, of, switchMap} from "rxjs";
@@ -58,6 +58,8 @@ export class Header implements OnInit, OnDestroy {
     visible: boolean = false;
     @ViewChild('noticeTpl', {read: TemplateRef})
     noticeTpl: TemplateRef<any>;
+    @Output()
+    collapsedChange: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(private http: HttpClient, private router: Router,
                 private notice: NzNotificationService,
@@ -69,16 +71,15 @@ export class Header implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.userInfo = this.startupSvc.userInfo || {};
-        this.queryMessage().subscribe(() => this.cdr.markForCheck());
+        this.queryMessage().subscribe();
         this.registerSSE();
     }
 
     logout() {
-        localStorage.removeItem("token");
-        this.http.get('/api/logout').subscribe(res => {
-            localStorage.removeItem("token");
-            this.router.navigateByUrl('/passport/login');
-        })
+         this.http.get('/api/logout').subscribe(res => {
+             localStorage.removeItem("token");
+             this.router.navigateByUrl('/passport/login');
+         })
     }
 
     /**
@@ -95,7 +96,9 @@ export class Header implements OnInit, OnDestroy {
                 this.total = data.total;
                 this.showDot = this.messages?.length > 0;
                 this.loading = false;
-                return of(this.messages);
+                // 手动刷新UI
+                this.cdr.detectChanges();
+                return of(res);
             }))
     }
 
@@ -115,13 +118,12 @@ export class Header implements OnInit, OnDestroy {
                 if (msg == 'close') {
                     this.closeSource();
                 } else {
-                    this.queryMessage().subscribe((data: any) => {
+                    this.queryMessage().subscribe(() => {
                         // 如果通知栏不是打开状态，那么给用户提个醒
-                        if (!this.visible && data != null && data.length > 0) {
-                            this.notice.template(this.noticeTpl, {nzData: data[0], nzDuration: 10_000})
+                        if (!this.visible && this.messages != null && this.messages.length > 0) {
+                            this.notice.template(this.noticeTpl, {nzData: this.messages[0], nzDuration: 10_000})
                         }
-                        this.cdr.detectChanges();
-                    });
+                    })
                 }
             }
             source.onerror = (err) => {
@@ -166,7 +168,7 @@ export class Header implements OnInit, OnDestroy {
             this.sysMessageSvc.markAsRead(msgId)
                 .pipe(switchMap(() => {
                     return this.queryMessage();
-                })).subscribe(() => this.cdr.detectChanges());
+                })).subscribe();
         }
     }
 
@@ -175,7 +177,7 @@ export class Header implements OnInit, OnDestroy {
         this.loading = true;
         this.sysMessageSvc.markAsRead(null).pipe(switchMap(() => {
             return this.queryMessage();
-        })).subscribe(() => this.cdr.detectChanges());
+        })).subscribe();
     }
 
     /**
@@ -194,13 +196,10 @@ export class Header implements OnInit, OnDestroy {
 
     routeToLink(link: any) {
         if (link != null && link != "") {
-            /* fix：修复问题。
-            * 因为当前组件采用onPush策略，所以导航要手动放回angular中运行，
-            * 否则其他模块的变更检查可能会有异常，例如导航进入流程详情页后，点击"查看流程图"按钮会报错说dagContainer是undefined，无法resetCells
-            * */
             this.zone.run(() => {
                 this.router.navigate(['/process/process-detail'], {queryParams: {id: link}});
             })
         }
     }
+
 }

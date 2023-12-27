@@ -1,6 +1,6 @@
 <nz-layout>
     <div class="form-design-header">
-        <div class="w-full text-xl font-bold pl-3 text-primary text-start">表单设计器</div>
+        <h1 class="ml-3 text-primary text-start">表单设计器</h1>
     </div>
     <div class="inner-content">
         <div class="experiment">
@@ -34,12 +34,14 @@
                     <div class="toolbar">
                         <div class="x6-toolbar">
                             <div class="flex items-center">
-                                <button nz-button nz-popover nzPopoverPlacement="bottom" nzPopoverContent="基本配置"
+                                <button nz-button nz-popover nzPopoverPlacement="bottom"
+                                        nzPopoverContent="基本配置"
                                         nzType="text" (click)="openModal()">
                                     <span nz-icon nzType="layout" nzTheme="outline"></span>
                                 </button>
-                                <button nz-button nz-popover nzPopoverPlacement="bottom" nzPopoverContent="保存"
-                                        nzType="text" (click)="visible=true" style="color: #1890ff">
+                                <button nz-button nz-popover nzPopoverPlacement="bottom"
+                                        nzPopoverContent="保存" style="color: #1890ff"
+                                        nzType="text" (click)="visible=true">
                                     <span nz-icon nzType="save" nzTheme="outline"></span>
                                 </button>
                             </div>

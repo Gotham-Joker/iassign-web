@@ -1,26 +1,55 @@
-import {defineConfig, presetUno, transformerDirectives, transformerVariantGroup} from "unocss";
+import {defineConfig, presetIcons, transformerDirectives, transformerVariantGroup} from 'unocss'
+import presetUno from '@unocss/preset-uno'
+
 
 /**
- * unocss开发环境配置，unocss能够按需生成css代码。
- * 例如在html中写class="pt-1"，就会在src/uno.scss文件中生成.pt-1{padding-top:0.25rem;}的代码。
- * 其他高级使用方式请查看官网。
- * 在angular中，暂时每次都需要在终端中运行unocss重新编译生成uno.scss文件。
+ * unocss设置。
+ * 它帮忙解析html中你会用到的class名，然后动态生成uno.css文件，所谓on-demand，就是按需生成css。
+ * 例如 class="pt-1" 即生成 .pt-1{padding-top: 0.25rem;}的代码
+ *
+ * 此外，还会解析scss文件中的unocss语法：
+ * 例如使用flex-center这个class，使用@apply关键字组合了flex items-center justify-center三个unocss的class，
+ * 就能生成你要的效果
+ * .flex-center{
+ *     @apply flex items-center justify-center
+ * }
+ * 会被替换成
+ * .flex-center{
+ *     display:flex;align-items:center;justify-content:center;
+ * }
  */
 export default defineConfig({
     presets: [
-        presetUno()
+        presetUno(),
+        presetIcons()
     ],
-    transformers:[
-        transformerDirectives(),
-        transformerVariantGroup()
+    theme: {
+        'primary': ''
+    },
+    transformers: [
+        transformerVariantGroup(),
+        transformerDirectives()
     ],
-    preflights:[],
-    cli:{
-        entry:[
+    preflights: [],
+    cli: {
+        // CliEntryItem | CliEntryItem[]
+        entry: [
             {
-                patterns:["src/**/*.html","src/app/**/*.scss"],
-                outFile:"src/uno.scss"
+                patterns: ["src/**/*.html", "src/app/**/*.scss"],
+                outFile: "src/uno.scss"
             }
         ]
-    }
+    },
+    // ...
 })
+
+interface CliEntryItem {
+    /**
+     * Glob patterns to match files
+     */
+    patterns: string[]
+    /**
+     * The output filename for the generated UnoCSS file
+     */
+    outFile: string
+}

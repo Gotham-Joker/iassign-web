@@ -1,7 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
+/**
+ * 角色-用户服务
+ */
 @Injectable({providedIn: 'root'})
 export class RoleUserService {
 
@@ -9,7 +12,8 @@ export class RoleUserService {
     }
 
     /**
-     * 查询指定角色下有哪些用户
+     * 查询拥有指定角色的用户清单
+     * @param queryParams
      */
     query(queryParams: any): Observable<any> {
         return this.http.get('/api/role-users', {params: queryParams});

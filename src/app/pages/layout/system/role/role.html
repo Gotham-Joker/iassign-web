@@ -1,5 +1,5 @@
 <nz-spin [nzSpinning]="loading">
-    <nz-card class="card-shadow">
+    <nz-card class="card-shadow card-radius search-card">
         <div nz-form [nzLayout]="'inline'">
             <nz-form-item>
                 <nz-form-label>ID</nz-form-label>
@@ -24,7 +24,7 @@
         </div>
     </nz-card>
     <br>
-    <nz-card class="card-shadow">
+    <nz-card class="card-shadow card-radius">
         <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
                   [nzTotal]="total"
                   [(nzPageIndex)]="queryParams.page"
@@ -42,7 +42,7 @@
                 <td>{{item.id}}</td>
                 <td>{{item.name}}</td>
                 <td>
-                    <a (click)="showRoleUser(item)"><span nz-icon [nzType]="'user'"></span> 用户</a>
+                    <a (click)="navigateToUserRole(item)"><span nz-icon [nzType]="'user'"></span> 用户</a>
                     <nz-divider [nzType]="'vertical'"></nz-divider>
                     <a (click)="edit(item)"><span nz-icon [nzType]="'file-search'"></span> 编辑</a>
                     <nz-divider [nzType]="'vertical'"></nz-divider>
@@ -61,7 +61,7 @@
                 <nz-form-item>
                     <nz-form-label>角色ID</nz-form-label>
                     <nz-form-control>
-                        <input nz-input formControlName="id" placeholder="不填写，则系统会自动生成">
+                        <input placeholder="不填写，则系统会自动生成" nz-input formControlName="id">
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
@@ -78,16 +78,6 @@
                     <nz-form-label>分配权限</nz-form-label>
                     <app-transfer [list]="modal.pms" formControlName="permissionIds"></app-transfer>
                 </nz-form-item>
-            </div>
-        </ng-template>
-    </nz-modal>
-
-    <nz-modal [nzCloseIcon]="'svg:close'" [(nzVisible)]="roleModal.visible" [nzContent]="roleUserContent"
-              [nzFooter]="null" [nzCentered]="true" (nzOnCancel)="roleModal.visible=false"
-              nzWidth="768px" (nzOnOk)="roleModal.visible=false">
-        <ng-template #roleUserContent>
-            <div class="px-4 pt-3">
-                <role-user [roleId]="roleModal.roleId"></role-user>
             </div>
         </ng-template>
     </nz-modal>

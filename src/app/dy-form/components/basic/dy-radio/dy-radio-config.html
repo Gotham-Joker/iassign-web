@@ -61,7 +61,7 @@
             <nz-form-label>选项</nz-form-label>
             <nz-form-control>
         <textarea rows="4" placeholder="多个值请换行分隔" nz-input [(ngModel)]="config.options"
-                  (ngModelChange)="optionChange($event)"></textarea>
+                  (blur)="optionChange($event)"></textarea>
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -93,14 +93,12 @@
                 <input nz-input placeholder="eg: data.ssicId" [(ngModel)]="config.res"/>
             </nz-form-control>
         </nz-form-item>
-
         <nz-form-item>
             <nz-form-label>LABEL</nz-form-label>
             <nz-form-control>
                 <input nz-input placeholder="eg: label" [(ngModel)]="config.resLabel"/>
             </nz-form-control>
         </nz-form-item>
-
         <nz-form-item>
             <nz-form-label>VALUE</nz-form-label>
             <nz-form-control>

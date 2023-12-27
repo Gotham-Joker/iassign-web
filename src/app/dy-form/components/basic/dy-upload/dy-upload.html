@@ -1,10 +1,10 @@
 <nz-form-item>
-  <nz-form-label *ngIf="config.label??false" [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
-                 [nzRequired]="config.required">{{config.label}}</nz-form-label>
-  <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
-    <nz-upload [nzDisabled]="config.readOnly" [nzAction]="config.url" [nzName]="config.name" [nzFileList]="fileList"
-               (nzChange)="change($event)">
-      <button nz-button><i nz-icon [nzType]="'upload'"></i>点击上传</button>
-    </nz-upload>
-  </nz-form-control>
+    <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
+                   [nzRequired]="config.required">{{config.label}}</nz-form-label>
+    <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
+        <nz-upload [nzDisabled]="config.readOnly" [nzAction]="config.url" [nzName]="config.name"
+                   [(nzFileList)]="config.value" [nzBeforeUpload]="upload">
+            <button nz-button><span nz-icon [nzType]="'upload'"></span>点击上传</button>
+        </nz-upload>
+    </nz-form-control>
 </nz-form-item>

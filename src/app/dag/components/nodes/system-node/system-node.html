@@ -51,7 +51,8 @@
                     <nz-form-item>
                         <nz-form-label>header</nz-form-label>
                         <nz-form-control>
-                            <textarea nz-input [(ngModel)]="data.header" placeholder="Content-Type: application/json"></textarea>
+                            <textarea nz-input [(ngModel)]="data.header"
+                                      placeholder="Content-Type: application/json"></textarea>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
@@ -70,6 +71,12 @@
                         <nz-form-label>重试次数</nz-form-label>
                         <nz-form-control>
                             <nz-input-number [(ngModel)]="data.retry" [nzMin]="0" [nzMax]="5"></nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>重试延时(ms)</nz-form-label>
+                        <nz-form-control>
+                            <nz-input-number [(ngModel)]="data.delay" [nzMin]="5000" [nzMax]="60000"></nz-input-number>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>

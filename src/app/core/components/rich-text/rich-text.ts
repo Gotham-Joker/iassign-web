@@ -10,7 +10,7 @@ import {
     createEditor,
     createToolbar,
     IDomEditor,
-    IDropPanelMenu, SlateEditor, SlateNode
+    IDropPanelMenu, SlateNode
 } from "@wangeditor/editor";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {UploadService} from "../../upload.service";
@@ -45,8 +45,12 @@ export class RichText implements OnInit, ControlValueAccessor {
 
     writeValue(obj: any): void {
         this.value = obj;
-        if (this.editor != null && obj == '') {
-            this.editor.setHtml('<p><br></p>');
+        if (this.editor != null) {
+            if (obj != null && obj != "") {
+                this.editor.setHtml(obj);
+            } else {
+                this.editor.setHtml('<p><br></p>');
+            }
         }
     }
 
@@ -60,6 +64,15 @@ export class RichText implements OnInit, ControlValueAccessor {
 
     setDisabledState?(isDisabled: boolean): void {
         this.disabled = isDisabled;
+        if (this.disabled) {
+            if (this.editor != null) {
+                this.editor.disable();
+            }
+        } else {
+            if (this.editor != null) {
+                this.editor.enable();
+            }
+        }
     }
 
     disabled: boolean = false;
@@ -120,6 +133,9 @@ export class RichText implements OnInit, ControlValueAccessor {
             mode: 'simple', // or 'simple'
         });
         this.editor = editor;
+        if (this.disabled) {
+            this.editor.disable();
+        }
 
         createToolbar({
             editor,
@@ -130,14 +146,14 @@ export class RichText implements OnInit, ControlValueAccessor {
                 insertKeys: {index: 0, keys: ['headerSelect', 'bEmotion']}
             },
             mode: 'simple', // or 'simple'
-        })
+        });
     }
 
     /**
      * 进一步处理富文本的值(润色)
      * @param value
      */
-    polish(value: string): string {
+    static polish(value: string): string {
         if (value == null) {
             return "";
         }
@@ -152,7 +168,7 @@ export class RichText implements OnInit, ControlValueAccessor {
             let tmpStr = str;
             const bgEx = /background-color:\s*(rgb\(.*?\));?/
             const bgColorMatch = str.match(bgEx);
-            // 将background-color颜色提取出来，转换成class，并删除style里的background-color
+            // 将background-color颜色提取出来，转换称class，并删除style里的background-color
             if (bgColorMatch != null && bgColorMatch.length > 0) {
                 const rgb = bgColorMatch[1].replaceAll(" ", "");
                 const className = COLORS[rgb];
@@ -180,6 +196,27 @@ export class RichText implements OnInit, ControlValueAccessor {
             match = polishEx.exec(value); // 继续往下查找
         }
         return tmpValue;
+    }
+
+    /**
+     * 此处的处理和后端保持一致
+     * @param value
+     */
+    static polishAndProcess(value) {
+        let val = RichText.polish(value);
+        val = val.replaceAll(/style="text-align:\s*center;?"/g, "class=\"text-center\"")
+            .replaceAll(/style="text-align:\s*left;?"/g, "class=\"text-start\"")
+            .replaceAll(/style="text-align:\\s*right;?"/g, "class=\"text-end\"")
+            .replaceAll(/alt="" data-href="emo-i" style=""/g, "class=\"emo-i\"");
+        const exp = /<img src=.*?style="width: (\d+)%;">/
+        let match = exp.exec(value);
+        while (match != null && match.length > 1) {
+            const img = match[0];
+            const width = match[1];
+            const imgNew = img.replaceAll(/style="width: \d+%;"/g, "class=\"w-" + width + "p\"");
+            val = val.replace(img, imgNew);
+        }
+        return val;
     }
 }
 

@@ -1,44 +1,60 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {NzTableModule} from "ng-zorro-antd/table";
-import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import {Component, OnInit} from '@angular/core';
 import {NzCardModule} from "ng-zorro-antd/card";
-import {NzFormModule} from "ng-zorro-antd/form";
-import {NzInputModule} from "ng-zorro-antd/input";
-import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzTableModule} from "ng-zorro-antd/table";
 import {RoleUserService} from "./role-user.service";
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzFormModule} from "ng-zorro-antd/form";
+import {NzGridModule} from "ng-zorro-antd/grid";
+import {NzIconModule} from "ng-zorro-antd/icon";
+import {NzInputModule} from "ng-zorro-antd/input";
+import {NzWaveModule} from "ng-zorro-antd/core/wave";
+import {ActivatedRoute} from "@angular/router";
+import {Backward} from "../../../../core/components/backward/backward";
 
 @Component({
     selector: 'role-user',
     templateUrl: 'role-user.html',
-    standalone: true,
-    imports: [NzTableModule, NgForOf, NzCardModule, NzFormModule, FormsModule, NzInputModule, NzButtonModule]
+    imports: [
+        CommonModule,
+        NzCardModule,
+        NzTableModule,
+        FormsModule,
+        NzButtonModule,
+        NzFormModule,
+        NzGridModule,
+        NzIconModule,
+        NzInputModule,
+        NzWaveModule,
+        Backward
+    ],
+    standalone: true
 })
 
-export class RoleUser implements OnInit, OnChanges {
-    @Input()
-    roleId: '';
-    queryParams: any = {
-        page: 1,
-        size: 10,
-        id: '',
-        username: '',
-        email: ''
-    }
+export class RoleUser implements OnInit {
     list: any[] = [];
     total: number = 0;
     loading: boolean = false;
 
-    constructor(private roleUserSvc: RoleUserService) {
+    queryParams: any = {
+        page: 1, size: 10, roleId: ''
+    }
+    roleName: any = '';
+
+    constructor(private roleUserSvc: RoleUserService, private route: ActivatedRoute) {
     }
 
     ngOnInit() {
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes['roleId'] != null) {
-            this.query(1);
-        }
+        this.route.queryParams.subscribe(params => {
+            if (params['roleId']) {
+                this.queryParams.roleId = params['roleId'];
+            }
+            if (params['roleName']) {
+                this.roleName = params['roleName'];
+            }
+            this.query();
+        })
     }
 
     query(page?: number) {
@@ -46,7 +62,6 @@ export class RoleUser implements OnInit, OnChanges {
             this.queryParams.page = page;
         }
         this.loading = true;
-        this.queryParams.roleId = this.roleId;
         this.roleUserSvc.query(this.queryParams).subscribe(res => {
             this.list = res.data.list;
             this.total = res.data.total;

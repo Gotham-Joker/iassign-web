@@ -3,7 +3,6 @@ import {DagContainer} from "../dag-container/dag-container";
 import { NodePanel } from '../node-panel/node-panel';
 import { NgStyle } from '@angular/common';
 import { Toolbar } from '../toolbar/toolbar';
-// import {timer} from "rxjs";
 
 @Component({
     selector: 'dag-designer',

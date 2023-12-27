@@ -27,9 +27,6 @@ export class DyUploadConfig implements OnInit, DyConfigComponent<DyUpload> {
 
     ngOnInit(): void {
         this.config = this.ref.config;
-        if (this.config.fileList == null) {
-            this.config.value = []; // 赋初始值
-        }
     }
 
 }

@@ -31,6 +31,7 @@ export class SystemNode implements OnInit, DagNode {
         url: '',
         condition: '',
         retry: 0,
+        delay: 5000,
         method: 'POST',
         header: '',
         body: '',

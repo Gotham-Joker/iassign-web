@@ -1,29 +1,31 @@
 import {Component, OnInit} from '@angular/core';
-import {NzMessageService} from "ng-zorro-antd/message";
-import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {NzMessageModule, NzMessageService} from "ng-zorro-antd/message";
+import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MenuService} from "./menu.service";
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NgFor } from '@angular/common';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import {NzRadioModule} from 'ng-zorro-antd/radio';
+import {NzInputNumberModule} from 'ng-zorro-antd/input-number';
+import {NzSelectModule} from 'ng-zorro-antd/select';
+import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {NgFor} from '@angular/common';
+import {NzTableModule} from 'ng-zorro-antd/table';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
 
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.html',
     standalone: true,
-    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzDividerModule, NzPopconfirmModule, NzModalModule, ReactiveFormsModule, NzSelectModule, NzInputNumberModule, NzRadioModule]
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule,
+        NzWaveModule, NzIconModule, NzTableModule, NgFor, NzDividerModule, NzPopconfirmModule,
+        NzModalModule, ReactiveFormsModule, NzSelectModule, NzInputNumberModule, NzRadioModule, NzMessageModule]
 })
 export class Menu implements OnInit {
 

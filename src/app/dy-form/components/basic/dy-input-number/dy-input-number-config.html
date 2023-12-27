@@ -56,11 +56,17 @@
             <nz-form-control>
                 <nz-switch [(ngModel)]="config.required"></nz-switch>
             </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
             <nz-form-label>只读</nz-form-label>
             <nz-form-control>
                 <nz-switch [(ngModel)]="config.readOnly"></nz-switch>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>取值范围</nz-form-label>
+            <nz-form-control>
+                <nz-input-number [(ngModel)]="config.min"></nz-input-number>
+                ~
+                <nz-input-number [(ngModel)]="config.max"></nz-input-number>
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>

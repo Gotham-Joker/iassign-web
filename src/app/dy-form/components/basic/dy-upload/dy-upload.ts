@@ -1,24 +1,25 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {environment} from "../../../../../environments/environment";
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NgIf } from '@angular/common';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzGridModule } from 'ng-zorro-antd/grid';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzUploadModule} from 'ng-zorro-antd/upload';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {UploadService} from "../../../../core/upload.service";
+import {mergeMap, Observable, of} from "rxjs";
+import {HttpBackend, HttpClient} from "@angular/common/http";
 
 @Component({
     selector: 'dy-upload',
     templateUrl: './dy-upload.html',
     styles: [':host{display: block;}'],
     standalone: true,
-    imports: [NzGridModule, NzFormModule, NgIf, NzUploadModule, NzButtonModule, NzWaveModule, NzIconModule]
+    imports: [NzGridModule, NzFormModule, NzUploadModule, NzButtonModule, NzWaveModule, NzIconModule]
 })
 export class DyUpload implements OnInit {
 
-    value: any = null;
     // 默认配置
     config: any = {
         type: 'upload',
@@ -30,30 +31,27 @@ export class DyUpload implements OnInit {
         placeholder: '',
         // 默认上传到本系统后台
         url: '/upload',
-        res: 'data'
+        res: 'data',
+        value: []
     };
     status: any = null;
-    fileList: any[] = [];
+    upload = (file, fileList): Observable<boolean> => {
+        const url = this.config.url;
+        let httpCli = url.startsWith("/") ? this.httpClient : this.http;
+        const form = new FormData();
+        form.append(this.config.name, file);
+        return httpCli.post("/upload", form).pipe(mergeMap(resp => {
+            this.config.value = [...this.config.value, resp[this.config.res]]
+            return of(false);
+        }));
+    };
+    private http: HttpClient; // 外部访问
 
-
-    constructor() {
+    constructor(private httpClient: HttpClient, private httpBackend: HttpBackend) {
+        this.http = new HttpClient(this.httpBackend);
     }
 
     ngOnInit(): void {
-    }
-
-    change(ev: any) {
-        let fileList = [...ev.fileList];
-        fileList = fileList.map(file => {
-            if (file.response) {
-                file.uid = file.response[this.config.res].id;
-                file.url = file.response[this.config.res].url;
-                file.name = file.response[this.config.res].name;
-            }
-            return file;
-        });
-
-        this.fileList = fileList;
     }
 
     validate() {
@@ -67,7 +65,7 @@ export class DyUpload implements OnInit {
         }
         validators.push(Validators.pattern(this.config.regex));
         // 开始校验
-        const control = new FormControl(this.value, validators);
+        const control = new FormControl(this.config.value, validators);
         if (control.invalid) {
             this.status = 'error';
         } else {

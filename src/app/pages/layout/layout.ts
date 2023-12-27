@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {LayoutService} from "./layout.service";
 import {ChildrenOutletContexts, RouterOutlet} from "@angular/router";
 import {zoomFadeAnimation} from "../../core/animations";
-import { Header } from './header/header';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NgClass } from '@angular/common';
-import { Sidebar } from './sidebar/sidebar';
+import {Header} from './header/header';
+import {NzLayoutModule} from 'ng-zorro-antd/layout';
+import {NgClass} from '@angular/common';
+import {Sidebar} from './sidebar/sidebar';
 
 @Component({
     selector: 'app-layout',
@@ -26,9 +26,9 @@ export class Layout implements OnInit {
     }
 
 
-    collapsedChange($event: boolean) {
-        this.isCollapsed = $event;
-        this.layoutSvc.next($event);
+    collapsedChange() {
+        this.isCollapsed = !this.isCollapsed;
+        this.layoutSvc.next(this.isCollapsed);
     }
 
     prepareRoute(outlet: RouterOutlet) {

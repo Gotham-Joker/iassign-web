@@ -3,7 +3,7 @@
     <div class="card-content-responsive">
         <nz-steps [nzCurrent]="current">
             <nz-step nzTitle="填写申请表"></nz-step>
-            <nz-step nzTitle="申请单号"></nz-step>
+            <nz-step nzTitle="系统生成申请单号"></nz-step>
         </nz-steps>
     </div>
 </nz-card>
@@ -22,9 +22,11 @@
             <dy-form [form]="data" #dynamicForm></dy-form>
 
             <div class="flex justify-center items-center mt-4">
-                <button nz-button nzType="primary" nzGhost (click)="viewGraph()">流程预览</button>
+                <button nz-button nzType="primary" nzGhost (click)="viewGraph()">
+                    流程预览
+                </button>
                 <button class="ml-4" nz-button nzType="primary" (click)="startProcess()">
-                    提交申请表
+                    提交申请
                 </button>
             </div>
         </div>
@@ -34,7 +36,7 @@
         <div class="card-content-responsive">
             <nz-result nzStatus="success" nzTitle="流程发起成功" [nzSubTitle]="subTitle">
                 <div nz-result-extra>
-                    <button class="ml-4" nzType="primary"
+                    <button nzType="primary"
                             nz-button routerLink="../process-detail" [queryParams]="{id:instanceId}">
                         查看流程
                     </button>
@@ -54,9 +56,10 @@
 
 </nz-spin>
 
+<!-- DAG流程图 -->
 <nz-modal [nzCloseIcon]="closeTpl" [(nzVisible)]="visible" [nzContent]="content"
-          [nzFooter]="null" [nzCentered]="true" (nzOnCancel)="visible=false" nzWidth="100%" (nzOnOk)="visible=false"
-          [nzBodyStyle]="{'padding':'24px'}">
+          [nzFooter]="null" [nzCentered]="true"
+          (nzOnCancel)="visible=false" nzWidth="100%" (nzOnOk)="visible=false" [nzBodyStyle]="{'padding':'24px'}">
     <ng-template #content>
         <div class="relative h-90vh">
             <dag-container #dagContainer [interacting]="false"></dag-container>

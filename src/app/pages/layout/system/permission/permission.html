@@ -1,6 +1,6 @@
 <nz-spin [nzSpinning]="loading">
 
-<nz-card class="card-shadow search-card card-radius">
+<nz-card class="card-shadow card-radius search-card">
     <div nz-form [nzLayout]="'inline'">
         <nz-form-item>
             <nz-form-label>ID</nz-form-label>
@@ -37,7 +37,7 @@
     </div>
 </nz-card>
 <br>
-<nz-card class="card-shadow">
+<nz-card class="card-shadow card-radius">
     <nz-table #basicTable [nzData]="list" [nzFrontPagination]="false"
               [nzTotal]="total"
               [(nzPageIndex)]="queryParams.page"

@@ -8,7 +8,7 @@ import {RouteGuard} from "./core/route.guard";
 import {RichText} from "./core/components/rich-text/rich-text";
 
 const routes: Routes = [
-    {path: '', redirectTo: '/process/process-list', pathMatch: 'full'},
+    {path: '', redirectTo: '/process/todo-list', pathMatch: 'full'},
     // 业务逻辑模块
     {
         path: '', component: Layout, children: [

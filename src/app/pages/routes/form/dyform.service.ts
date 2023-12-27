@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable} from "rxjs";
 import {BaseService} from "../../../core/base.service";
+import {Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -11,12 +11,13 @@ export class DyformService extends BaseService {
         super('/api/forms')
     }
 
-    /**
-     * 表单定义查找，并替换占位符
-     * @param id
-     */
-    defContext(id:any):Observable<any>{
-        return this.http.get(`${this.baseUrl}/def/context?id=${id}`);
+    queryDefContext(formId: string): Observable<any> {
+        return this.http.get(`${this.baseUrl}/def/context?id=${formId}`);
     }
 
+    upload(file):Observable<any> {
+        const form = new FormData();
+        form.append('file', file);
+        return this.http.post("/api/forms/in", form);
+    }
 }

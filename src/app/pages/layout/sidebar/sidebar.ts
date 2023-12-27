@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {StartupService} from "../../../core/startup.service";
-import { RouterLink } from '@angular/router';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NgIf, NgFor } from '@angular/common';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import {RouterLink} from '@angular/router';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzMenuModule} from 'ng-zorro-antd/menu';
+import {NzToolTipModule} from 'ng-zorro-antd/tooltip';
+import {NgIf, NgFor} from '@angular/common';
+import {NzLayoutModule} from 'ng-zorro-antd/layout';
 
 @Component({
     selector: 'app-sidebar',
@@ -18,7 +18,7 @@ export class Sidebar implements OnInit {
     @Input()
     collapsed: boolean = true;
     @Output()
-    collapsedChange: EventEmitter<boolean> = new EventEmitter();
+    collapsedChange: EventEmitter<any> = new EventEmitter<any>();
 
     userInfo: any;
     menus: any;
@@ -31,9 +31,8 @@ export class Sidebar implements OnInit {
         this.menus = this.startupSvc.menus || [];
     }
 
-    toggleExpand() { // 菜单折叠状态变更
-        // this.collapsed = !this.collapsed;
-        this.collapsedChange.emit(!this.collapsed);
+    toggleCollapsed() {
+        this.collapsed = !this.collapsed;
+        this.collapsedChange.emit(this.collapsed);
     }
-
 }

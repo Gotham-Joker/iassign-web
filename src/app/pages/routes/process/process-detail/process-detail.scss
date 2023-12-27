@@ -8,110 +8,11 @@
   }
 
   .time-line-card {
-    border: 1px solid #e6e6e6;
+    margin-top: 24px;
+    border: 1px solid #d5d5d5;
     border-radius: 8px;
   }
 
-  .remark-p {
-    background-color: white;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    margin-bottom: 0;
-    padding: 1rem 0.75rem 1rem 1rem;
-
-    img {
-      max-width: 100%;
-    }
-
-    .w-30p {
-      width: 30%;
-    }
-
-    .w-50p {
-      width: 50%;
-    }
-
-    .w-100p {
-      width: 100%;
-    }
-
-    ol {
-      li {
-        margin-left: 15px;
-        list-style-type: decimal;
-      }
-    }
-
-    ul {
-      li {
-        margin-left: 15px;
-        list-style-type: disc;
-      }
-    }
-
-    blockquote {
-      background-color: #f5f2f0;
-      border-left: 8px solid #B4D5FF;
-      display: block;
-      font-size: 100%;
-      line-height: 1.5;
-      margin: 10px 0;
-      padding: 10px;
-    }
-
-    table {
-      width: 100%;
-      text-align: center;
-      border-radius: 0.25rem 0.25rem 0 0;
-      border-collapse: separate;
-      border-spacing: 0;
-
-      th {
-        width: auto !important;
-        position: relative;
-        color: #394161;
-        font-weight: 500;
-        background: #eceef4;
-        border-bottom: 1px solid #f0f0f0;
-        transition: background 0.3s ease;
-        padding: 8px 16px;
-
-        &:first-child {
-          border-top-left-radius: 0.25rem;
-        }
-
-        &:last-child {
-          border-top-right-radius: 0.25rem;
-        }
-
-        &:not(:last-child)::before {
-          position: absolute;
-          top: 50%;
-          right: 0;
-          width: 1px;
-          height: 1.6em;
-          background-color: rgba(0, 0, 0, 0.06);
-          transform: translateY(-50%);
-          transition: background-color 0.3s;
-          content: '';
-        }
-      }
-
-      td {
-        border-bottom: 1px solid #f0f0f0;
-        transition: background 0.3s;
-        padding: 16px;
-        overflow-wrap: break-word;
-      }
-    }
-
-    .emo-i {
-      display: inline-block;
-      width: 28px;
-      height: 28px;
-      flex-shrink: 0;
-    }
-  }
 }
 
 .avatar-wrap {

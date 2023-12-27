@@ -1,4 +1,6 @@
-
+:host{
+  display: flex;
+}
 .app-wrap {
   width: 100%;
   min-height: 100vh;
@@ -8,11 +10,8 @@
 }
 
 .app-content {
-  margin-left: 225px;
+  margin-left: 25px;
   margin-top: 25px;
   margin-right: 25px;
   padding-bottom: 25px;
-}
-.app-collapsed .app-content {
-  margin-left: 89px;
 }

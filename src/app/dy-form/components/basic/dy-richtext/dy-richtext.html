@@ -1,0 +1,7 @@
+<nz-form-item>
+    <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
+                   [nzRequired]="config.required">{{config.label}}</nz-form-label>
+    <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
+        <textarea nz-input [disabled]="config.readOnly"></textarea>
+    </nz-form-control>
+</nz-form-item>

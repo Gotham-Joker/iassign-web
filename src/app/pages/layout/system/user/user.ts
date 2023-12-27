@@ -1,29 +1,28 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "./user.service";
-import {NzMessageModule, NzMessageService} from "ng-zorro-antd/message";
+import {NzMessageService} from "ng-zorro-antd/message";
 import {ActivatedRoute, Router} from "@angular/router";
-import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
-import {NzDividerModule} from 'ng-zorro-antd/divider';
-import {NzSwitchModule} from 'ng-zorro-antd/switch';
-import {NgFor} from '@angular/common';
-import {NzTableModule} from 'ng-zorro-antd/table';
-import {NzIconModule} from 'ng-zorro-antd/icon';
-import {NzWaveModule} from 'ng-zorro-antd/core/wave';
-import {NzButtonModule} from 'ng-zorro-antd/button';
-import {FormsModule} from '@angular/forms';
-import {NzInputModule} from 'ng-zorro-antd/input';
-import {NzGridModule} from 'ng-zorro-antd/grid';
-import {NzFormModule} from 'ng-zorro-antd/form';
-import {NzCardModule} from 'ng-zorro-antd/card';
-import {NzSpinModule} from 'ng-zorro-antd/spin';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NgFor } from '@angular/common';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import {AclDirective} from "../../../../core/acl/acl.directive";
 
 @Component({
     selector: 'app-user',
     templateUrl: './user.html',
     standalone: true,
-    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule,
-        NzWaveModule, NzIconModule, NzTableModule, NgFor, NzSwitchModule, NzDividerModule, NzPopconfirmModule,
-        NzMessageModule]
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzSwitchModule, NzDividerModule, NzPopconfirmModule, AclDirective]
 })
 export class User implements OnInit {
     queryParams: any = {
@@ -76,6 +75,16 @@ export class User implements OnInit {
     setAdmin(user: any, isAdmin: any) {
         this.loading = true;
         this.userSvc.setAdmin(user.id, isAdmin).subscribe(res => {
+            this.query();
+        });
+    }
+
+    /**
+     * 调用uas更新数据
+     */
+    sync() {
+        this.loading = true;
+        this.userSvc.sync().subscribe(res => {
             this.query();
         });
     }

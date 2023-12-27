@@ -1,8 +1,17 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {HttpBackend, HttpClient} from "@angular/common/http";
-import {mergeMap, of} from "rxjs";
+import {delay, mergeMap, of, Subject} from "rxjs";
 import {FormControl, Validators, FormsModule} from "@angular/forms";
-import {formatNumber, NgIf, NgSwitch, NgSwitchCase, NgFor, NgTemplateOutlet, NgSwitchDefault} from "@angular/common";
+import {
+    formatNumber,
+    NgIf,
+    NgSwitch,
+    NgSwitchCase,
+    NgFor,
+    NgTemplateOutlet,
+    NgSwitchDefault,
+    formatDate
+} from "@angular/common";
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzWaveModule} from 'ng-zorro-antd/core/wave';
 import {NzButtonModule} from 'ng-zorro-antd/button';
@@ -15,6 +24,7 @@ import {NzInputNumberModule} from 'ng-zorro-antd/input-number';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzGridModule} from 'ng-zorro-antd/grid';
+import {RichText} from "../core/components/rich-text/rich-text";
 
 @Component({
     selector: 'dy-form',
@@ -40,6 +50,7 @@ import {NzGridModule} from 'ng-zorro-antd/grid';
         NzIconModule,
         NgTemplateOutlet,
         NgSwitchDefault,
+        RichText,
     ],
 })
 export class DyForm implements OnInit, OnChanges {
@@ -51,6 +62,9 @@ export class DyForm implements OnInit, OnChanges {
 
     @Input()
     readonly: boolean = false;
+    options: any[] = [];
+    richText: any = {} // 富文本显示
+    $subject: Subject<any> = new Subject<any>();
 
     numberFormatter: (value: number) => string | number = (value: number) => {
         return formatNumber(value, 'en_US', '1.0-6');
@@ -59,41 +73,57 @@ export class DyForm implements OnInit, OnChanges {
         return value.replaceAll(",", '');
     };
 
-    options: any = {};
 
-    /**
-     *
-     * @param httpBackend
-     * @param httpClient 应用全局http
-     */
     constructor(private httpBackend: HttpBackend, private httpClient: HttpClient) {
-        this.http = new HttpClient(httpBackend); // 构造新的http实例，不带拦截器
+        // http站外访问，而httpClient是站内访问: 带有拦截器
+        this.http = new HttpClient(httpBackend);
     }
 
     ngOnInit(): void {
-
+        this.$subject.pipe(delay(300)).subscribe(res => {
+            if (res != null && res.length > 0) {
+                for (let i = 0; i < res.length; i++) {
+                    const item = res[i];
+                    // 将润色完毕的富文本进行二次加工(目的是尽量不要绕过angular安全策略)
+                    this.richText[item.field] = RichText.polishAndProcess(item.value);
+                }
+            }
+        })
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (!changes['form']?.firstChange) {
-            const children = this.form.children;
-            for (let i = 0; i < children.length; i++) {
-                const item = children[i];
-                if (item.type == 'select' || item.type == 'checkbox' || item.type == 'radio') {
-                    this.options[item.field] = [];
-                    this.fetchOptions(this.options[item.field], item);
-                }else if (item.type=='row'){
-                    const rowChildren = item.children;
-                    for (let j = 0; j < rowChildren.length; j++) {
-                        let rowChild = rowChildren[j];
-                        if (rowChild.type == 'select' || rowChild.type == 'checkbox' || rowChild.type == 'radio') {
-                            this.options[rowChild.field] = [];
-                            this.fetchOptions(this.options[rowChild.field], rowChild);
-                        }
+        if (changes['form'] != null) {
+            if (this.form.children != null) {
+                this.renderForm();
+            }
+        }
+
+    }
+
+    private renderForm() {
+        const children = this.form.children;
+        const richTextItem = [];
+        for (let i = 0; i < children.length; i++) {
+            const item = children[i];
+            if (item.type == 'select' || item.type == 'checkbox' || item.type == 'radio') {
+                this.options[item.field] = [];
+                this.fetchOptions(this.options[item.field], item);
+            } else if (item.type == 'richtext') {
+                richTextItem.push(item);
+            } else if (item.type == 'row') { // 栅格布局内有表单控件，把它们也算上
+                const rowChildren = item.children;
+                for (let j = 0; j < rowChildren.length; j++) {
+                    let rowChild = rowChildren[j];
+                    if (rowChild.type == 'select' || rowChild.type == 'checkbox' || rowChild.type == 'radio') {
+                        this.options[rowChild.field] = [];
+                        this.fetchOptions(this.options[rowChild.field], rowChild);
+                    } else if (rowChild.type == 'richtext') {
+                        richTextItem.push(rowChild);
                     }
                 }
             }
         }
+        this.$subject.next(richTextItem);
     }
 
     upload(config: any) {
@@ -103,13 +133,13 @@ export class DyForm implements OnInit, OnChanges {
         return (file, fileList) => {
             const form = new FormData();
             form.append(varName, file);
-            let post;
-            if (url.startsWith("/")) { // 上传到本系统
-                post = this.httpClient.post(url, form);
-            } else { // 上传到其他系统
-                post = this.http.post(url, form);
+            let req;
+            if (url != null && url.startsWith("/")) {
+                req = this.httpClient;
+            } else {
+                req = this.http;
             }
-            return post.pipe(mergeMap((res: any) => {
+            return req.post(url, form).pipe(mergeMap((res: any) => {
                 const file = res[key]
                 config.value = [...config.value, file];
                 return of(false);
@@ -182,36 +212,124 @@ export class DyForm implements OnInit, OnChanges {
         }
     }
 
-    isCheck(value, optionValue: any) {
+    isCheck(value, item: any) {
         if (value == null || !Array.isArray(value) || value.length == 0) {
             return false;
         }
-        return value.indexOf(optionValue) != -1;
+        return value.indexOf(item) != -1;
     }
 
-    fetchOptions(options: any[], config: any) {
-        if (config.url) {
-            if (this.form['context']) {
-                const context = this.form['context'];
-                Object.keys(context).forEach(key => {
-                    config.url = config.url.replaceAll("${" + key + "}", "" + context[key]);
-                })
-            }
-            this.httpClient.get(config.url).subscribe(res => {
-                const data = res[config.res]
+    /**
+     * 获取下拉框选项数据
+     * @param options
+     * @param item
+     * @private
+     */
+    private fetchOptions(options: any, item: any) {
+        if (item.url) {
+            let req = item.url.startsWith("/") ? this.httpClient.get(item.url) : this.http.get(item.url);
+            req.subscribe(res => {
+                let splits = item.res.split(".");
+                let data: any = res;
+                for (let i = 0; i < splits.length; i++) {
+                    data = data[splits[i]]
+                }
                 if (data != null) {
                     for (let i = 0; i < data.length; i++) {
                         const option = data[i];
-                        options.push({label: option[config.resLabel], value: option[config.resValue]});
+                        let label = option[item.resLabel];
+                        if (item.resLabel2 != null && item.resLabel2 != '') {
+                            label = label + '(' + option[item.resLabel2] + ')';
+                        }
+                        if (item.resLabel3 != null && item.resLabel3 != '') {
+                            label = label + '<' + option[item.resLabel3] + '>';
+                        }
+                        options.push({label: label, value: option[item.resValue]})
                     }
                 }
             })
         } else {
-            const splits = config.options.split('\n');
+            const splits = item.options.split('\n');
             for (let i = 0; i < splits.length; i++) {
-                const option = splits[i];
-                options.push({label: option, value: option})
+                const line = splits[i];
+                if (line == null || line.trim() == '') { // 跳过空值
+                    continue;
+                }
+                const option = line.split('|');
+                let value = option[0];
+                let label = option[0];
+                if (option.length > 1) {
+                    label = option[1];
+                }
+                options.push({label: label, value: value});
             }
+        }
+    }
+
+    /**
+     * 获取最终表单数据，包括填写的数据
+     */
+    data(): any {
+        const children = this.form.children;
+        for (let i = 0; i < children.length; i++) {
+            const item = children[i];
+            if (item.type == 'select') {
+                // 如果是快照版，直接录入options快照，并且删除URL配置。
+                this.generateSnapshot(item);
+            } else if (item.type == 'row') { // 栅格布局内有表单控件，把它们也算上
+                const rowChildren = item.children;
+                for (let j = 0; j < rowChildren.length; j++) {
+                    let rowChild = rowChildren[j];
+                    if (rowChild.type == 'select') {
+                        // 如果是快照版，直接录入options快照，并且删除URL配置。
+                        this.generateSnapshot(rowChild);
+                    }
+                }
+            }
+        }
+        return this.form;
+    }
+
+    /**
+     * 当url返回的options数据量很大时，生成快照是很好的。
+     * 此函数是为下拉框选项生成快照（只有被选中的选项会生成快照，避免每次加载表单都重新访问url，以及当url返回的options中
+     * 不存在相应的value导致选择框没有选中相应的值：可能这个value已经被远程服务器删除，或者url接口无法保证幂等性）
+     * @param item 控件
+     * @private
+     */
+    private generateSnapshot(item: any) {
+        if (item.snapshot && item.url) {
+            item['url'] = null;
+            const options = this.options[item.field];
+            // 构造map
+            const optionMap = {};
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                optionMap[option['value']] = option['label'];
+            }
+            let optionsStr = '';
+            // 组件的值不是数组
+            if (!Array.isArray(item.value)) {
+                optionsStr = item.value + "|" + optionMap[item.value];
+            } else { // 组件的值是数组
+                for (let j = 0; j < item.value.length; j++) {
+                    const val = item.value[j];
+                    optionsStr = optionsStr + val + "|" + optionMap[val] + "\n";
+                }
+            }
+            // 最后一个不需要换行符
+            if (optionsStr != null && optionsStr.endsWith("\n")) {
+                optionsStr = optionsStr.substring(0, optionsStr.length - 1);
+            }
+            item.options = optionsStr;
+        }
+    }
+
+    formatDate(val, item: any) {
+        if (val) {
+            item.value = formatDate(val, this.dateTimeFormat, 'zh_CN');
+        } else {
+            item.value = '';
         }
     }
 }

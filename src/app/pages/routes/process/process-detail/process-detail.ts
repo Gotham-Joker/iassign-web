@@ -10,7 +10,7 @@ import {RichText} from "../../../../core/components/rich-text/rich-text";
 import {catchError} from "rxjs/operators";
 import {environment} from "../../../../../environments/environment";
 import {UploadService} from "../../../../core/upload.service";
-import {DagContainer} from "../../../../dag/components/dag-container/dag-container";
+import {DyformService} from "../../form/dyform.service";
 import {DiffTimePipe} from '../../../../core/diff-time/diff-time.pipe';
 import {DictPipe} from '../../../../core/dictionary/dict.pipe';
 import {NzSelectModule} from 'ng-zorro-antd/select';
@@ -27,14 +27,16 @@ import {NzTagModule} from 'ng-zorro-antd/tag';
 import {NzTimelineModule} from 'ng-zorro-antd/timeline';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzGridModule} from 'ng-zorro-antd/grid';
-import {NgIf, NgFor} from '@angular/common';
+import {NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault} from '@angular/common';
 import {NzWaveModule} from 'ng-zorro-antd/core/wave';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {AclDirective} from '../../../../core/acl/acl.directive';
 import {NzCardModule} from 'ng-zorro-antd/card';
 import {Backward} from '../../../../core/components/backward/backward';
-import {DyformService} from "../../form/dyform.service";
-import {RoleUser} from "../../../layout/system/role-user/role-user";
+import {NzTableModule} from "ng-zorro-antd/table";
+import {RoleUserList} from "../role-user-list/role-user-list";
+import {DagContainer} from "../../../../dag/components/dag-container/dag-container";
+import {DagModule} from "../../../../dag/dag.module";
 
 /**
  * 流程审批详情
@@ -47,9 +49,10 @@ import {RoleUser} from "../../../layout/system/role-user/role-user";
     styleUrls: ['./process-detail.scss', '../../../../core/components/rich-text/colors.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [Backward, NzCardModule, AclDirective, NzButtonModule, NzWaveModule, NgIf, NzGridModule, NzIconModule, DyForm, NzTimelineModule, NgFor, NzTagModule, NzAvatarModule, NzModalModule, DagContainer, ProcessAssign, ShotOverlay, FormsModule, NzSpinModule, NzFormModule, MailSelect, RichText, NzUploadModule, NzSelectModule, DictPipe, DiffTimePipe, RoleUser]
+    imports: [Backward, NzCardModule, AclDirective, NzButtonModule, NzWaveModule, NgIf, NzGridModule, NzIconModule, DyForm, NzTimelineModule, NgFor, NzTagModule, NzAvatarModule, NzModalModule, DagModule, ProcessAssign, ShotOverlay, FormsModule, NzSpinModule, NzFormModule, MailSelect, RichText, NzUploadModule, NzSelectModule, DictPipe, DiffTimePipe, NzTableModule, RoleUserList, NgSwitch, NgSwitchCase, NgSwitchDefault]
 })
 export class ProcessDetail implements OnInit {
+    instanceName: any = '' // 流程实例名
     form: any = {
         id: '',
         name: '',
@@ -62,6 +65,7 @@ export class ProcessDetail implements OnInit {
     instanceId: string = '';
     dag: string = '';
     visible: boolean = false;
+    modalLoading: boolean = false;
     @ViewChild("dagContainer", {read: DagContainer})
     dagContainer: DagContainer;
     @ViewChild("auditFormContainer", {read: DyForm})
@@ -143,6 +147,7 @@ export class ProcessDetail implements OnInit {
                     } else {
                         this.emails = [];
                     }
+                    this.instanceName = data.name;
                     this.dag = data.dag;
                     // 查找申请人信息
                     this.userSvc.queryBaseInfo(data.starter).subscribe((userInfo: any) => {
@@ -172,14 +177,21 @@ export class ProcessDetail implements OnInit {
     private appendTimelineNode(taskList: any) {
         const backList = []; // 构造可退回清单
         for (let i = 0; i < taskList.length; i++) {
+            // 处理审批环节，用户审批环节是可以回退的，这个要先记录下来
             const task = taskList[i];
             if (task.userNode) {
                 backList.push(task);
             }
-            if (task.attachments != null && task.attachments != '') {
-                task.attachments = JSON.parse(task.attachments);
-            } else {
-                task.attachments = [];
+            // 处理审批意见中的附件
+            const opinions = task['opinions'];
+            if (opinions != null && opinions.length > 0) {
+                for (let j = 0; j < opinions.length; j++) {
+                    if (opinions[j].attachments != null && opinions[j].attachments != '') {
+                        opinions[j].attachments = JSON.parse(opinions[j].attachments);
+                    } else {
+                        opinions[j].attachments = [];
+                    }
+                }
             }
         }
         // 更新时间轴，追加时间轴节点
@@ -229,8 +241,14 @@ export class ProcessDetail implements OnInit {
      */
     viewGraph() {
         this.visible = true;
+        this.modalLoading = true;
         // 再触发一次异步，重新渲染dag
         timer(0).subscribe(res => {
+            this.modalLoading = false;
+            this.dagContainer.resetCells(JSON.parse(this.dag))
+            this.dagContainer.getGraph().on('render:done', () => {
+                this.dagContainer.getGraph().zoomToFit({maxScale: 1})
+            });
             const list = this.taskList;
             const nodeStatusList = [];
             for (let i = 0; i < list.length; i++) {
@@ -263,7 +281,6 @@ export class ProcessDetail implements OnInit {
                 }
                 nodeStatusList.push(nodeStatus);
             }
-            this.dagContainer.resetCells(JSON.parse(this.dag))
             // 查找审批历史，并且显示状态
             this.dagContainer.showNodeStatus(nodeStatusList);
         })
@@ -282,7 +299,7 @@ export class ProcessDetail implements OnInit {
             return of(1);
         })).subscribe(res => {
             this.loading = false;
-            this.notification.success("提示", "您已受理，现在您可以亲自审批或指派(需要有指派权限)给其他人来审批");
+            this.notification.success("提示", "您已受理，现在您可以亲自审批或指派(需要有指派权限)给其他人来审批", {nzPlacement: 'bottomRight'});
             this.currentTask.status = 'CLAIMED';
         })
     }
@@ -294,7 +311,7 @@ export class ProcessDetail implements OnInit {
     private createAuditForm() {
         if (this.currentTask.formId != null && this.currentTask.formId != '') {
             // 加载form表单
-            this.formSvc.defContext(this.currentTask.formId).subscribe((res: any) => {
+            this.formSvc.queryDefContext(this.currentTask.formId).subscribe((res: any) => {
                 const definition = res.data.definition
                 this.auditForm = JSON.parse(definition);
                 this.needAuditForm = true;
@@ -317,7 +334,7 @@ export class ProcessDetail implements OnInit {
             this.message.success("指派成功");
             this.assignVisible = false;
             this.currentTask = res.data;
-            this.taskList[this.taskList.length - 1] = this.currentTask;
+            this.appendTimelineNode(res.data);
         })
     }
 
@@ -348,7 +365,8 @@ export class ProcessDetail implements OnInit {
                 this.drawer.loading = false;
                 return;
             } else {
-                this.drawer.data.formData = this.auditForm;
+                // 保存表单填写数据
+                this.drawer.data.formData = this.auditFormContainer.data();
             }
         }
         this.drawer.loading = true;
@@ -438,7 +456,7 @@ export class ProcessDetail implements OnInit {
         this.drawer.data.operation = operation;
         this.drawer.data.taskId = this.currentTask.id;
         // 富文本处理，主要是一些转换工作
-        this.drawer.data.remark = this.richText.polish(this.drawer.data.remark);
+        this.drawer.data.remark = RichText.polish(this.drawer.data.remark);
         // 处理收件人数据
         if (this.emails == null) {
             this.drawer.data.emails = '';
@@ -483,7 +501,7 @@ export class ProcessDetail implements OnInit {
     }
 
     /**
-     * 恢复失败的作业
+     * 恢复运行失败的系统任务
      * @param task
      */
     recover(task: any) {
@@ -495,10 +513,14 @@ export class ProcessDetail implements OnInit {
             this.pending = true;
             this.appendTimelineNode(res.data);
             this.loading = false;
-        })
+        });
     }
 
-    showRoleUser(role: any) {
+    /**
+     * 展示某个角色的用户列表
+     * @param role
+     */
+    showRoleUser(role) {
         this.roleModal.roleId = role.referenceId;
         this.roleModal.visible = true;
     }

@@ -8,7 +8,7 @@ import {Sidebar} from "./sidebar/sidebar";
 import {SharedModule} from "../../core/shared.module";
 import {KeywordSearch} from "./keyword-search/keyword-search";
 
-import {SysMessageService} from "./sys-message.service";
+import {SysMessageService} from "./system/message/sys-message.service";
 
 // 按需引入其他模块
 const MODULES = [NzLayoutModule, SharedModule];

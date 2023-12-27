@@ -15,7 +15,7 @@ const COMPONENTS = [FormManage, FormPreview, FormDesign];
 // 当前模块的路由
 const routes: Route[] = [
     {path: '', redirectTo: 'form-manage', pathMatch: 'full'},
-    {path: 'form-manage', component: FormManage, data: {breadcrumb: '表单管理'}},
+    {path: 'form-manage', component: FormManage, data: {breadcrumb: '表单管理', reuse: true}},
     {path: 'form-preview', component: FormPreview, data: {breadcrumb: '表单预览'}}
 ];
 

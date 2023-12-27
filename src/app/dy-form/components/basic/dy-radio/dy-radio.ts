@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { FormControl, Validators, FormsModule } from '@angular/forms';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NgIf, NgFor } from '@angular/common';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzGridModule } from 'ng-zorro-antd/grid';
+import {FormControl, Validators, FormsModule} from '@angular/forms';
+import {NzRadioModule} from 'ng-zorro-antd/radio';
+import {NgIf, NgFor} from '@angular/common';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzGridModule} from 'ng-zorro-antd/grid';
 
 @Component({
     selector: 'dy-radio',
@@ -22,15 +22,16 @@ export class DyRadio implements OnInit {
         label: '单选',
         dyColSpan: 12,
         required: false,
-        options: 'Apple\nAndroid'
+        options: '0|Apple\n1|Android'
     };
     status: any;  // 校验结果
-
+    opts: any[] = [];
 
     constructor() {
     }
 
     ngOnInit(): void {
+        this.resolveOptions();
     }
 
     validate() {
@@ -52,4 +53,26 @@ export class DyRadio implements OnInit {
     }
 
 
+    resolveOptions() {
+        const opts = [];
+        if (this.config.options == null || this.config.options.trim() == '') {
+            this.opts = opts;
+            return;
+        }
+        const splits = this.config.options.split('\n');
+        for (let i = 0; i < splits.length; i++) {
+            const line = splits[i];
+            if (line == null || line.trim() == '') { // 跳过空值
+                continue;
+            }
+            const option = line.split('|');
+            let value = option[0];
+            let label = option[0];
+            if (option.length > 1) {
+                label = option[1];
+            }
+            opts.push({label: label, value: value});
+        }
+        this.opts = opts;
+    }
 }

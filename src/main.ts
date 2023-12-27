@@ -1,6 +1,3 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
-
 import { AppComponent } from './app/app.component';
 import { SharedModule } from './app/core/shared.module';
 import { IconsProviderModule } from './app/core/ng-zorro/icons-provider.module';
@@ -17,11 +14,11 @@ import { DictionaryService } from './app/core/dictionary/dictionary.service';
 import { StartupService } from './app/core/startup.service';
 import { Provider, APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
-import {NZ_I18N, zh_CN} from 'ng-zorro-antd/i18n';
+import { NZ_I18N, zh_CN } from 'ng-zorro-antd/i18n';
 import {registerLocaleData} from "@angular/common";
-import zh from '@angular/common/locales/zh';
+import zh from "@angular/common/locales/zh";
 
-registerLocaleData(zh);
+registerLocaleData(zh)
 
 const nzConfig: NzConfig = {
     notification: {

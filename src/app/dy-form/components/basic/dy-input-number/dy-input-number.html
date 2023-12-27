@@ -1,8 +1,9 @@
 <nz-form-item>
-  <nz-form-label *ngIf="config.label??false" [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
+  <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
                  [nzRequired]="config.required">{{config.label}}</nz-form-label>
   <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
     <nz-input-number style="width: 100%" [disabled]="config.readOnly" [(ngModel)]="config.value"
+                     [nzMax]="config.max" [nzMin]="config.min"
                      [nzPlaceHolder]="config.placeholder" [nzFormatter]="formatter" [nzParser]="parser"></nz-input-number>
   </nz-form-control>
 </nz-form-item>

@@ -1,12 +1,12 @@
 <nz-spin [nzSpinning]="loading">
     <nz-card class="card-shadow search-card">
         <div nz-form [nzLayout]="'inline'">
-            <!-- <nz-form-item>
-                 <nz-form-label>ID</nz-form-label>
-                 <nz-form-control>
-                     <input nz-input [(ngModel)]="queryParams.id">
-                 </nz-form-control>
-             </nz-form-item>-->
+            <nz-form-item>
+                <nz-form-label>ID</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.id">
+                </nz-form-control>
+            </nz-form-item>
             <nz-form-item>
                 <nz-form-label>序号</nz-form-label>
                 <nz-form-control>
@@ -26,15 +26,26 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <button nz-button [nzType]="'primary'" (click)="query(true)">
+                <button nz-button [nzType]="'primary'" (click)="query(1)">
                     <i nz-icon [nzType]="'search'"></i>查询
                 </button>
             </nz-form-item>
-            <nz-form-item>
-                <button nz-button nzType="primary" routerLink="/process-designer">
-                    <span nz-icon nzType="plus"></span>
-                    添加流程
-                </button>
+            <ng-container *acl="'pdadd'">
+                <nz-form-item>
+                    <button nz-button nzType="primary" routerLink="/process-designer">
+                        <span nz-icon nzType="plus"></span>
+                        添加流程
+                    </button>
+                </nz-form-item>
+            </ng-container>
+            <nz-form-item *acl="'inForm'">
+                <nz-upload [nzBeforeUpload]="upload" [nzShowUploadList]="false"
+                           [nzAccept]="['.json']">
+                    <button nz-button>
+                        <span nz-icon nzType="upload"></span>
+                        导入
+                    </button>
+                </nz-upload>
             </nz-form-item>
         </div>
     </nz-card>
@@ -49,7 +60,7 @@
                   (nzPageIndexChange)="query($event)">
             <thead>
             <tr>
-                <!--                <th>ID</th>-->
+                <th>ID</th>
                 <th>序号</th>
                 <th>图标</th>
                 <th>流程名称</th>
@@ -64,7 +75,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let item of basicTable.data">
-                <!--                <td>{{item.id}}</td>-->
+                <td>{{item.id}}</td>
                 <td>{{item.seqNo}}</td>
                 <td>
                     <nz-avatar [nzSrc]="item.icon"></nz-avatar>
@@ -81,19 +92,28 @@
                 </td>
                 <td>
                     <ng-container *acl="'pdd'">
-                        <a (click)="openDeploy(item)"><span nz-icon [nzType]="'eye'"></span> 部署</a>
+                        <a [routerLink]="'/process/process-config'" [queryParams]="{id:item.id}">
+                            <span nz-icon [nzType]="'file'"></span>
+                            配置
+                        </a>
                         <nz-divider [nzType]="'vertical'"></nz-divider>
                     </ng-container>
-                    <a [routerLink]="'/process/process-index'" [queryParams]="{definitionId:item.id}">
-                        <span nz-icon nzType="search"></span>
-                        查数
-                    </a>
+                    <ng-container *ngIf="canQueryData(item)">
+                        <a [routerLink]="'/process/process-index'" [queryParams]="{definitionId:item.id}">
+                            <span nz-icon nzType="search"></span>
+                            查数
+                        </a>
+                    </ng-container>
                     <ng-container *acl="'pdmd'">
                         <nz-divider [nzType]="'vertical'"></nz-divider>
                         <a [routerLink]="'/process-designer'" [queryParams]="{id:item.id}">
                             <span nz-icon [nzType]="'edit'"></span>
                             修改
                         </a>
+                    </ng-container>
+                    <ng-container *acl="'outDef'">
+                        <nz-divider [nzType]="'vertical'"></nz-divider>
+                        <a (click)="exportDef(item.id)"><span nz-icon nzType="download"></span> 导出</a>
                     </ng-container>
                     <ng-container *acl="'pdrm'">
                         <nz-divider [nzType]="'vertical'"></nz-divider>
@@ -106,28 +126,3 @@
         </nz-table>
     </nz-card>
 </nz-spin>
-<nz-modal nzCloseIcon="svg:close" (nzOnCancel)="modal.visible=false" [(nzVisible)]="modal.visible"
-          [nzContent]="content" (nzOnOk)="deploy()">
-    <ng-template #content>
-        <p class="mt-4">
-            如果选了"全部"部门可见，对于未来新增加的部门，也会自动关联上。选了"全部"请勿再选其他
-        </p>
-        <div class="flex items-center mb-3">
-            <label class="pe-3">部署状态:</label>
-            <nz-switch [(ngModel)]="modal.data.status"></nz-switch>
-        </div>
-        <div nz-form nzLayout="vertical">
-            <nz-form-item>
-                <nz-form-label>可见部门:</nz-form-label>
-                <nz-form-control>
-                    <nz-select nzMode="multiple" [(ngModel)]="modal.data.deptIds">
-                        <nz-option nzLabel="全部" nzValue="ALL"></nz-option>
-                        <nz-option *ngFor="let item of deptList"
-                                   [nzLabel]="item.deptCode+' ('+item.deptTw+')'"
-                                   [nzValue]="item.deptId"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-    </ng-template>
-</nz-modal>

@@ -1,0 +1,98 @@
+<app-backward></app-backward>
+
+<nz-spin [nzSpinning]="loading">
+    <nz-card class="card-radius card-shadow important-mt-5">
+        <nz-tabset nzTabPosition="left">
+            <nz-tab nzTitle="基本设置">
+                <div class="px-2">
+                    <div class="profile-card">
+                        <div class="profile-avatar" style="width:48px;height: 48px;">
+                            <img [src]="data.icon" style="width: 32px;height: 32px" alt="">
+                            <div class="absolute right-0 bottom-0">
+                                <nz-upload [nzBeforeUpload]="upload" [nzShowUploadList]="false"
+                                           [nzAccept]="['.jpg','.png']">
+                                    <button nzSize="small" nz-button nzShape="circle">
+                                        <span nz-icon nzType="upload"></span>
+                                    </button>
+                                </nz-upload>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="b-1 b-solid b-rd-2 b-#dfdfdf mt-3 p-4">
+                        <div nz-form nzLayout="vertical" style="max-width: 568px">
+                            <nz-form-item>
+                                <nz-form-label>启动表单ID</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input placeholder="启动表单ID" [(ngModel)]="data.formId">
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label>名称</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input placeholder="名称" [(ngModel)]="data.name">
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label>序号</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input placeholder="名称" [(ngModel)]="data.seqNo">
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label>分组</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input placeholder="分组" [(ngModel)]="data.groupName">
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label>描述</nz-form-label>
+                                <nz-form-control>
+                                    <nz-textarea-count [nzMaxCharacterCount]="100">
+                                    <textarea rows="2" nz-input placeholder="描述"
+                                              [(ngModel)]="data.description"></textarea>
+                                    </nz-textarea-count>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <button nz-button nzType="primary" (click)="saveBase()">保存</button>
+                    </div>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="部署配置" [nzForceRender]="false">
+                <div class="px-2">
+                    <p>
+                        如果选了"全部"部门可见，对于未来新增加的部门，也会自动关联上。"可见部门"选了"全部"请勿再选其他
+                    </p>
+                    <div class="flex items-center my-3">
+                        <label class="pe-3">部署状态:</label>
+                        <nz-switch [(ngModel)]="deployStatus"></nz-switch>
+                    </div>
+                    <div nz-form nzLayout="vertical" style="max-width: 768px">
+                        <nz-form-item>
+                            <nz-form-label>可见部门:</nz-form-label>
+                            <nz-form-control>
+                                <nz-select nzMode="multiple" [(ngModel)]="data.deptIds">
+                                    <nz-option nzLabel="全部" nzValue="ALL"></nz-option>
+                                    <nz-option *ngFor="let item of deptList"
+                                               [nzLabel]="item.deptCode+' ('+item.deptTw+')'"
+                                               [nzValue]="item.deptId"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item>
+                            <nz-form-label>流程数据管理者</nz-form-label>
+                            <nz-form-control>
+                                <nz-textarea-count [nzMaxCharacterCount]="100">
+                                    <textarea nz-input rows="2"
+                                              placeholder="流程管理人员ID清单,逗号分隔,限制5人以内,留空则不做限制"
+                                              [(ngModel)]="data.managers"></textarea>
+                                </nz-textarea-count>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <button nzType="primary" nz-button (click)="deploy()">保存</button>
+                </div>
+            </nz-tab>
+        </nz-tabset>
+    </nz-card>
+</nz-spin>

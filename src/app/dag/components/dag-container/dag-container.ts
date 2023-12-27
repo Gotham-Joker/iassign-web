@@ -17,15 +17,15 @@ import {SystemNode} from "../nodes/system-node/system-node";
 import {StartNode} from "../nodes/start-node/start-node";
 import {EndNode} from "../nodes/end-node/end-node";
 import {NodeDataInterface} from "../../interface/node-data.interface";
-import {NzIconModule} from 'ng-zorro-antd/icon';
-import {NgClass} from '@angular/common';
-import {NzWaveModule} from 'ng-zorro-antd/core/wave';
-import {NzButtonModule} from 'ng-zorro-antd/button';
-import {FormsModule} from '@angular/forms';
-import {NzInputModule} from 'ng-zorro-antd/input';
-import {NzGridModule} from 'ng-zorro-antd/grid';
-import {NzFormModule} from 'ng-zorro-antd/form';
-import {NzDrawerModule} from 'ng-zorro-antd/drawer';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NgClass } from '@angular/common';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 @Component({
     selector: 'dag-container',
@@ -139,7 +139,6 @@ export class DagContainer implements OnInit, OnDestroy {
             this.graph = new Graph({
                 // false关闭交互模式 （只能预览）
                 interacting: this.interacting,
-                virtual: true,
                 container: ele,
                 autoResize: true,
                 panning: {
@@ -147,7 +146,12 @@ export class DagContainer implements OnInit, OnDestroy {
                     eventTypes: ['leftMouseDown'],
                 },
                 mousewheel: {
-                    enabled: false
+                    enabled: false,
+                    /*enabled: true,
+                    modifiers: 'ctrl',
+                    factor: 1.1,
+                    maxScale: 1.5,
+                    minScale: 0.5,*/
                 },
                 highlighting: {
                     // 连接桩可以被连接时在连接桩外围围渲染一个包围框
@@ -219,21 +223,22 @@ export class DagContainer implements OnInit, OnDestroy {
                 background: {color: '#d3d4d0'},
             })
             const graph = this.graph;
-            this.dnd = new Dnd({
-                target: graph,
-                getDragNode: (node) => node.clone({keepId: true}),
-                getDropNode: (node) => node.clone({keepId: true})
-            })
-            graph.on('edge:connected', ({edge}) => {
-                edge.attr({
-                    line: {
-                        strokeDasharray: '',
-                    },
-                })
-            });
 
             // 交互模式才开启
             if (this.interacting) {
+
+                this.dnd = new Dnd({
+                    target: graph,
+                    getDragNode: (node) => node.clone({keepId: true}),
+                    getDropNode: (node) => node.clone({keepId: true})
+                })
+                graph.on('edge:connected', ({edge}) => {
+                    edge.attr({
+                        line: {
+                            strokeDasharray: '',
+                        },
+                    })
+                });
 
                 // 线条的右键菜单
                 graph.on('edge:contextmenu', ({e, edge}) => {
