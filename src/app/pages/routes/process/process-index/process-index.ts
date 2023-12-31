@@ -25,7 +25,6 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {AclDirective} from "../../../../core/acl/acl.directive";
 import {NzPopconfirmModule} from "ng-zorro-antd/popconfirm";
 import {StartupService} from "../../../../core/startup.service";
-import {mergeMap, of} from "rxjs";
 
 @Component({
     selector: 'process-index',
@@ -56,7 +55,7 @@ export class ProcessIndex implements OnInit {
     }
     list: any = [];
     total: number = 0;
-    createTimeGe = dayjs().add(-6, 'month').toDate()
+    createTimeGe = dayjs().add(-180, 'day').toDate()
     createTimeLe = dayjs().toDate()
     private currentUserId: string;
     private hasPermission: any = false;
@@ -157,21 +156,21 @@ export class ProcessIndex implements OnInit {
 
     private validate() {
         if (this.createTimeGe == null) {
-            this.createTimeGe = dayjs().add(-1, 'month').toDate()
+            this.createTimeGe = dayjs().add(-180, 'day').toDate()
         }
         if (this.createTimeLe == null) {
             this.createTimeLe = dayjs().toDate()
         }
-        const startDate = dayjs(this.createTimeGe).startOf("day");
-        const endDate = dayjs(this.createTimeLe).endOf("day");
+        const startDate = dayjs(this.createTimeGe);
+        const endDate = dayjs(this.createTimeLe);
         this.bodyParams.createTimeGe = startDate.format("YYYY-MM-DD HH:mm:ss");
         this.bodyParams.createTimeLe = endDate.format("YYYY-MM-DD HH:mm:ss");
         if (startDate.isAfter(endDate)) {
             this.message.warning("日期开始时间不能超过结束时间");
             return false;
         }
-        if (startDate.add(6, "month").endOf("day").isBefore(endDate)) {
-            this.message.warning("选择的日期范围不能超过6个月");
+        if (startDate.add(180, "day").isAfter(endDate)) {
+            this.message.warning("选择的日期范围不能超过180天");
             return false;
         }
         return true;
