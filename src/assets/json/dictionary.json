@@ -7,11 +7,11 @@
     },
     "PENDING": {
       "status": "待受理",
-      "color": "processing",
+      "color": "purple",
       "timelineColor": "blue"
     },
     "RUNNING": {
-      "status": "运行中",
+      "status": "审批中",
       "color": "processing",
       "timelineColor": "blue"
     },
@@ -49,6 +49,11 @@
       "status": "已撤销",
       "color": "error",
       "timelineColor": "red"
+    },
+    "RETURN": {
+      "status": "退回发起人",
+      "color": "warning",
+      "timelineColor": "red"
     }
   },
   "opinionOperation": {
@@ -62,11 +67,15 @@
     },
     "BACK": {
       "label": "退回",
-      "color": "red"
+      "color": "warning"
     },
     "ASSIGN": {
       "label": "指派",
       "color": "magenta"
+    },
+    "RETURN": {
+      "label": "退回发起人",
+      "color": "warning"
     }
   }
 }

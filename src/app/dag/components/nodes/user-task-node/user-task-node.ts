@@ -24,6 +24,7 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NgClass, NgIf} from '@angular/common';
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
+import {NzRadioModule} from "ng-zorro-antd/radio";
 
 
 @Component({
@@ -32,20 +33,11 @@ import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
     styleUrls: ['./user-task-node.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzSelectModule, NzWaveModule, NzCheckboxModule]
+    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzSelectModule, NzWaveModule, NzCheckboxModule, NzRadioModule]
 })
 export class UserTaskNode implements OnInit, DagNode {
     // 当前dag节点的数据
-    data: any = {
-        label: '',
-        status: null,
-        formId: '',
-        userList: [],
-        roleList: [],
-        userScript: '',
-        roleScript: '',
-        countersign: false // 是否是会签节点
-    };
+    data: any = {};
 
     cell: Cell;
     image = {
@@ -69,24 +61,13 @@ export class UserTaskNode implements OnInit, DagNode {
 
     onDagInit(data: any, cell: Cell) {
         this.data = data;
-        if (!this.data['userList']) {
-            this.data.userList = [];
-        }
-        if (!this.data['roleList']) {
-            this.data.roleList = [];
-        }
-        if (!this.data['userScript']) {
-            this.data.userScript = '';
-        }
-        if (!this.data['roleScript']) {
-            this.data.roleScript = '';
-        }
         this.cell = cell;
         this.cdr.detectChanges(); // 手动触发变更检测
     }
 
     save() { // 保存
         this.visible = false;
+        this.cdr.detectChanges();
     }
 
     // 关闭抽屉
@@ -110,12 +91,22 @@ export class UserTaskNode implements OnInit, DagNode {
     }
 
 
+    /**
+     * 拖拽节点进来时，初始化一些节点数据，以及连接点
+     */
     public static createNode() {
         return {
             id: IdWorker.nextId(),
-            data: {
+            data: {  // 节点初始数据
                 label: '新建审批',
-                status: 'default'
+                status: 'default',
+                userList: [],
+                roleList: [],
+                userScript: '',
+                roleScript: '',
+                countersign: false, // 是否是会签节点
+                fileRequired: false, // 是否必传附件
+                assign: false // 是否允许指派
             },
             ports: [
                 {

@@ -37,6 +37,7 @@ import {NzTableModule} from "ng-zorro-antd/table";
 import {RoleUserList} from "../role-user-list/role-user-list";
 import {DagContainer} from "../../../../dag/components/dag-container/dag-container";
 import {DagModule} from "../../../../dag/dag.module";
+import {NzPopconfirmModule} from "ng-zorro-antd/popconfirm";
 
 /**
  * 流程审批详情
@@ -49,10 +50,12 @@ import {DagModule} from "../../../../dag/dag.module";
     styleUrls: ['./process-detail.scss', '../../../../core/components/rich-text/colors.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    imports: [Backward, NzCardModule, AclDirective, NzButtonModule, NzWaveModule, NgIf, NzGridModule, NzIconModule, DyForm, NzTimelineModule, NgFor, NzTagModule, NzAvatarModule, NzModalModule, DagModule, ProcessAssign, ShotOverlay, FormsModule, NzSpinModule, NzFormModule, MailSelect, RichText, NzUploadModule, NzSelectModule, DictPipe, DiffTimePipe, NzTableModule, RoleUserList, NgSwitch, NgSwitchCase, NgSwitchDefault]
+    imports: [Backward, NzCardModule, AclDirective, NzButtonModule, NzWaveModule, NgIf, NzGridModule, NzIconModule,
+        DyForm, NzTimelineModule, NgFor, NzTagModule, NzAvatarModule, NzModalModule, DagModule, ProcessAssign,
+        ShotOverlay, FormsModule, NzSpinModule, NzFormModule, MailSelect, RichText, NzUploadModule, NzSelectModule,
+        DictPipe, DiffTimePipe, NzTableModule, RoleUserList, NgSwitch, NgSwitchCase, NgSwitchDefault, NzPopconfirmModule]
 })
 export class ProcessDetail implements OnInit {
-    instanceName: any = '' // 流程实例名
     form: any = {
         id: '',
         name: '',
@@ -62,7 +65,6 @@ export class ProcessDetail implements OnInit {
     taskList: any[] = [];
     backList: any[] = [];
     isBack: boolean = false; // 是否点击了退回按钮
-    instanceId: string = '';
     dag: string = '';
     visible: boolean = false;
     modalLoading: boolean = false;
@@ -72,6 +74,7 @@ export class ProcessDetail implements OnInit {
     auditFormContainer: DyForm;
     @ViewChild("richText", {read: RichText})
     richText: RichText;
+    processInstance: any = {} // 流程实例
 
     pending: boolean | string = false;
     // 申请人信息
@@ -85,6 +88,7 @@ export class ProcessDetail implements OnInit {
         visible: false,
         loading: false,
         attachments: [],
+        attachmentsStatus: '', // 文件上传提示状态，可为 '' 或 'error'
         data: {
             emails: '',  // 邮件抄送人str，逗号分隔
             remark: '',
@@ -100,7 +104,7 @@ export class ProcessDetail implements OnInit {
         loading: false,
         form: null
     };
-    // 全行用户清单
+    // 全部用户清单，用于邮件抄送
     userList: any[] = [];
 
     // 指派弹窗可见
@@ -122,22 +126,24 @@ export class ProcessDetail implements OnInit {
     }
 
     ngOnInit(): void {
+        // 获取全部用户清单，用作邮件抄送
         this.userSvc.query({page: 1, size: 10000, deptName_oda: 1}).subscribe(res => this.userList = res.data.list);
         this.route.queryParams.subscribe(res => {
             if (res["id"]) {
                 // 流程实例ID
                 const id = res["id"];
-                if (this.instanceId != id) { // 查看另外一个详情，需要全部重新渲染
+                if (this.processInstance.id != id) { // 查看另外一个详情，需要全部重新渲染
                     this.emails = [];
                     this.taskList = [];
                     this.backList = [];
                     this.resetDrawerData();
                 }
-                this.instanceId = id;
+                this.processInstance = {id: id};
                 this.loading = true;
                 // 查找申请人填写的表单，以及审批历史
                 this.processSvc.findInstanceDetail(id).subscribe((result: any) => {
-                    const data = result.data;
+                    this.processInstance = result.data;
+                    const data = this.processInstance;
                     this.pending = data.status == 'RUNNING';
                     this.form = JSON.parse(data.formData);
                     // 回显邮件抄送
@@ -147,7 +153,6 @@ export class ProcessDetail implements OnInit {
                     } else {
                         this.emails = [];
                     }
-                    this.instanceName = data.name;
                     this.dag = data.dag;
                     // 查找申请人信息
                     this.userSvc.queryBaseInfo(data.starter).subscribe((userInfo: any) => {
@@ -164,7 +169,7 @@ export class ProcessDetail implements OnInit {
      * 刷新时间轴
      */
     refreshTimeline() {
-        this.processSvc.queryTaskAuditList(this.instanceId).subscribe(res => {
+        this.processSvc.queryTaskAuditList(this.processInstance.id).subscribe(res => {
             this.appendTimelineNode(res.data);
         });
     }
@@ -369,6 +374,15 @@ export class ProcessDetail implements OnInit {
                 this.drawer.data.formData = this.auditFormContainer.data();
             }
         }
+        if (this.currentTask.fileRequired) {
+            if (this.drawer.attachments == null || this.drawer.attachments.length == 0) {
+                this.drawer.loading = false;
+                this.drawer.attachmentsStatus = 'error'
+                return;
+            } else {
+                this.drawer.attachmentsStatus = '';
+            }
+        }
         this.drawer.loading = true;
         this.handleDrawerData('APPROVE');
         this.processSvc.handleTask(this.drawer.data).pipe(catchError(err => {
@@ -393,7 +407,9 @@ export class ProcessDetail implements OnInit {
         }
         this.loading = true;
         this.drawer.loading = true;
-        this.handleDrawerData('BACK');
+        const isReturn = this.drawer.data.backwardTaskId == 'STARTER';
+        // 判断是退回发起人还是退回至某一审批环节
+        isReturn ? this.handleDrawerData('RETURN') : this.handleDrawerData('BACK');
         this.processSvc.handleTask(this.drawer.data).pipe(catchError(err => {
             this.drawer.loading = false;
             return EMPTY;
@@ -404,6 +420,9 @@ export class ProcessDetail implements OnInit {
             this.drawer.loading = false;
             this.cancelBack();
             this.appendTimelineNode(res.data);
+            if (isReturn) {
+                this.pending = false;
+            }
         });
     }
 
@@ -443,10 +462,10 @@ export class ProcessDetail implements OnInit {
 
     /**
      * 处理抽屉数据
-     * @param operation 'APPROVE' | 'BACK' | 'REJECT'分别代表同意，退回，拒绝
+     * @param operation 'APPROVE' | 'BACK' | 'REJECT' | 'RETURN' 分别代表同意，退回，拒绝，退回申请人
      * @private
      */
-    private handleDrawerData(operation: 'APPROVE' | 'BACK' | 'REJECT') {
+    private handleDrawerData(operation: 'APPROVE' | 'BACK' | 'REJECT' | 'RETURN') {
         // 处理附件
         if (this.drawer.attachments != null && this.drawer.attachments.length > 0) {
             this.drawer.data.attachments = JSON.stringify(this.drawer.attachments);
@@ -472,6 +491,7 @@ export class ProcessDetail implements OnInit {
     private resetDrawerData() {
         this.drawer.data.taskId = '';
         this.drawer.attachments = [];
+        this.drawer.attachmentsStatus = '';
         this.drawer.data.attachments = '';
         this.drawer.data.remark = '';
         this.drawer.data.formData = null;
@@ -496,7 +516,7 @@ export class ProcessDetail implements OnInit {
     }
 
     downloadLog() {
-        window.location.href = environment.SERVER_URL + "/api/process-instance/log?instanceId=" + this.instanceId + "&token="
+        window.location.href = environment.SERVER_URL + "/api/process-instance/log?instanceId=" + this.processInstance.id + "&token="
             + localStorage.getItem("token");
     }
 

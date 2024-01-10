@@ -13,8 +13,7 @@ export class ProcessService extends BaseService {
 
     /**
      * 部署流程定义
-     * @param id
-     * @param status
+     * @param data
      */
     deploy(data: any): Observable<any> {
         return this.http.put("/api/process-definition/deploy", data);
@@ -33,6 +32,13 @@ export class ProcessService extends BaseService {
      */
     startInstance(data: any): Observable<any> {
         return this.http.post("/api/process", data);
+    }
+
+    /**
+     * 退回申请人以后，申请人重新启动流程
+     */
+    restartInstance(data: any): Observable<any> {
+        return this.http.put("/api/process", data);
     }
 
     /**
@@ -150,7 +156,7 @@ export class ProcessService extends BaseService {
      * @param defId
      */
     dag(defId: any): Observable<any> {
-        return this.http.get(`/api/process-definition/dag?id=${defId}`);
+        return this.http.get(`/api/process-definition/dag?ruId=${defId}`);
     }
 
     /**
@@ -164,9 +170,17 @@ export class ProcessService extends BaseService {
      * 上传流程定义
      * @param file
      */
-    upload(file):Observable<any> {
+    upload(file): Observable<any> {
         const form = new FormData();
         form.append('file', file);
         return this.http.post("/api/process-definition/in", form);
+    }
+
+    /**
+     * 任务取回
+     * @param taskId
+     */
+    reclaim(taskId) {
+        return this.http.post('/api/process-task/reclaim?taskId=' + taskId, null);
     }
 }

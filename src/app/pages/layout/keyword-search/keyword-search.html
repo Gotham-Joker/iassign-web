@@ -2,7 +2,7 @@
     [(nzPopoverVisible)]="visible" (nzPopoverVisibleChange)="changeTrigger($event)">
     <nz-input-group [nzSuffix]="suffixTemplate">
         <input [(ngModel)]="keyword" class="search-input" type="text" nz-input
-               placeholder="请输入申请单号" (input)="keywordChange()"/>
+               placeholder="请输入申请编号" (input)="keywordChange()"/>
     </nz-input-group>
     <ng-template #suffixTemplate><i nz-icon nzType="search" (click)="keywordSearch()"></i></ng-template>
 </div>

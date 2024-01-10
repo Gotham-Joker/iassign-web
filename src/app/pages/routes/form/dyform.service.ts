@@ -15,6 +15,10 @@ export class DyformService extends BaseService {
         return this.http.get(`${this.baseUrl}/def/context?id=${formId}`);
     }
 
+    queryFormInstance(formInstanceId:string):Observable<any>{
+        return this.http.get(`${this.baseUrl}/instance?id=${formInstanceId}`);
+    }
+
     upload(file):Observable<any> {
         const form = new FormData();
         form.append('file', file);

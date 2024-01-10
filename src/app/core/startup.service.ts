@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {catchError, mergeMap} from "rxjs/operators";
 import {Router} from "@angular/router";
-import * as _ from "lodash"
+import  _ from "lodash"
 
 export interface UserInfo {
     id: string;

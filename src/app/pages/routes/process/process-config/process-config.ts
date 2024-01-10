@@ -22,10 +22,13 @@ import {ProcessService} from "../process.service";
 import {NzSpinModule} from "ng-zorro-antd/spin";
 import {catchError} from "rxjs/operators";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {NzRadioModule} from "ng-zorro-antd/radio";
 
 @Component({
     selector: 'process-config',
     templateUrl: 'process-config.html',
+    standalone: true,
+    styleUrls: ['../../user-profile/user-profile.scss'],
     imports: [
         Backward,
         NzTabsModule,
@@ -42,10 +45,9 @@ import {NzMessageService} from "ng-zorro-antd/message";
         NzSelectModule,
         NzSwitchModule,
         FormsModule,
-        NzSpinModule
-    ],
-    standalone: true,
-    styleUrls: ['../../user-profile/user-profile.scss']
+        NzSpinModule,
+        NzRadioModule
+    ]
 })
 
 export class ProcessConfig implements OnInit {
@@ -95,7 +97,8 @@ export class ProcessConfig implements OnInit {
         const data = {
             id: this.id, name: this.data.name,
             formId: this.data.formId, groupName: this.data.groupName,
-            seqNo: this.data.seqNo, description: this.data.description
+            seqNo: this.data.seqNo, description: this.data.description,
+            returnable: this.data.returnable
         };
         this.processSvc.saveOrUpdate(data).pipe(this.catchErr()).subscribe(res => {
             this.message.success("保存成功");
@@ -125,5 +128,19 @@ export class ProcessConfig implements OnInit {
             this.loading = false;
             return throwError(err);
         })
+    }
+
+    /**
+     * 保存fallback
+     */
+    saveFallback() {
+        this.loading = true;
+        const data = {
+            id: this.id, fallback: this.data.fallback
+        };
+        this.processSvc.saveOrUpdate(data).pipe(this.catchErr()).subscribe(res => {
+            this.message.success("保存成功");
+            this.loading = false;
+        });
     }
 }

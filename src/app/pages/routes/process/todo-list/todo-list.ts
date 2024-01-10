@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProcessService} from "../process.service";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {NzPresetColor} from "ng-zorro-antd/core/color";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import {DictPipe} from '../../../../core/dictionary/dict.pipe';
 import {RouterLink} from '@angular/router';
 import {NzTagModule} from 'ng-zorro-antd/tag';

@@ -20,9 +20,8 @@
                 <ng-container *ngIf="currentTask.status=='CLAIMED'||currentTask.status=='ASSIGNED'">
                     <button nz-button class="ml-2" (click)="openAudit()">审批</button>
                 </ng-container>
-                <ng-container *ngIf="currentTask.status=='CLAIMED'">
-                    <!-- 注意：“指派”操作是需要有“指派接口权限”的 acl -->
-                    <button nz-button class="ml-2" (click)="openAssign()" *acl="'assign'">指派</button>
+                <ng-container *ngIf="currentTask.status=='CLAIMED' && currentTask.assign">
+                    <button nz-button class="ml-2" (click)="openAssign()">指派</button>
                 </ng-container>
             </ng-container>
         </div>
@@ -56,10 +55,10 @@
         </div>
     </div>
     <div class="mt-2">
-        <label class="fs-6 fw-bold mr-2">申请单号:</label>
-        <span class="fs-6 fw-bold mr-1 id-fc">{{instanceId}}</span>
+        <label class="fs-6 fw-bold mr-2">申请编号:</label>
+        <span class="fs-6 fw-bold mr-1 id-fc">{{processInstance.id}}</span>
         <label class="fs-6 fw-bold mx-2">流程名称:</label>
-        <span class="fs-6 fw-bold mr-1">{{instanceName}}</span>
+        <span class="fs-6 fw-bold mr-1">{{processInstance.name}}</span>
     </div>
     <div class="mt-4">
         <nz-card [nzLoading]="loading">
@@ -119,7 +118,7 @@
                 </ng-container>
                 <!-- 可审批人员和角色清单 -->
                 <ng-container
-                        *ngIf="task.userNode && (task.status=='PENDING'||(task.countersign&&task.status=='CLAIMED'))">
+                        *ngIf="task.userNode && (task.status=='PENDING'||task.status=='CLAIMED')">
                     <ng-container *ngIf="task.users&&task.users.length>0">
                         <div class="fw-bold text-danger">可审批人员</div>
                         <div class="px-3 flex flex-wrap">
@@ -164,7 +163,7 @@
                             <div>
                                 <p class="mb-0 text-#c41d7f px-3 flex flex-wrap items-center">
                                     <span nz-icon nzType="svg:link"></span>指派给:
-                                    <strong class="px-2">@{{opinion.assignName}}</strong>
+                                    <strong class="px-2">&#64;{{opinion.assignName}}</strong>
                                     <span>{{opinion.assignMail}}</span>
                                 </p>
                             </div>
@@ -249,17 +248,18 @@
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
-                        <nz-form-label>审批意见</nz-form-label>
+                        <nz-form-label><span class="text-gradient bg-gradient-danger font-bold">审批意见</span>
+                        </nz-form-label>
                         <nz-form-control>
                             <!-- 如果觉得富文本不安全，审批意见输入框也可以改成 <textarea [(ngMogal)]="" nz-input></textarea> -->
                             <app-rich-text #richText [(ngModel)]="drawer.data.remark"></app-rich-text>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>
-                        <nz-form-label>上传附件</nz-form-label>
-                        <nz-form-control>
+                        <nz-form-label [nzRequired]="currentTask.fileRequired">附件</nz-form-label>
+                        <nz-form-control nzErrorTip="请上传附件" [nzValidateStatus]="drawer.attachmentsStatus">
                             <nz-upload [nzBeforeUpload]="upload" [(nzFileList)]="drawer.attachments">
-                                <button nz-button><i nz-icon [nzType]="'upload'"></i>点击上传</button>
+                                <button nz-button><span nz-icon [nzType]="'upload'"></span>点击上传</button>
                             </nz-upload>
                         </nz-form-control>
                     </nz-form-item>
@@ -269,7 +269,7 @@
                                 <nz-col nzSpan="8">
                                     <button nzBlock nz-button nzType="primary" (click)="approve()">
                                         <span nz-icon nzType="check"></span>
-                                        同意
+                                        提交
                                     </button>
                                 </nz-col>
                                 <nz-col nzSpan="8">
@@ -279,7 +279,10 @@
                                     </button>
                                 </nz-col>
                                 <nz-col nzSpan="8">
-                                    <button nzBlock nz-button nzType="primary" nzDanger (click)="reject()">
+                                    <button nz-popconfirm nzOkDanger nzBlock
+                                            (nzOnConfirm)="reject()"
+                                            nzPopconfirmTitle="拒绝的话流程就结束了，确定吗？(您若是在找关闭按钮，它在右上角)"
+                                            nz-button nzType="primary" nzDanger>
                                         <span nz-icon nzType="svg:close2"></span>
                                         拒绝
                                     </button>
@@ -292,6 +295,9 @@
                             <nz-form-label nzRequired>回退环节</nz-form-label>
                             <nz-form-control>
                                 <nz-select style="width: 100%" [(ngModel)]="drawer.data.backwardTaskId">
+                                    <nz-option *ngIf="processInstance.returnable"
+                                               [nzLabel]="'【'+processInstance.createTime+'】 申请人'"
+                                               [nzValue]="'STARTER'"></nz-option>
                                     <nz-option *ngFor="let item of backList"
                                                [nzLabel]="'【'+item.createTime+'】 '+item.name"
                                                [nzValue]="item.id"></nz-option>

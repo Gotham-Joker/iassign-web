@@ -27,6 +27,17 @@
                                 </nz-form-control>
                             </nz-form-item>
                             <nz-form-item>
+                                <nz-form-label>是否可以退回申请人<span
+                                        class="text-orange-5">（请自行确认风险，并且仅对新发起的流程生效）</span>
+                                </nz-form-label>
+                                <nz-form-control>
+                                    <nz-radio-group [(ngModel)]="data.returnable">
+                                        <label nz-radio [nzValue]="true">是</label>
+                                        <label nz-radio [nzValue]="false">否</label>
+                                    </nz-radio-group>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
                                 <nz-form-label>名称</nz-form-label>
                                 <nz-form-control>
                                     <input nz-input placeholder="名称" [(ngModel)]="data.name">
@@ -91,6 +102,22 @@
                         </nz-form-item>
                     </div>
                     <button nzType="primary" nz-button (click)="deploy()">保存</button>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="fallback配置" [nzForceRender]="false">
+                <div class="px-2">
+                    <p>
+                        失败执行的接口回调，get请求，携带starter(申请人ID)参数
+                    </p>
+                    <div nz-form nzLayout="vertical" style="max-width: 768px">
+                        <nz-form-item>
+                            <nz-form-label>fallback url:</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="data.fallback">
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <button nzType="primary" nz-button (click)="saveFallback()">保存</button>
                 </div>
             </nz-tab>
         </nz-tabset>

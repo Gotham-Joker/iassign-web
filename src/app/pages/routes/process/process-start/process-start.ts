@@ -20,6 +20,7 @@ import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzIconModule} from "ng-zorro-antd/icon";
 import {DagModule} from "../../../../dag/dag.module";
 import {DagContainer} from "../../../../dag/components/dag-container/dag-container";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
     selector: 'app-process-start',
@@ -43,36 +44,50 @@ export class ProcessStart implements OnInit {
     emails: string[] = []; // 邮件接收人
     definitionId: string = '';
     formId: string = '';
+    ruId: string = ''; // 流程运行时采用的流程图ID
     loading: boolean = false;
     current: number = 0;
-    instanceId: string = ""; // 申请单号
+    instanceId: string = ""; // 申请编号
     userList: any[] = []
     visible: boolean = false;
     dag: any;
+    isEdit: boolean = false; // 判断是否是编辑操作
 
     constructor(protected formSvc: DyformService,
                 protected processSvc: ProcessService,
                 protected startupSvc: StartupService,
                 protected userSvc: UserService,
                 protected router: Router,
-                protected route: ActivatedRoute) {
+                protected route: ActivatedRoute,
+                private message: NzMessageService) {
     }
 
     ngOnInit(): void {
         this.route.queryParams.subscribe(params => {
             this.definitionId = params.id;
             this.formId = params.formId;
+            this.ruId = params.ruId;
             this.userSvc.query({page: 1, size: 10000, deptId_oda: 1}).subscribe(res => this.userList = res.data.list);
-            if (this.formId) {
+            // 退回发起人后重新编辑
+            if (params['instanceId']) {
+                const instId = params['instanceId'];
+                this.processSvc.queryInstance({id: instId}).subscribe(res => {
+                    const list = res.data.list;
+                    if (list != null && list.length == 1) {
+                        // 允许编辑
+                        this.editInstance(list[0]);
+                    }
+                })
+            } else if (this.formId) {
                 this.formSvc.queryDefContext(this.formId).subscribe(res => {
                     this.data = JSON.parse(res.data.definition);
                 });
+                const email = this.startupSvc.userInfo['email'];
+                if (email != null && /\w+@[0-9a-zA-Z.]+/.test(email)) {
+                    this.emails = [email];
+                }
             }
-            const email = this.startupSvc.userInfo['email'];
-            if (email != null && /\w+@[0-9a-zA-Z.]+/.test(email)) {
-                this.emails = [email];
-            }
-        })
+        });
     }
 
     /**
@@ -83,12 +98,20 @@ export class ProcessStart implements OnInit {
         // 校验填写的表单
         if (this.dynamicForm.validate()) {
             // this.loading = true;
-            const data = {
+            const data: any = {
                 definitionId: this.definitionId,
                 formData: this.dynamicForm.data(),
                 emails: this.emails.join(",")
             }
-            this.processSvc.startInstance(data).pipe(catchError(err => {
+            let http;
+            if (this.isEdit) {
+                data.instanceId = this.instanceId;
+                http = this.processSvc.restartInstance(data);
+            } else {
+                data.instanceId = null;
+                http = this.processSvc.startInstance(data);
+            }
+            http.pipe(catchError(err => {
                 this.loading = false;
                 return EMPTY;
             })).subscribe(res => {
@@ -115,14 +138,36 @@ export class ProcessStart implements OnInit {
     viewGraph() {
         this.visible = true;
         if (this.dag == null) {
-            this.processSvc.dag(this.definitionId).subscribe(res => {
+            this.processSvc.dag(this.ruId).subscribe(res => {
                 this.dag = JSON.parse(res.data);
                 this.dagContainer.resetCells(this.dag);
+                this.dagContainer.getGraph().on('render:done', () => {
+                    this.dagContainer.getGraph().centerContent();
+                });
             });
         } else {
             timer(0).subscribe(res => {
                 this.dagContainer.resetCells(this.dag);
+                this.dagContainer.getGraph().on('render:done', () => {
+                    this.dagContainer.getGraph().centerContent();
+                });
             })
         }
+    }
+
+    private editInstance(instance: any) {
+        if (!instance.returnable) {
+            this.message.error("该流程不支持退回至发起人，禁止编辑");
+            return;
+        }
+        this.definitionId = instance.definitionId;
+        this.instanceId = instance.id;
+        this.ruId = instance.ruId;
+        this.emails = instance.emails == null || instance.emails.length == 0 ? [] : instance.emails.split(",");
+        this.isEdit = true;
+        // 查询表单
+        this.formSvc.queryFormInstance(instance.formInstanceId).subscribe(res => {
+            this.data = JSON.parse(res.data);
+        })
     }
 }

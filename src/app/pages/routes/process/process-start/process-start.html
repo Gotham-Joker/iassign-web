@@ -3,7 +3,7 @@
     <div class="card-content-responsive">
         <nz-steps [nzCurrent]="current">
             <nz-step nzTitle="填写申请表"></nz-step>
-            <nz-step nzTitle="系统生成申请单号"></nz-step>
+            <nz-step nzTitle="Feedback"></nz-step>
         </nz-steps>
     </div>
 </nz-card>
@@ -40,13 +40,13 @@
                             nz-button routerLink="../process-detail" [queryParams]="{id:instanceId}">
                         查看流程
                     </button>
-                    <button class="ml-4" nz-button (click)="reapply()">
+                    <button *ngIf="!isEdit" class="ml-4" nz-button (click)="reapply()">
                         再次申请
                     </button>
                 </div>
             </nz-result>
             <ng-template #subTitle>
-                <div class="text-center">您的申请单号为: <span
+                <div class="text-center">您的申请编号为: <span
                         class="fw-bold text-gradient bg-gradient-danger">{{this.instanceId}}</span>，
                     审批可能需要花一些时间，请您耐心等待结果
                 </div>

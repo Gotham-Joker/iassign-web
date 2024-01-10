@@ -30,8 +30,28 @@
                     <nz-form-item>
                         <nz-form-label>会签</nz-form-label>
                         <nz-form-control>
-                            <label nz-checkbox [(ngModel)]="data.countersign"
-                                   (ngModelChange)="detectChanges()">是</label>
+                            <nz-radio-group [(ngModel)]="data.countersign">
+                                <label nz-radio [nzValue]="true">是</label>
+                                <label nz-radio [nzValue]="false">否</label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>指派</nz-form-label>
+                        <nz-form-control>
+                            <nz-radio-group [(ngModel)]="data.assign">
+                                <label nz-radio [nzValue]="true">允许</label>
+                                <label nz-radio [nzValue]="false">不许</label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label>附件</nz-form-label>
+                        <nz-form-control>
+                            <nz-radio-group [(ngModel)]="data.fileRequired">
+                                <label nz-radio [nzValue]="true">必传</label>
+                                <label nz-radio [nzValue]="false">选传</label>
+                            </nz-radio-group>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item>

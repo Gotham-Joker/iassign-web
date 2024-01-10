@@ -12,7 +12,7 @@ import {environment} from "../../environments/environment";
 import {catchError, mergeMap} from "rxjs/operators";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {Router} from "@angular/router";
-import * as _ from "lodash";
+import _ from "lodash";
 
 
 const MESSAGE: { [key: number]: string } = {
@@ -42,7 +42,7 @@ export class DefaultInterceptor implements HttpInterceptor {
             const errorText = MESSAGE[ev.status] || ev.statusText;
             if (errorText != null && errorText != '') {
                 this.notice.error('错误', errorText);
-                return throwError(errorText);
+                return throwError(() => new Error(errorText));
             }
         }
         const body = (ev as HttpResponse<any>).body;

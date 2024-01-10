@@ -11,7 +11,7 @@
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-                <nz-form-label>申请单号</nz-form-label>
+                <nz-form-label>申请编号</nz-form-label>
                 <nz-form-control>
                     <input nz-input [(ngModel)]="queryParams.instanceId">
                 </nz-form-control>
@@ -31,7 +31,7 @@
                   (nzPageIndexChange)="query($event)">
             <thead>
             <tr>
-                <th>申请单号</th>
+                <th>申请编号</th>
                 <th>流程名称</th>
                 <th>申请人</th>
                 <th>审批环节</th>
@@ -56,6 +56,10 @@
                 </td>
                 <td>
                     <a [routerLink]="'/process/process-detail'" [queryParams]="{id:item.instanceId}">详情</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a class="text-orange-600 hover:text-orange-400" nz-popconfirm
+                       nzPopconfirmTitle="以下场景无法取回，确定尝试取回吗？1.流程结束 2.会签环节 3.下一环节已受理或已审批" (nzOnConfirm)="reclaim(item)"
+                       nzOkDanger nzOkText="取回">尝试取回</a>
                 </td>
             </tr>
             </tbody>

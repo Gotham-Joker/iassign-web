@@ -1,4 +1,14 @@
-import {Component, EventEmitter, NgZone, OnInit, Output, Renderer2, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    NgZone,
+    OnInit,
+    Output,
+    Renderer2,
+    ViewChild,
+    ViewContainerRef
+} from '@angular/core';
 import {CdkDrag, CdkDragDrop, CdkDropList, DragDrop} from "@angular/cdk/drag-drop";
 import {NzContextMenuService, NzDropdownMenuComponent, NzDropDownModule} from "ng-zorro-antd/dropdown";
 import {Platform} from "@angular/cdk/platform";
@@ -66,7 +76,7 @@ export declare interface FormConfig {
         NzIconModule, NzFormModule, NzModalModule, NzGridModule, NzRadioModule, FormsModule, NzInputModule,
         NzDropDownModule, NzMessageModule]
 })
-export class FormsDesigner implements OnInit {
+export class FormsDesigner implements OnInit, AfterViewInit {
     // 左侧可拖动的组
     dragGroups: DyFormDragGroup[] = [
         {
@@ -281,10 +291,9 @@ export class FormsDesigner implements OnInit {
     }
 
     private getInst(viewRef: any) {
-        if (viewRef && viewRef._view != null && viewRef._view.length > 0) {
-            const size = viewRef._view.length;
-            const inst = viewRef._view[size - 1];
-            return inst;
+        if (viewRef && viewRef._lView != null && viewRef._lView.length > 0) {
+            const size = viewRef._lView.length;
+            return viewRef._lView[size - 1];
         }
         return null;
     }

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProcessService} from "../process.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {StartupService} from "../../../../core/startup.service";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import {OnReuseRetrieve} from "../../../../core/route-reuse";
 import { DictPipe } from '../../../../core/dictionary/dict.pipe';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';

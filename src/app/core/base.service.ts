@@ -1,6 +1,6 @@
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import * as _ from "lodash"
+import  _ from "lodash"
 import {inject} from "@angular/core";
 
 export abstract class BaseService {

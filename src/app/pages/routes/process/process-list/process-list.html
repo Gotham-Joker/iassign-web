@@ -4,7 +4,8 @@
             <nz-form-item>
                 <nz-form-label>关键字</nz-form-label>
                 <nz-form-control>
-                    <input style="width:250px" [autofocus]="true" nz-input [(ngModel)]="keyword" placeholder="序号,名称,部门,描述" (keydown.enter)="query()"/>
+                    <input style="width:250px" [autofocus]="true" nz-input [(ngModel)]="keyword"
+                           placeholder="序号,名称,部门,描述" (keydown.enter)="query()"/>
                 </nz-form-control>
             </nz-form-item>
 
@@ -22,7 +23,7 @@
             <div nz-row nzGutter="16">
                 <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="6" *ngFor="let item of group[key]">
                     <div class="process-item" routerLink="../process-start"
-                         [queryParams]="{id:item.id,formId:item.formId}">
+                         [queryParams]="{id:item.id,ruId:item.ruId,formId:item.formId}">
                         <span class="process-icon-wrapper">
                             <nz-avatar [nzSrc]="item.icon" nzSize="large" class="process-icon"></nz-avatar>
                         </span>

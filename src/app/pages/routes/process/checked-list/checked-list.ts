@@ -20,6 +20,9 @@ import {NzSwitchModule} from "ng-zorro-antd/switch";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {NzToolTipModule} from "ng-zorro-antd/tooltip";
 import {DictPipe} from "../../../../core/dictionary/dict.pipe";
+import {catchError} from "rxjs/operators";
+import {throwError} from "rxjs";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 /**
  * 已办事项清单
@@ -64,7 +67,7 @@ export class CheckedList implements OnInit {
     auditTime_ge: any = dayjs().add(-6, 'month').toDate();
     auditTime_le: any = dayjs().toDate();
 
-    constructor(private processSvc: ProcessService) {
+    constructor(private processSvc: ProcessService, private message: NzMessageService) {
     }
 
     ngOnInit() {
@@ -91,5 +94,19 @@ export class CheckedList implements OnInit {
             this.total = res.data.total;
             this.loading = false;
         })
+    }
+
+    /**
+     * 尝试取回
+     */
+    reclaim(item: any) {
+        this.loading = true;
+        this.processSvc.reclaim(item.taskId).pipe(catchError(err => {
+            this.loading = false;
+            return throwError(err)
+        })).subscribe(res => {
+            this.query();
+            this.message.success("取回成功");
+        });
     }
 }

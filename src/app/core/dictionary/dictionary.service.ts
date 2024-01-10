@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpBackend, HttpClient} from "@angular/common/http";
 import {Observable, of, switchMap} from "rxjs";
-import * as _ from "lodash"
+import  _ from "lodash"
 
 @Injectable()
 export class DictionaryService {

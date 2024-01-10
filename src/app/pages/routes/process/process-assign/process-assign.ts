@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {StartupService} from "../../../../core/startup.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {UserService} from "../../../layout/system/user/user.service";
@@ -80,6 +80,7 @@ export class ProcessAssign implements OnInit {
         }
         this.onAssign.emit(this.data);
         this.visible = false;
+        this.visibleChange.emit(this.visible);
     }
 
     /**
@@ -127,4 +128,5 @@ export class ProcessAssign implements OnInit {
         this.avatar = user.avatar;
         this.isAssigning = false;
     }
+
 }
