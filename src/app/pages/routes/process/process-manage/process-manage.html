@@ -117,8 +117,8 @@
                     </ng-container>
                     <ng-container *acl="'pdrm'">
                         <nz-divider [nzType]="'vertical'"></nz-divider>
-                        <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                           (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'user-delete'"></span> 删除</a>
+                        <a nz-popconfirm nzPopconfirmTitle="删除流程定义和部署数据（但保留流程实例和流程图），确定删除吗？"
+                           (nzOnConfirm)="remove(item.id)" nzOkDanger><span nz-icon [nzType]="'delete'"></span> 删除</a>
                     </ng-container>
                 </td>
             </tr>
