@@ -10,7 +10,7 @@ import {
     NgFor,
     NgTemplateOutlet,
     NgSwitchDefault,
-    formatDate
+    formatDate, NgClass
 } from "@angular/common";
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzWaveModule} from 'ng-zorro-antd/core/wave';
@@ -51,6 +51,7 @@ import {RichText} from "../core/components/rich-text/rich-text";
         NgTemplateOutlet,
         NgSwitchDefault,
         RichText,
+        NgClass,
     ],
 })
 export class DyForm implements OnInit, OnChanges {
@@ -65,6 +66,8 @@ export class DyForm implements OnInit, OnChanges {
     options: any[] = [];
     richText: any = {} // 富文本显示
     $subject: Subject<any> = new Subject<any>();
+
+    private cascade: boolean = false; // 表单是否存在联动关系
 
     numberFormatter: (value: number) => string | number = (value: number) => {
         return formatNumber(value, 'en_US', '1.0-6');
@@ -101,28 +104,18 @@ export class DyForm implements OnInit, OnChanges {
     }
 
     private renderForm() {
-        const children = this.form.children;
         const richTextItem = [];
-        for (let i = 0; i < children.length; i++) {
-            const item = children[i];
+        this.formIterate((item) => {
+            if (item.cascade != null && item.cascade != "") {
+                this.cascade = true; // 存在联动关系，启用联动
+            }
             if (item.type == 'select' || item.type == 'checkbox' || item.type == 'radio') {
                 this.options[item.field] = [];
                 this.fetchOptions(this.options[item.field], item);
             } else if (item.type == 'richtext') {
                 richTextItem.push(item);
-            } else if (item.type == 'row') { // 栅格布局内有表单控件，把它们也算上
-                const rowChildren = item.children;
-                for (let j = 0; j < rowChildren.length; j++) {
-                    let rowChild = rowChildren[j];
-                    if (rowChild.type == 'select' || rowChild.type == 'checkbox' || rowChild.type == 'radio') {
-                        this.options[rowChild.field] = [];
-                        this.fetchOptions(this.options[rowChild.field], rowChild);
-                    } else if (rowChild.type == 'richtext') {
-                        richTextItem.push(rowChild);
-                    }
-                }
             }
-        }
+        });
         this.$subject.next(richTextItem);
     }
 
@@ -147,26 +140,46 @@ export class DyForm implements OnInit, OnChanges {
         };
     }
 
+    /**
+     * 表单校验
+     */
     validate(): boolean {
         let successful = true;
+        this.formIterate((config) => {
+            if (config.type != 'row') {
+                if (!config.hidden) {
+                    if (!this.validateControl(config)) {
+                        successful = false;
+                    }
+                }
+            } else if (config.type == 'row' && config.hidden) {
+                return true;
+            }
+            return false;
+        });
+        return successful;
+    }
+
+    /**
+     * 遍历表单控件
+     * @param handler 处理函数，返回true则表示跳过孩子节点，加快程序效率
+     */
+    private formIterate(handler: (item) => void | boolean) {
         const children = this.form.children;
         for (let i = 0; i < children.length; i++) {
             const child = children[i];
+            const skipChildren = handler(child);
+            if (skipChildren) {
+                continue;
+            }
             if (child.type == 'row') {
                 const rowChildren = child.children;
                 for (let j = 0; j < rowChildren.length; j++) {
                     const rowChild = rowChildren[j];
-                    if (!this.validateControl(rowChild)) {
-                        successful = false;
-                    }
-                }
-            } else {
-                if (!this.validateControl(child)) {
-                    successful = false;
+                    handler(rowChild);
                 }
             }
         }
-        return successful;
     }
 
     private validateControl(config: any): boolean {
@@ -270,23 +283,11 @@ export class DyForm implements OnInit, OnChanges {
      * 获取最终表单数据，包括填写的数据
      */
     data(): any {
-        const children = this.form.children;
-        for (let i = 0; i < children.length; i++) {
-            const item = children[i];
-            if (item.type == 'select') {
-                // 如果是快照版，直接录入options快照，并且删除URL配置。
+        this.formIterate((item) => {
+            if (item.type == 'select' && item.snapshot) {
                 this.generateSnapshot(item);
-            } else if (item.type == 'row') { // 栅格布局内有表单控件，把它们也算上
-                const rowChildren = item.children;
-                for (let j = 0; j < rowChildren.length; j++) {
-                    let rowChild = rowChildren[j];
-                    if (rowChild.type == 'select') {
-                        // 如果是快照版，直接录入options快照，并且删除URL配置。
-                        this.generateSnapshot(rowChild);
-                    }
-                }
             }
-        }
+        })
         return this.form;
     }
 
@@ -298,7 +299,7 @@ export class DyForm implements OnInit, OnChanges {
      * @private
      */
     private generateSnapshot(item: any) {
-        if (item.snapshot && item.url) {
+        if (item.url) {
             item['url'] = null;
             const options = this.options[item.field];
             // 构造map
@@ -330,6 +331,34 @@ export class DyForm implements OnInit, OnChanges {
             item.value = formatDate(val, this.dateTimeFormat, 'zh_CN');
         } else {
             item.value = '';
+        }
+    }
+
+    modelChange($event: any, config: any) {
+        config.value = $event;
+        if (this.cascade) { // 如果存在联动关系，开启联动判断，隐藏或显示其他控件
+            const val: any = {}
+            this.formIterate((item) => {
+                if (item.type == 'row') {
+                    if (item.hidden) {
+                        return true;
+                    }
+                    return false;
+                }
+                // 构造map对象，将值填充进去，用来进行接下来的判断
+                val[item['field']] = item['value'];
+                return false;
+            })
+            const ctxKeys = Object.keys(val);
+            const ctxValues = [];
+            ctxKeys.forEach(key => ctxValues.push(val[key]));
+            this.formIterate((item) => {
+                // 只有这三种组件可以被隐藏或展示
+                if (item.type == 'row' || item.type == 'input' || item.type == 'textarea') {
+                    const func = new Function(...ctxKeys, "return " + item.cascade);
+                    item.hidden = func(...ctxValues);
+                }
+            });
         }
     }
 }

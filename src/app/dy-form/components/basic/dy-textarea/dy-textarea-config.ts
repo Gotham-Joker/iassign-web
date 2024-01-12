@@ -10,12 +10,13 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import {NzDividerComponent} from "ng-zorro-antd/divider";
 
 @Component({
     selector: 'dy-textarea-config',
     templateUrl: './dy-textarea-config.html',
     standalone: true,
-    imports: [NzTabsModule, NzGridModule, NzFormModule, NzInputModule, FormsModule, NzInputNumberModule, NzSwitchModule, NzButtonModule, NzWaveModule]
+    imports: [NzTabsModule, NzGridModule, NzFormModule, NzInputModule, FormsModule, NzInputNumberModule, NzSwitchModule, NzButtonModule, NzWaveModule, NzDividerComponent]
 })
 export class DyTextareaConfig implements OnInit, DyConfigComponent<DyTextarea> {
     ref: DyTextarea;

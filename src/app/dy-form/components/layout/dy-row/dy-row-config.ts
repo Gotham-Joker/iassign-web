@@ -10,12 +10,14 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {NzInputDirective} from "ng-zorro-antd/input";
 
 @Component({
     selector: 'dy-row-config',
     templateUrl: './dy-row-config.html',
     standalone: true,
-    imports: [NzTabsModule, NzFormModule, NzGridModule, NzButtonModule, NzIconModule, NzPopoverModule, NzInputNumberModule, FormsModule, NzRadioModule]
+    imports: [NzTabsModule, NzFormModule, NzGridModule, NzButtonModule, NzIconModule, NzPopoverModule, NzInputNumberModule, FormsModule, NzRadioModule, NzDividerComponent, NzInputDirective]
 })
 export class DyRowConfig implements OnInit, DyConfigComponent<DyRow> {
   ref: DyRow;

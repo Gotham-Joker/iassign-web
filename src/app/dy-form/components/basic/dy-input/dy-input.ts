@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { FormControl, Validators, FormsModule } from '@angular/forms';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NgIf } from '@angular/common';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzGridModule } from 'ng-zorro-antd/grid';
+import {FormControl, Validators, FormsModule} from '@angular/forms';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NgIf} from '@angular/common';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzGridModule} from 'ng-zorro-antd/grid';
 
 @Component({
     selector: 'dy-input',
@@ -22,6 +22,7 @@ export class DyInput implements OnInit {
         required: false,
         placeholder: '',
         dyColSpan: 12,
+        cascade: '', // 联动条件，表达式为true时控件会被隐藏
         value: ''
     };
     status: any;  // 校验结果

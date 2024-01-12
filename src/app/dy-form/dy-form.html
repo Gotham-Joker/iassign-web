@@ -5,9 +5,9 @@
                        [nzNoColon]="config.noColon">{{config.label}}</nz-form-label>
         <nz-form-control [nzErrorTip]="config.msg" [nzValidateStatus]="config.status">
             <ng-container [ngSwitch]="config.type">
-                <!--输入框-->
+                <!--输入框，支持联动隐藏 -->
                 <input *ngSwitchCase="'input'" nz-input [(ngModel)]="config.value"
-                       [disabled]="readonly||config.readOnly"
+                       [ngClass]="{'hidden':config.hidden}" [disabled]="readonly||config.readOnly"
                        [placeholder]="config.placeholder">
                 <nz-input-number style="width: 100%;" *ngSwitchCase="'number'" [(ngModel)]="config.value"
                                  [nzDisabled]="readonly||config.readOnly"
@@ -16,18 +16,20 @@
                                  [nzMin]="config.min"
                                  [nzParser]="numberParser"
                                  [nzFormatter]="numberFormatter"></nz-input-number>
-                <!-- 文本框 -->
+                <!-- 文本框，支持联动隐藏 -->
                 <textarea *ngSwitchCase="'textarea'" nz-input [(ngModel)]="config.value"
-                          [disabled]="readonly||config.readOnly"
-                          [placeholder]="config.placeholder"></textarea>
+                          [ngClass]="{'hidden':config.hidden}"
+                          [disabled]="readonly||config.readOnly" [placeholder]="config.placeholder"></textarea>
                 <!--日期选择器-->
                 <nz-date-picker *ngSwitchCase="'datepicker'"
                                 [nzDisabled]="readonly||config.readOnly"
                                 [nzShowTime]="config.showTime" (ngModelChange)="formatDate($event,config)"
                                 [nzFormat]="config.showTime?dateTimeFormat:dateFormat"
                                 [(ngModel)]="config.val"></nz-date-picker>
-                <!--下拉框-->
-                <nz-select *ngSwitchCase="'select'" [(ngModel)]="config.value" [nzDisabled]="readonly||config.readOnly"
+                <!-- 下拉框 -->
+                <nz-select *ngSwitchCase="'select'" [ngModel]="config.value"
+                           (ngModelChange)="modelChange($event,config)"
+                           [nzDisabled]="readonly||config.readOnly"
                            nzShowSearch [nzMode]="config.mode??'default'" [nzAllowClear]="config.allowClear">
                     <nz-option *ngFor="let option of options[config.field]"
                                [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
@@ -41,7 +43,8 @@
                 </ng-container>
                 <!--单选框-->
                 <ng-container *ngSwitchCase="'radio'">
-                    <nz-radio-group *ngIf="config.options?.length>0" [(ngModel)]="config.value">
+                    <nz-radio-group *ngIf="config.options?.length>0" [ngModel]="config.value"
+                                    (ngModelChange)="modelChange($event,config)">
                         <label nz-radio *ngFor="let option of options[config.field]"
                                [nzValue]="option.value"
                                [nzDisabled]="readonly||config.readOnly">{{option.label}}</label>
@@ -75,7 +78,8 @@
     <ng-container *ngFor="let item of form.children">
         <ng-container [ngSwitch]="item.type">
             <!-- 栅格布局配置开始 -->
-            <nz-row *ngSwitchCase="'row'" [nzGutter]="item.gutter" nz-form [nzLayout]="item.layout">
+            <nz-row *ngSwitchCase="'row'" [nzGutter]="item.gutter" nz-form [nzLayout]="item.layout"
+                    [ngClass]="{'important-hidden':item.hidden}">
                 <div nz-col *ngFor="let col of item.children" [nzSpan]="col.dyColSpan">
                     <!-- 栅格布局内的元素，其中configTemplate是最上面那个通用模板 -->
                     <!-- 其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
