@@ -1,22 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../user.service";
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {RoleService} from "../../role/role.service";
 import {catchError, mergeMap} from "rxjs/operators";
-import { Transfer } from '../../transfer/transfer';
-import { NgIf } from '@angular/common';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { Backward } from '../../../../../core/components/backward/backward';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import {Transfer} from '../../transfer/transfer';
+import {NgIf} from '@angular/common';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {Backward} from '../../../../../core/components/backward/backward';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
+import {throwError} from "rxjs";
 
 @Component({
     selector: 'app-user-view',
@@ -41,23 +42,44 @@ export class UserPreview implements OnInit {
             'id': [null, [Validators.required]],
             'username': [null, [Validators.required]],
             'roleIds': [[]],
-            'email': [null],
+            'email': [null, [Validators.required, Validators.email]],
             'deptId': ['', [Validators.required]],
         });
         // 获取路由参数
         this.route.params.subscribe((params: any) => {
             this.userId = params.id;
-            // 从后端加载数据
-            this.fetchData(params.id);
+            if (this.userId != null && this.userId != "0") {
+                // 从后端加载数据
+                this.fetchData(params.id);
+            } else {
+                this.fetchRoles().subscribe(() => this.fetching = false);
+            }
         });
     }
 
     save() { // 保存
         this.loading = true;
-        this.userSvc.update(this.form.value).subscribe(res => {
+        if (this.form.invalid) {
+            Object.values(this.form.controls).forEach(control => {
+                if (control.invalid) {
+                    control.markAsDirty();
+                    control.updateValueAndValidity({onlySelf: true})
+                }
+            })
             this.loading = false;
-            this.message.success('保存成功');
-        });
+        } else {
+            let http;
+            if (this.userId == "0") {
+                http = this.userSvc.save(this.form.value);
+            } else {
+                http = this.userSvc.saveOrUpdate(this.form.value);
+            }
+            http.subscribe(res => {
+                this.loading = false;
+                this.userId = this.userId == "0" ? "" : this.userId;
+                this.message.success('保存成功');
+            });
+        }
     }
 
     /**
@@ -65,7 +87,20 @@ export class UserPreview implements OnInit {
      * @param id
      */
     private fetchData(id: any) {
-        this.roleSvc.query({page: 1, size: 1000})
+        this.fetchRoles().pipe(mergeMap(res => {
+            return this.userSvc.queryById(id);
+        }), catchError(err => {
+            this.fetching = false;
+            return throwError(err);
+        })).subscribe(res => {
+            // 处理用户信息
+            this.form.patchValue(res.data);
+            this.fetching = false;
+        });
+    }
+
+    private fetchRoles() {
+        return this.roleSvc.query({page: 1, size: 10000})
             .pipe(mergeMap(res => {
                 // 处理角色列表
                 const roles: any[] = [];
@@ -73,14 +108,7 @@ export class UserPreview implements OnInit {
                     roles.push({key: e.id, title: e.name});
                 });
                 this.roles = roles;
-                return this.userSvc.queryById(id);
-            }), catchError(res => {
-                this.fetching = false;
-                return res;
-            })).subscribe(res => {
-            // 处理用户信息
-            this.form.patchValue(res.data);
-            this.fetching = false;
-        });
+                return roles;
+            }));
     }
 }

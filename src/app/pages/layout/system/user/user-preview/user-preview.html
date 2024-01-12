@@ -12,32 +12,32 @@
             <nz-row nzGutter="32">
                 <nz-col [nzSpan]="8">
                     <nz-form-item>
-                        <nz-form-label>ID</nz-form-label>
-                        <nz-form-control>
+                        <nz-form-label nzRequired>ID</nz-form-label>
+                        <nz-form-control nzErrorTip="请输入ID">
                             <input nz-input formControlName="id">
                         </nz-form-control>
                     </nz-form-item>
                 </nz-col>
                 <nz-col [nzSpan]="8">
                     <nz-form-item>
-                        <nz-form-label>username</nz-form-label>
-                        <nz-form-control>
+                        <nz-form-label nzRequired>用户名</nz-form-label>
+                        <nz-form-control nzErrorTip="请输入用户名">
                             <input nz-input formControlName="username">
                         </nz-form-control>
                     </nz-form-item>
                 </nz-col>
                 <nz-col [nzSpan]="8">
                     <nz-form-item>
-                        <nz-form-label>email</nz-form-label>
-                        <nz-form-control>
+                        <nz-form-label nzRequired>邮箱</nz-form-label>
+                        <nz-form-control nzErrorTip="请输入邮箱地址">
                             <input nz-input formControlName="email">
                         </nz-form-control>
                     </nz-form-item>
                 </nz-col>
                 <nz-col [nzSpan]="8">
                     <nz-form-item>
-                        <nz-form-label>部门ID</nz-form-label>
-                        <nz-form-control>
+                        <nz-form-label nzRequired>部门ID</nz-form-label>
+                        <nz-form-control nzErrorTip="请输入部门ID">
                             <input nz-input formControlName="deptId">
                         </nz-form-control>
                     </nz-form-item>

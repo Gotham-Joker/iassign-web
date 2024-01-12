@@ -26,9 +26,9 @@
             </nz-form-item>
             <ng-container *acl="'sync'">
                 <nz-form-item>
-                    <button nz-button [nzType]="'primary'" (click)="sync()">
-                        <span nz-icon [nzType]="'sync'"></span>更新
-                    </button>
+                    <a nz-button [nzType]="'primary'" [routerLink]="'/system/user/0'">
+                        <span nz-icon [nzType]="'plus'"></span>新增
+                    </a>
                 </nz-form-item>
             </ng-container>
         </div>
@@ -62,10 +62,10 @@
                     <nz-switch [ngModel]="item.admin" (ngModelChange)="setAdmin(item,$event)"></nz-switch>
                 </td>
                 <td>
-                    <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 详情</a>
+                    <a (click)="edit(item)"><span nz-icon [nzType]="'file-search'"></span> 详情</a>
                     <nz-divider [nzType]="'vertical'"></nz-divider>
                     <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                       (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'user-delete'"></i> 删除</a>
+                       (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'user-delete'"></span> 删除</a>
                 </td>
             </tr>
             </tbody>

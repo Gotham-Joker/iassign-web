@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "./user.service";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -22,7 +22,7 @@ import {AclDirective} from "../../../../core/acl/acl.directive";
     selector: 'app-user',
     templateUrl: './user.html',
     standalone: true,
-    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzSwitchModule, NzDividerModule, NzPopconfirmModule, AclDirective]
+    imports: [NzSpinModule, NzCardModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzButtonModule, NzWaveModule, NzIconModule, NzTableModule, NgFor, NzSwitchModule, NzDividerModule, NzPopconfirmModule, AclDirective, RouterLink]
 })
 export class User implements OnInit {
     queryParams: any = {
@@ -79,13 +79,4 @@ export class User implements OnInit {
         });
     }
 
-    /**
-     * 调用uas更新数据
-     */
-    sync() {
-        this.loading = true;
-        this.userSvc.sync().subscribe(res => {
-            this.query();
-        });
-    }
 }

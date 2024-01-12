@@ -23,10 +23,4 @@ export class UserService extends BaseService {
         return this.http.put(`${this.baseUrl}/set-admin`, form);
     }
 
-    /**
-     * 同步uas数据
-     */
-    sync():Observable<any> {
-        return this.http.get('/api/uas/sync');
-    }
 }

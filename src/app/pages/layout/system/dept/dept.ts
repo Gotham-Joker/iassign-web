@@ -1,19 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {DeptService} from "./dept.service";
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NgFor, NgIf } from '@angular/common';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzWaveModule } from 'ng-zorro-antd/core/wave';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
+import {FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
+import {NzDividerModule} from 'ng-zorro-antd/divider';
+import {NgFor, NgIf} from '@angular/common';
+import {NzTableModule} from 'ng-zorro-antd/table';
+import {NzIconModule} from 'ng-zorro-antd/icon';
+import {NzWaveModule} from 'ng-zorro-antd/core/wave';
+import {NzButtonModule} from 'ng-zorro-antd/button';
+import {NzInputModule} from 'ng-zorro-antd/input';
+import {NzGridModule} from 'ng-zorro-antd/grid';
+import {NzFormModule} from 'ng-zorro-antd/form';
+import {NzCardModule} from 'ng-zorro-antd/card';
+import {NzSpinModule} from 'ng-zorro-antd/spin';
 
 @Component({
     selector: 'app-dept',
@@ -39,6 +39,7 @@ export class Dept implements OnInit {
     ngOnInit(): void {
         this.form = this.fb.group({
             'id': [''],
+            'deptId': ['', [Validators.required]],
             'deptCode': ['', [Validators.required]],
             'deptTw': ['', [Validators.required]]
         })
