@@ -96,7 +96,7 @@ export class ProcessDetail implements OnInit {
             attachments: '' // 化为字符串后的附件
         }
     }
-    canAudit: boolean = false; // 当前用户是否可以审批, true就表示可以，需要请求后端接口
+    actionable: boolean = false; // 当前用户是否可以审批, true就表示可以，需要请求后端接口
     needAuditForm: boolean = false; // 当前用户是否需要填写额外的表单
     auditForm: any = {} // 审批单json(加载动态表单)
     taskHistoryForm: any = {
@@ -226,7 +226,7 @@ export class ProcessDetail implements OnInit {
         // 判断当前用户是否可以审批当前任务
         this.processSvc.judgePermission(this.currentTask.id).subscribe((res: any) => {
             const data = res.data;
-            this.canAudit = data.canAudit;
+            this.actionable = data.actionable;
             this.currentTask.users = data.users;
             this.currentTask.roles = data.roles;
             this.loading = false;

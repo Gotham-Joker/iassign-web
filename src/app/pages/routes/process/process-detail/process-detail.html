@@ -15,7 +15,7 @@
         <div class="text-end py-2 px-3 flex items-center flex-wrap">
             <button *acl="'pi_log'" nz-button nzType="primary" class="ml-2" (click)="downloadLog()">下载日志</button>
             <button nz-button nzType="primary" class="ml-2" (click)="viewGraph()">查看流程图</button>
-            <ng-container *ngIf="canAudit">
+            <ng-container *ngIf="actionable">
                 <button nz-button class="ml-2" (click)="claim()" *ngIf="currentTask.status=='PENDING'">确认受理</button>
                 <ng-container *ngIf="currentTask.status=='CLAIMED'||currentTask.status=='ASSIGNED'">
                     <button nz-button class="ml-2" (click)="openAudit()">审批</button>
@@ -225,7 +225,7 @@
     <nz-spin [nzSpinning]="drawer.loading">
         <div class="px-5 pt-5 pb-3 mt-4">
             <div style="max-width: 768px;margin: auto">
-                <ng-container *ngIf="canAudit && needAuditForm">
+                <ng-container *ngIf="actionable && needAuditForm">
                     <div class="pt-3">
                         <div>
                             <span class="fs-6 fw-bold text-gradient bg-gradient-success">当前审批人需要填写的审批表</span>
