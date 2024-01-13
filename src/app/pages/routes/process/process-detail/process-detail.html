@@ -225,21 +225,6 @@
     <nz-spin [nzSpinning]="drawer.loading">
         <div class="px-5 pt-5 pb-3 mt-4">
             <div style="max-width: 768px;margin: auto">
-                <ng-container *ngIf="actionable && needAuditForm">
-                    <div class="pt-3">
-                        <div>
-                            <span class="fs-6 fw-bold text-gradient bg-gradient-success">当前审批人需要填写的审批表</span>
-                        </div>
-                        <div>
-                            <h1 class="text-center">{{auditForm.name}}</h1>
-                            <div class="text-center">
-                                <p>{{auditForm.description}}</p>
-                            </div>
-                            <dy-form [form]="auditForm" #auditFormContainer></dy-form>
-                        </div>
-                    </div>
-                </ng-container>
-
                 <div nz-form nzLayout="vertical">
                     <nz-form-item>
                         <nz-form-label><span class="fw-bold">邮件抄送</span></nz-form-label>
@@ -247,6 +232,12 @@
                             <app-mail-select [list]="userList" [(emails)]="emails"></app-mail-select>
                         </nz-form-control>
                     </nz-form-item>
+                </div>
+                <ng-container *ngIf="actionable && needAuditForm">
+                    <dy-form [form]="auditForm" #auditFormContainer></dy-form>
+                </ng-container>
+
+                <div nz-form nzLayout="vertical">
                     <nz-form-item>
                         <nz-form-label><span class="text-gradient bg-gradient-danger font-bold">审批意见</span>
                         </nz-form-label>
