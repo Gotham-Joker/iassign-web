@@ -1,73 +1,94 @@
 <!-- 通用模板开始，用于复用，可减少重复代码 let-config的意思是将外部传进来的"$implicit"参数定义为config -->
 <ng-template #configTemplate let-config>
     <nz-form-item>
-        <nz-form-label *ngIf="config.label??false" [nzRequired]="config.required"
-                       [nzNoColon]="config.noColon">{{config.label}}</nz-form-label>
+        @if (config.label ?? false) {
+            <nz-form-label [nzRequired]="config.required"
+                           [nzNoColon]="config.noColon">{{ config.label }}
+            </nz-form-label>
+        }
         <nz-form-control [nzErrorTip]="config.msg" [nzValidateStatus]="config.status">
-            <ng-container [ngSwitch]="config.type">
-                <!--输入框，支持联动隐藏 -->
-                <input *ngSwitchCase="'input'" nz-input [(ngModel)]="config.value"
-                       [ngClass]="{'hidden':config.hidden}" [disabled]="readonly||config.readOnly"
-                       [placeholder]="config.placeholder">
-                <nz-input-number style="width: 100%;" *ngSwitchCase="'number'" [(ngModel)]="config.value"
-                                 [nzDisabled]="readonly||config.readOnly"
-                                 [nzPlaceHolder]="config.placeholder"
-                                 [nzMax]="config.max"
-                                 [nzMin]="config.min"
-                                 [nzParser]="numberParser"
-                                 [nzFormatter]="numberFormatter"></nz-input-number>
-                <!-- 文本框，支持联动隐藏 -->
-                <textarea *ngSwitchCase="'textarea'" nz-input [(ngModel)]="config.value"
-                          [ngClass]="{'hidden':config.hidden}"
-                          [disabled]="readonly||config.readOnly" [placeholder]="config.placeholder"></textarea>
-                <!--日期选择器-->
-                <nz-date-picker *ngSwitchCase="'datepicker'"
-                                [nzDisabled]="readonly||config.readOnly"
-                                [nzShowTime]="config.showTime" (ngModelChange)="formatDate($event,config)"
-                                [nzFormat]="config.showTime?dateTimeFormat:dateFormat"
-                                [(ngModel)]="config.val"></nz-date-picker>
-                <!-- 下拉框 -->
-                <nz-select *ngSwitchCase="'select'" [ngModel]="config.value"
-                           (ngModelChange)="modelChange($event,config)"
-                           [nzDisabled]="readonly||config.readOnly"
-                           nzShowSearch [nzMode]="config.mode??'default'" [nzAllowClear]="config.allowClear">
-                    <nz-option *ngFor="let option of options[config.field]"
-                               [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
-                </nz-select>
-                <!-- 多选框 -->
-                <ng-container *ngSwitchCase="'checkbox'">
-                    <label *ngFor="let option of options[config.field]" nz-checkbox [nzValue]="option.value"
-                           [ngModel]="isCheck(config.value,option.value)"
-                           [nzDisabled]="readonly||config.readOnly"
-                           (nzCheckedChange)="checkboxChange($event,config,option.value)">{{option.label}}</label>
-                </ng-container>
-                <!--单选框-->
-                <ng-container *ngSwitchCase="'radio'">
-                    <nz-radio-group *ngIf="config.options?.length>0" [ngModel]="config.value"
-                                    (ngModelChange)="modelChange($event,config)">
-                        <label nz-radio *ngFor="let option of options[config.field]"
-                               [nzValue]="option.value"
-                               [nzDisabled]="readonly||config.readOnly">{{option.label}}</label>
-                    </nz-radio-group>
-                </ng-container>
-                <!-- 富文本 -->
-                <ng-container *ngSwitchCase="'richtext'">
-                    <ng-container *ngIf="readonly||config.readOnly;else richTextTpl">
+            @switch (config.type) {
+                @case ("input") {
+                    <!--输入框，支持联动隐藏 -->
+                    <input nz-input [(ngModel)]="config.value"
+                           [ngClass]="{'hidden':config.hidden}" [disabled]="readonly||config.readOnly"
+                           [placeholder]="config.placeholder">
+                }
+                @case ("number") {
+                    <nz-input-number style="width: 100%;" [(ngModel)]="config.value"
+                                     [nzDisabled]="readonly||config.readOnly"
+                                     [nzPlaceHolder]="config.placeholder"
+                                     [nzMax]="config.max"
+                                     [nzMin]="config.min"
+                                     [nzParser]="numberParser"
+                                     [nzFormatter]="numberFormatter"></nz-input-number>
+                }
+                @case ("textarea") {
+                    <!-- 文本框，支持联动隐藏 -->
+                    <textarea nz-input [(ngModel)]="config.value"
+                              [ngClass]="{'hidden':config.hidden}"
+                              [disabled]="readonly||config.readOnly" [placeholder]="config.placeholder"></textarea>
+                }
+                @case ("datepicker") {
+                    <!--日期选择器-->
+                    <nz-date-picker [nzDisabled]="readonly||config.readOnly"
+                                    [nzShowTime]="config.showTime" (ngModelChange)="formatDate($event,config)"
+                                    [nzFormat]="config.showTime?dateTimeFormat:dateFormat"
+                                    [(ngModel)]="config.val"></nz-date-picker>
+                }
+                @case ("select") {
+                    <!-- 下拉框 -->
+                    <nz-select [ngModel]="config.value"
+                               (ngModelChange)="modelChange($event,config)"
+                               [nzDisabled]="readonly||config.readOnly"
+                               nzShowSearch [nzMode]="config.mode??'default'" [nzAllowClear]="config.allowClear">
+                        @for (option of options[config.field]; track option.value) {
+                            <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                        }
+                    </nz-select>
+                }
+                @case ("checkbox") {
+                    <!-- 多选框 -->
+                    @for (option of options[config.field]; track option.value) {
+                        <label nz-checkbox [nzValue]="option.value"
+                               [ngModel]="isCheck(config.value,option.value)"
+                               [nzDisabled]="readonly||config.readOnly"
+                               (nzCheckedChange)="checkboxChange($event,config,option.value)">{{ option.label }}</label>
+                    }
+                }
+                @case ("radio") {
+                    <!--单选框-->
+                    @if (config.options?.length > 0) {
+                        <nz-radio-group [ngModel]="config.value"
+                                        (ngModelChange)="modelChange($event,config)">
+                            @for (option of options[config.field]; track option.value) {
+                                <label nz-radio [nzValue]="option.value"
+                                       [nzDisabled]="readonly||config.readOnly">{{ option.label }}</label>
+                            }
+                        </nz-radio-group>
+                    }
+                }
+                @case ("richtext") {
+                    <!-- 富文本 -->
+                    @if (readonly || config.readOnly) {
                         <div class="remark-p b-1 b-gray-300 b-solid b-rd-t-8px"
                              [innerHTML]="richText[config.field]"></div>
-                    </ng-container>
-                    <ng-template #richTextTpl>
+                    } @else {
                         <app-rich-text [(ngModel)]="config.value"
                                        [disabled]="readonly||config.readOnly"></app-rich-text>
-                    </ng-template>
-                </ng-container>
-                <!-- 上传组件 -->
-                <nz-upload *ngSwitchCase="'upload'" [nzDisabled]="readonly||config.readOnly"
-                           [(nzFileList)]="config.value" [nzBeforeUpload]="upload(config)">
-                    <button nz-button><span nz-icon [nzType]="'upload'"></span>点击上传
-                    </button>
-                </nz-upload>
-            </ng-container>
+                    }
+                }
+                @case ("upload") {
+                    <!-- 上传组件 -->
+                    <nz-upload [nzDisabled]="readonly||config.readOnly"
+                               [(nzFileList)]="config.value" [nzBeforeUpload]="upload(config)">
+                        <button nz-button>
+                            <span nz-icon [nzType]="'upload'"></span>
+                            点击上传
+                        </button>
+                    </nz-upload>
+                }
+            }
         </nz-form-control>
     </nz-form-item>
 </ng-template>
@@ -75,26 +96,30 @@
 
 <!-- 开始渲染表单 -->
 <div nz-form [nzLayout]="form.config?.layout">
-    <ng-container *ngFor="let item of form.children">
-        <ng-container [ngSwitch]="item.type">
-            <!-- 栅格布局配置开始 -->
-            <nz-row *ngSwitchCase="'row'" [nzGutter]="item.gutter" nz-form [nzLayout]="item.layout"
-                    [ngClass]="{'important-hidden':item.hidden}">
-                <div nz-col *ngFor="let col of item.children" [nzSpan]="col.dyColSpan">
-                    <!-- 栅格布局内的元素，其中configTemplate是最上面那个通用模板 -->
-                    <!-- 其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
-                    <ng-container [ngTemplateOutlet]="configTemplate"
-                                  [ngTemplateOutletContext]="{$implicit:col}"></ng-container>
-                </div>
-            </nz-row>
-            <!-- 栅格布局配置结束 -->
-
-            <!-- 其他普通表单元素 -->
-            <!-- 其中configTemplate是最上面那个通用模板 -->
-            <!-- 其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
-            <ng-container *ngSwitchDefault [ngTemplateOutlet]="configTemplate"
-                          [ngTemplateOutletContext]="{$implicit:item}"></ng-container>
-        </ng-container>
-    </ng-container>
-
+    @for (item of form.children; track $index) {
+        @switch (item.type) {
+            @case ('row') {
+                <!-- 栅格布局配置开始 -->
+                <nz-row [nzGutter]="item.gutter" nz-form [nzLayout]="item.layout"
+                        [ngClass]="{'important-hidden':item.hidden}">
+                    @for (col of item.children; track $index) {
+                        <div nz-col [nzSpan]="col.dyColSpan">
+                            <!-- 栅格布局内的元素，其中configTemplate是最上面那个通用模板 -->
+                            <!-- 其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
+                            <ng-container [ngTemplateOutlet]="configTemplate"
+                                          [ngTemplateOutletContext]="{$implicit:col}"></ng-container>
+                        </div>
+                    }
+                </nz-row>
+                <!-- 栅格布局配置结束 -->
+            }
+            @default {
+                <!-- 其他普通表单元素
+                     其中configTemplate是最上面那个通用模板
+                     其中$implicit是默认参数，在通用模板可以直接"let-变量名"来使用该参数 -->
+                <ng-container [ngTemplateOutlet]="configTemplate"
+                              [ngTemplateOutletContext]="{$implicit:item}"></ng-container>
+            }
+        }
+    }
 </div>

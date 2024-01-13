@@ -1,7 +1,10 @@
 <nz-form-item>
-  <nz-form-label *ngIf="config.label??false" [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
-                 [nzRequired]="config.required">{{config.label}}</nz-form-label>
-  <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
-    <input nz-input [disabled]="config.readOnly" [(ngModel)]="config.value" [placeholder]="config.placeholder">
-  </nz-form-control>
+    @if (config.label ?? false) {
+        <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
+                       [nzRequired]="config.required">{{ config.label }}
+        </nz-form-label>
+    }
+    <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
+        <input nz-input [disabled]="config.readOnly" [(ngModel)]="config.value" [placeholder]="config.placeholder">
+    </nz-form-control>
 </nz-form-item>

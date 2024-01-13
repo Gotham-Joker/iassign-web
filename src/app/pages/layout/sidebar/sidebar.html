@@ -6,31 +6,33 @@
                 <img [src]="userInfo.avatar" alt="">
             </div>
             <div class="nav-user-info">
-                <strong>{{userInfo.username}}</strong>
+                <strong>{{ userInfo.username }}</strong>
                 <p class="mb-0 text-gray-700 text-ellipsis" nz-tooltip
-                   [nzTooltipTitle]="userInfo.email">{{userInfo.email}}</p>
+                   [nzTooltipTitle]="userInfo.email">{{ userInfo.email }}</p>
             </div>
         </div>
         <div class="nav-line"></div>
         <!-- 菜单栏 -->
         <ul nz-menu nzTheme="light" nzMode="inline">
-            <ng-container *ngFor="let item of menus;let idx=index">
+            @for (item of menus; let idx = $index; track idx) {
                 <!-- 第一层是菜单组 -->
                 <li nz-menu-group [nzTitle]="item.text"></li>
-
                 <!-- 默认第一个菜单组的第一个子菜单是展开的 -->
-                <li *ngFor="let subMenu of item.children;let subIdx=index" nz-submenu
-                    [nzOpen]="idx==0&&subIdx==0"
-                    [nzTitle]="subMenu.text"
-                    [nzIcon]="subMenu.icon">
-                    <ul>
-                        <li *ngFor="let subMenuItem of subMenu.children" nz-menu-item nzMatchRouter>
-                            <a [routerLink]="subMenuItem.link">{{subMenuItem.text}}</a>
-                        </li>
-                    </ul>
-                </li>
-
-            </ng-container>
+                @for (subMenu of item.children; let subIdx = $index; track subIdx) {
+                    <li nz-submenu
+                        [nzOpen]="idx==0&&subIdx==0"
+                        [nzTitle]="subMenu.text"
+                        [nzIcon]="subMenu.icon">
+                        <ul>
+                            @for (subMenuItem of subMenu.children;track $index) {
+                                <li nz-menu-item nzMatchRouter>
+                                    <a [routerLink]="subMenuItem.link">{{ subMenuItem.text }}</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+            }
             <!--<li nz-menu-group nzTitle="菜单"></li>
             <li nz-submenu nzTitle="仪表盘" nzIcon="_workbench_ao">
               <ul>

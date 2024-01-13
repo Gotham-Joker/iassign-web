@@ -63,7 +63,8 @@ export class DyForm implements OnInit, OnChanges {
 
     @Input()
     readonly: boolean = false;
-    options: any[] = [];
+    // map类型，其中key是string类型，value是数组类型
+    options: { [key: string]: any[] } = {};
     richText: any = {} // 富文本显示
     $subject: Subject<any> = new Subject<any>();
 
@@ -361,4 +362,5 @@ export class DyForm implements OnInit, OnChanges {
             });
         }
     }
+
 }

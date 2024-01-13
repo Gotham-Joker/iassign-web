@@ -3,9 +3,10 @@
         nz-form [nzLayout]="config.layout" class="indicator-bd cdk-drag-animating"
         style="min-height: 70px;border-radius: 4px;margin: 1px 0;padding: 15px 4px">
 
-    <div nz-col [nzSpan]="item.config?.dyColSpan" class="cdk-drag py-3 indicator-bd"
-         *ngFor="let item of cols;let i=index" cdkDrag>
-        <ng-container *dyCol="item;index:i;create: onCreate;destroy:onDestroy"></ng-container>
-    </div>
+    @for (item of cols; let i = $index; track i) {
+        <div nz-col [nzSpan]="item.config?.dyColSpan" class="cdk-drag py-3 indicator-bd" cdkDrag>
+            <ng-container *dyCol="item;index:i;create: onCreate;destroy:onDestroy"></ng-container>
+        </div>
+    }
 
 </nz-row>

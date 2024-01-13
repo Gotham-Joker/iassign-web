@@ -43,19 +43,21 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of basicTable.data">
-                <td>{{item.text}}</td>
-                <td>{{item.icon}}</td>
-                <td>{{item.link}}</td>
-                <td>{{item.weight}}</td>
-                <td>{{item.allAvailable}}</td>
-                <td>
-                    <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 编辑</a>
-                    <nz-divider [nzType]="'vertical'"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                       (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
-                </td>
-            </tr>
+                @for (item of basicTable.data; track item.id) {
+                    <tr>
+                        <td>{{ item.text }}</td>
+                        <td>{{ item.icon }}</td>
+                        <td>{{ item.link }}</td>
+                        <td>{{ item.weight }}</td>
+                        <td>{{ item.allAvailable }}</td>
+                        <td>
+                            <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 编辑</a>
+                            <nz-divider [nzType]="'vertical'"></nz-divider>
+                            <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
+                               (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'delete'"></span> 删除</a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </nz-table>
     </nz-card>
@@ -69,8 +71,9 @@
                     <nz-form-control nzErrorTip="必填项">
                         <nz-select formControlName="pid" [nzPlaceHolder]="'父级菜单'">
                             <nz-option nzLabel="HOME" [nzValue]="'0'"></nz-option>
-                            <nz-option *ngFor="let item of parents" [nzLabel]="item.text"
-                                       [nzValue]="item.id"></nz-option>
+                            @for (item of parents; track item.id) {
+                                <nz-option [nzLabel]="item.text" [nzValue]="item.id"></nz-option>
+                            }
                         </nz-select>
                     </nz-form-control>
                 </nz-form-item>

@@ -74,54 +74,58 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of basicTable.data">
-                <td>{{item.id}}</td>
-                <td>{{item.seqNo}}</td>
-                <td>
-                    <nz-avatar [nzSrc]="item.icon"></nz-avatar>
-                </td>
-                <td><a nz-tooltip [nzTooltipTitle]="item.description">{{item.name}}</a></td>
-                <!--                <td>{{item.description}}</td>-->
-                <td>{{item.groupName}}</td>
-                <td>{{item.formId}}</td>
-                <!--                <td>{{item.creator}}</td>-->
-                <td>{{item.createTime}}</td>
-                <!--                <td>{{item.updateTime}}</td>-->
-                <td>
-                    <nz-switch [ngModel]="item.status" nzDisabled></nz-switch>
-                </td>
-                <td>
-                    <ng-container *acl="'pdd'">
-                        <a [routerLink]="'/process/process-config'" [queryParams]="{id:item.id}">
-                            <span nz-icon [nzType]="'file'"></span>
-                            配置
-                        </a>
-                        <nz-divider [nzType]="'vertical'"></nz-divider>
-                    </ng-container>
-                    <ng-container *ngIf="canQueryData(item)">
-                        <a [routerLink]="'/process/process-index'" [queryParams]="{definitionId:item.id}">
-                            <span nz-icon nzType="search"></span>
-                            查数
-                        </a>
-                    </ng-container>
-                    <ng-container *acl="'pdmd'">
-                        <nz-divider [nzType]="'vertical'"></nz-divider>
-                        <a [routerLink]="'/process-designer'" [queryParams]="{id:item.id}">
-                            <span nz-icon [nzType]="'edit'"></span>
-                            修改
-                        </a>
-                    </ng-container>
-                    <ng-container *acl="'outDef'">
-                        <nz-divider [nzType]="'vertical'"></nz-divider>
-                        <a (click)="exportDef(item.id)"><span nz-icon nzType="download"></span> 导出</a>
-                    </ng-container>
-                    <ng-container *acl="'pdrm'">
-                        <nz-divider [nzType]="'vertical'"></nz-divider>
-                        <a nz-popconfirm nzPopconfirmTitle="删除流程定义和部署数据（但保留流程实例和流程图），确定删除吗？"
-                           (nzOnConfirm)="remove(item.id)" nzOkDanger><span nz-icon [nzType]="'delete'"></span> 删除</a>
-                    </ng-container>
-                </td>
-            </tr>
+                @for (item of basicTable.data; track item.id) {
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.seqNo }}</td>
+                        <td>
+                            <nz-avatar [nzSrc]="item.icon"></nz-avatar>
+                        </td>
+                        <td><a nz-tooltip [nzTooltipTitle]="item.description">{{ item.name }}</a></td>
+                        <!--                <td>{{item.description}}</td>-->
+                        <td>{{ item.groupName }}</td>
+                        <td>{{ item.formId }}</td>
+                        <!--                <td>{{item.creator}}</td>-->
+                        <td>{{ item.createTime }}</td>
+                        <!--                <td>{{item.updateTime}}</td>-->
+                        <td>
+                            <nz-switch [ngModel]="item.status" nzDisabled></nz-switch>
+                        </td>
+                        <td>
+                            <ng-container *acl="'pdd'">
+                                <a [routerLink]="'/process/process-config'" [queryParams]="{id:item.id}">
+                                    <span nz-icon [nzType]="'file'"></span>
+                                    配置
+                                </a>
+                                <nz-divider [nzType]="'vertical'"></nz-divider>
+                            </ng-container>
+                            @if (canQueryData(item)) {
+                                <a [routerLink]="'/process/process-index'" [queryParams]="{definitionId:item.id}">
+                                    <span nz-icon nzType="search"></span>
+                                    查数
+                                </a>
+                            }
+                            <ng-container *acl="'pdmd'">
+                                <nz-divider [nzType]="'vertical'"></nz-divider>
+                                <a [routerLink]="'/process-designer'" [queryParams]="{id:item.id}">
+                                    <span nz-icon [nzType]="'edit'"></span>
+                                    修改
+                                </a>
+                            </ng-container>
+                            <ng-container *acl="'outDef'">
+                                <nz-divider [nzType]="'vertical'"></nz-divider>
+                                <a (click)="exportDef(item.id)"><span nz-icon nzType="download"></span> 导出</a>
+                            </ng-container>
+                            <ng-container *acl="'pdrm'">
+                                <nz-divider [nzType]="'vertical'"></nz-divider>
+                                <a nz-popconfirm
+                                   nzPopconfirmTitle="删除流程定义和部署数据（但保留流程实例和流程图），确定删除吗？"
+                                   (nzOnConfirm)="remove(item.id)" nzOkDanger><span nz-icon [nzType]="'delete'"></span>
+                                    删除</a>
+                            </ng-container>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </nz-table>
     </nz-card>

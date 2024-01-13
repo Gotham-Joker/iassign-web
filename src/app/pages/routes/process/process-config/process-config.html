@@ -84,9 +84,10 @@
                             <nz-form-control>
                                 <nz-select nzMode="multiple" [(ngModel)]="data.deptIds">
                                     <nz-option nzLabel="全部" nzValue="ALL"></nz-option>
-                                    <nz-option *ngFor="let item of deptList"
-                                               [nzLabel]="item.deptCode+' ('+item.deptTw+')'"
-                                               [nzValue]="item.deptId"></nz-option>
+                                    @for (item of deptList; track item.deptId) {
+                                        <nz-option [nzLabel]="item.deptCode+' ('+item.deptTw+')'"
+                                                   [nzValue]="item.deptId"></nz-option>
+                                    }
                                 </nz-select>
                             </nz-form-control>
                         </nz-form-item>

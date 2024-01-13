@@ -77,13 +77,13 @@
 
     <div infinite-scroll (scrolled)="scrollQuery()" [scrollWindow]="true" class="search-result"
          [infiniteScrollDistance]="0" [infiniteScrollThrottle]="500">
-        <ng-container *ngFor="let item of list">
+        @for (item of list; track item.id) {
             <nz-card class="card-radius scroll-item">
                 <div class="flex justify-between items-center fw-bold mb-1">
                     <div>
-                        <span class="text-base text-gradient bg-gradient-danger fw-bold">{{item.id}}</span>
+                        <span class="text-base text-gradient bg-gradient-danger fw-bold">{{ item.id }}</span>
                         <nz-divider nzType="vertical"></nz-divider>
-                        <span>{{item.name}}</span>
+                        <span>{{ item.name }}</span>
                     </div>
                     <div>
                         <a [routerLink]="'/process/process-detail'" [queryParams]="{id:item.id}">
@@ -92,23 +92,23 @@
                         </a>
                     </div>
                 </div>
-                <nz-tag [nzColor]="item.status|dict:'instanceStatus':'color'">{{item.status|dict:'instanceStatus':'status'}}</nz-tag>
-                <div *ngIf="item.isHighlight;else idxContentTpl"
-                     class="my-2 text-base text-gray-500 my-2 highlight line-clamp-3"
-                     [innerHTML]="item.highlight.join('......')"></div>
-                <ng-template #idxContentTpl>
+                <nz-tag [nzColor]="item.status|dict:'instanceStatus':'color'">{{ item.status|dict:'instanceStatus':'status' }}</nz-tag>
+                @if (item.isHighlight) {
+                    <div class="my-2 text-base text-gray-500 my-2 highlight line-clamp-3"
+                         [innerHTML]="item.highlight.join('......')"></div>
+                } @else {
                     <div class="my-2 text-base text-gray-500 my-2 highlight line-clamp-3"
                          [innerText]="item.content"></div>
-                </ng-template>
+                }
                 <div class="flex justify-between mt-3">
                     <div class="text-gray-500">
                         <span nz-icon nzType="user"></span>
-                        <strong class="mx-2 text-cyan-600">{{item.starterName}}({{item.starter}})</strong>
-                        <span>{{item.deptName}}</span>
+                        <strong class="mx-2 text-cyan-600">{{ item.starterName }}({{ item.starter }})</strong>
+                        <span>{{ item.deptName }}</span>
                     </div>
-                    <div class="text-gray-500">申请于 {{item.createTime}}</div>
+                    <div class="text-gray-500">申请于 {{ item.createTime }}</div>
                 </div>
             </nz-card>
-        </ng-container>
+        }
     </div>
 </nz-spin>

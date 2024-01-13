@@ -12,7 +12,7 @@ import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzButtonModule} from 'ng-zorro-antd/button';
-import {NgClass, NgIf} from '@angular/common';
+import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {NzSelectModule} from "ng-zorro-antd/select";
 
 @Component({
@@ -21,7 +21,7 @@ import {NzSelectModule} from "ng-zorro-antd/select";
     styleUrls: ['./system-node.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzInputNumberModule, NzWaveModule, NzSelectModule]
+    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzInputNumberModule, NzWaveModule, NzSelectModule, NgOptimizedImage]
 })
 export class SystemNode implements OnInit, DagNode {
     // 当前dag节点的数据

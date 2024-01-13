@@ -47,8 +47,10 @@
                     <nz-form-item>
                         <nz-form-label>角色</nz-form-label>
                         <nz-form-control>
-                            <app-transfer *ngIf="!fetching" [list]="roles" formControlName="roleIds"
-                                          [nzListStyle]="{width:'250px',minHeight:'300px'}"></app-transfer>
+                            @if (!fetching) {
+                                <app-transfer [list]="roles" formControlName="roleIds"
+                                              [nzListStyle]="{width:'250px',minHeight:'300px'}"></app-transfer>
+                            }
                         </nz-form-control>
                     </nz-form-item>
                 </nz-col>

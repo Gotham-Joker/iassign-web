@@ -13,15 +13,26 @@
                 <div class="component-content">
                     <ul nz-menu nzMode="inline">
                         <!-- 组件列表 -->
-                        <li nz-submenu nzOpen *ngFor="let dragGroup of dragGroups" [nzTitle]="dragGroup.title"
-                            [nzIcon]="dragGroup.icon">
-                            <ul cdkDropList *ngIf="dragGroup.items" [cdkDropListConnectedTo]="dropListConnectedTo"
-                                [cdkDropListSortingDisabled]="true">
-                                <li nz-menu-item cdkDrag *ngFor="let item of dragGroup.items" [cdkDragData]="item">
-                                    <a>{{item.name}}</a>
-                                </li>
-                            </ul>
-                        </li>
+                        @for (dragGroup of dragGroups; track $index) {
+
+                            <li nz-submenu nzOpen [nzTitle]="dragGroup.title"
+                                [nzIcon]="dragGroup.icon">
+
+                                @if (dragGroup.items) {
+                                    <ul cdkDropList [cdkDropListConnectedTo]="dropListConnectedTo"
+                                        [cdkDropListSortingDisabled]="true">
+
+                                        @for (item of dragGroup.items; track $index) {
+                                            <li nz-menu-item cdkDrag [cdkDragData]="item">
+                                                <a>{{ item.name }}</a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                }
+
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

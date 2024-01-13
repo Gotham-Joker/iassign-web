@@ -1,13 +1,16 @@
 <!-- 操作指引蒙版 -->
 <div class="stepMask" (click)="skipStepTips()">
-    <div *ngFor="let item of steps;let idx=index" nz-popconfirm [nzPopconfirmOrigin]="item.origin"
-         nzPopconfirmPlacement="right"
-         [nzPopconfirmVisible]="item.visible" [nzCondition]="true"
-         [nzPopconfirmTitle]="item.title"
-         [nzOkText]="item.ok" [nzCancelText]="item.cancel"
-         (nzOnCancel)="skipStepTips()" (nzOnConfirm)="nextStepTips(idx)"></div>
+    @for (item of steps; let idx = $index; track idx) {
+        <div nz-popconfirm [nzPopconfirmOrigin]="item.origin"
+             nzPopconfirmPlacement="right"
+             [nzPopconfirmVisible]="item.visible" [nzCondition]="true"
+             [nzPopconfirmTitle]="item.title"
+             [nzOkText]="item.ok" [nzCancelText]="item.cancel"
+             (nzOnCancel)="skipStepTips()" (nzOnConfirm)="nextStepTips(idx)"></div>
+    }
 </div>
 
 <ng-template #highlight>
-    <div style="border: 2px solid white;background-color: rgba(255,255,255,.3)" [style.width]="width" [style.height]="height"></div>
+    <div style="border: 2px solid white;background-color: rgba(255,255,255,.3)" [style.width]="width"
+         [style.height]="height"></div>
 </ng-template>

@@ -17,27 +17,30 @@
         </div>
     </div>
 
-    <ng-container *ngFor="let key of list">
+    @for (key of list; track $index) {
         <div class="p-4 b-rd-2 shadow-lg shadow-gray-200 mt-5 bg-white">
-            <div class="fs-6 fw-bold">{{key}}</div>
+            <div class="fs-6 fw-bold">{{ key }}</div>
             <div nz-row nzGutter="16">
-                <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="6" *ngFor="let item of group[key]">
-                    <div class="process-item" routerLink="../process-start"
-                         [queryParams]="{id:item.id,ruId:item.ruId,formId:item.formId}">
+                @for (item of group[key]; track item.id) {
+                    <div nz-col [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="8" [nzXXl]="6">
+                        <div class="process-item" routerLink="../process-start"
+                             [queryParams]="{id:item.id,ruId:item.ruId,formId:item.formId}">
                         <span class="process-icon-wrapper">
                             <nz-avatar [nzSrc]="item.icon" nzSize="large" class="process-icon"></nz-avatar>
                         </span>
-                        <div class="pl-3">
-                            <div class="fs-6 fw-bold text-white">
-                                <span>{{item.seqNo}}</span>
-                                <nz-divider nzType="vertical"></nz-divider>
-                                <span>{{item.name}}</span>
+                            <div class="pl-3">
+                                <div class="fs-6 fw-bold text-white">
+                                    <span>{{ item.seqNo }}</span>
+                                    <nz-divider nzType="vertical"></nz-divider>
+                                    <span>{{ item.name }}</span>
+                                </div>
+                                <div class="process-desc text-ellipsis">{{ item.description }}</div>
                             </div>
-                            <div class="process-desc text-ellipsis">{{item.description}}</div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
-    </ng-container>
+    }
+
 </nz-spin>

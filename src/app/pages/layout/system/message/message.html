@@ -22,22 +22,24 @@
                   [(nzPageSize)]="queryParams.size"
                   (nzPageIndexChange)="query($event)">
             <tbody>
-            <tr *ngFor="let item of basicTable.data">
-                <td>
-                    <nz-avatar [nzSrc]="item.fromUserAvatar"></nz-avatar>
-                    <span class="pl-3">{{item.fromUsername}}</span>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    {{item.createTime|diffTime}}
-                </td>
-                <td><strong>{{item.subject}}</strong></td>
-                <td>{{item.content}}</td>
-                <td>
-                    <a (click)="routeToLink(item.link)"><span nz-icon nzType="edit"></span> 详情</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                       (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
-                </td>
-            </tr>
+                @for (item of basicTable.data; track item.id) {
+                    <tr>
+                        <td>
+                            <nz-avatar [nzSrc]="item.fromUserAvatar"></nz-avatar>
+                            <span class="pl-3">{{ item.fromUsername }}</span>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            {{ item.createTime|diffTime }}
+                        </td>
+                        <td><strong>{{ item.subject }}</strong></td>
+                        <td>{{ item.content }}</td>
+                        <td>
+                            <a (click)="routeToLink(item.link)"><span nz-icon nzType="edit"></span> 详情</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
+                               (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'delete'"></span> 删除</a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </nz-table>
     </nz-card>

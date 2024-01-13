@@ -1,10 +1,12 @@
 <div class="node" [ngClass]="data.status" (dblclick)="interacting?edit():''"
      (contextmenu)="interacting?onContextMenu.emit({ev:$event,cell}):''">
     <span nz-icon nzType="svg:system" class="ico"></span>
-    <span class="label">{{data?.label}}</span>
-    <span class="status" *ngIf="data.status!=null && data.status!='default'">
-        <img [src]="image[data.status]">
+    <span class="label">{{ data?.label }}</span>
+    @if (data.status != null && data.status != 'default') {
+        <span class="status">
+        <img [ngSrc]="image[data.status]" fill="">
     </span>
+    }
 </div>
 
 <nz-drawer [nzVisible]="visible"

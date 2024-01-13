@@ -17,23 +17,24 @@
                     <span nz-col nzSpan="6" class="font-bold text-gray-500 text-right">Assign to:</span>
                     <span nz-col nzSpan="18" class="text-left">
                         <span class="flex items-center">
-                            <ng-container *ngIf="isAssigning;else labelTpl">
+                            @if (isAssigning) {
                                 <nz-select style="min-width: 180px" nzShowSearch nzServerSearch
                                            nzPlaceHolder="请输入姓名或邮箱" [(ngModel)]="selectedValue"
                                            [nzShowArrow]="false" [nzFilterOption]="nzFilterOption"
                                            (nzOnSearch)="search($event)"
                                            (ngModelChange)="confirm($event)">
-                                    <nz-option *ngFor="let item of options" [nzLabel]="item.username+'('+item.email+')'"
-                                               [nzValue]="item"></nz-option>
+                                    @for (item of options; track $index) {
+                                        <nz-option [nzLabel]="item.username+'('+item.email+')'"
+                                                   [nzValue]="item"></nz-option>
+                                    }
                                 </nz-select>
-                            </ng-container>
-                            <ng-template #labelTpl>
+                            } @else {
                                 <nz-avatar [nzSrc]="avatar"></nz-avatar>
-                                <span class="mx-2 fw-bold">{{data.username}}</span>
+                                <span class="mx-2 fw-bold">{{ data.username }}</span>
                                 <a (click)="isAssigning=true">
                                     <span class="text-base" nz-icon nzType="svg:switch"></span>
                                 </a>
-                            </ng-template>
+                            }
                         </span>
                     </span>
                 </div>
@@ -41,7 +42,7 @@
                     <span nz-col nzSpan="6" class="font-bold text-gray-500 text-right">Email:</span>
                     <span nz-col nzSpan="18" class="text-left">
                         <span class="flex items-center">
-                           {{data?.email}}
+                           {{ data?.email }}
                         </span>
                     </span>
                 </div>
@@ -57,7 +58,9 @@
                     </div>
                 </div>
             </div>
-            <p *ngIf="data?.remark" class="rounded mt-3 p-2 bg-gray-50">{{data?.remark}}</p>
+            @if (data?.remark) {
+                <p class="rounded mt-3 p-2 bg-gray-50">{{ data?.remark }}</p>
+            }
         </div>
     </ng-template>
 </nz-modal>

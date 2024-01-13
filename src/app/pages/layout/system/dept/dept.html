@@ -54,18 +54,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of basicTable.data">
-                <td>{{item.id}}</td>
-                <td>{{item.deptId}}</td>
-                <td>{{item.deptCode}}</td>
-                <td>{{item.deptTw}}</td>
-                <td>
-                    <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 编辑</a>
-                    <nz-divider [nzType]="'vertical'"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                       (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
-                </td>
-            </tr>
+                @for (item of basicTable.data; track item.id) {
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.deptId }}</td>
+                        <td>{{ item.deptCode }}</td>
+                        <td>{{ item.deptTw }}</td>
+                        <td>
+                            <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 编辑</a>
+                            <nz-divider [nzType]="'vertical'"></nz-divider>
+                            <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
+                               (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </nz-table>
     </nz-card>
@@ -75,12 +77,14 @@
           [nzContent]="content" nzTitle="部门信息">
     <ng-template #content>
         <div nz-form [formGroup]="form" nzLayout="vertical">
-            <nz-form-item *ngIf="isEdit">
-                <nz-form-label>ID</nz-form-label>
-                <nz-form-control nzErrorTip="必填项">
-                    <input nz-input formControlName="id" readonly>
-                </nz-form-control>
-            </nz-form-item>
+            @if (isEdit) {
+                <nz-form-item>
+                    <nz-form-label>ID</nz-form-label>
+                    <nz-form-control nzErrorTip="必填项">
+                        <input nz-input formControlName="id" readonly>
+                    </nz-form-control>
+                </nz-form-item>
+            }
             <nz-form-item>
                 <nz-form-label nzRequired>部门ID</nz-form-label>
                 <nz-form-control nzErrorTip="必填项">

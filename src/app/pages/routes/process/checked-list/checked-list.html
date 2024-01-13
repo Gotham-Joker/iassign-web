@@ -41,27 +41,30 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of basicTable.data">
-                <td style="width:155px">
-                    <span class="fw-bold text-gradient bg-gradient-danger">{{item.instanceId}}</span>
-                </td>
-                <td>{{item.instanceName}}</td>
-                <td>{{item.starterName}}</td>
-                <td>{{item.taskName}}</td>
-                <td>{{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td>
-                    <nz-tag [nzColor]="item.operation|dict:'opinionOperation':'color'">
-                        {{item.operation|dict:'opinionOperation':'label'}}
-                    </nz-tag>
-                </td>
-                <td>
-                    <a [routerLink]="'/process/process-detail'" [queryParams]="{id:item.instanceId}">详情</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a class="text-orange-600 hover:text-orange-400" nz-popconfirm
-                       nzPopconfirmTitle="以下场景无法取回，确定尝试取回吗？1.流程结束 2.会签环节 3.下一环节已受理或已审批" (nzOnConfirm)="reclaim(item)"
-                       nzOkDanger nzOkText="取回">尝试取回</a>
-                </td>
-            </tr>
+                @for (item of basicTable.data; track $index) {
+                    <tr>
+                        <td style="width:155px">
+                            <span class="fw-bold text-gradient bg-gradient-danger">{{ item.instanceId }}</span>
+                        </td>
+                        <td>{{ item.instanceName }}</td>
+                        <td>{{ item.starterName }}</td>
+                        <td>{{ item.taskName }}</td>
+                        <td>{{ item.createTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                        <td>
+                            <nz-tag [nzColor]="item.operation|dict:'opinionOperation':'color'">
+                                {{ item.operation|dict:'opinionOperation':'label' }}
+                            </nz-tag>
+                        </td>
+                        <td>
+                            <a [routerLink]="'/process/process-detail'" [queryParams]="{id:item.instanceId}">详情</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a class="text-orange-600 hover:text-orange-400" nz-popconfirm
+                               nzPopconfirmTitle="以下场景无法取回，确定尝试取回吗？1.流程结束 2.会签环节 3.下一环节已受理或已审批"
+                               (nzOnConfirm)="reclaim(item)"
+                               nzOkDanger nzOkText="取回">尝试取回</a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </nz-table>
     </nz-card>

@@ -62,41 +62,43 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of basicTable.data">
-                <td><span class="text-gradient bg-gradient-danger fw-bold">{{item.id}}</span></td>
-                <td>{{item.name}}</td>
-                <td>
-                    <nz-tag [nzColor]="item.status|dict:'instanceStatus':'color'">
-                        {{item.status|dict:'instanceStatus':'status'}}
-                    </nz-tag>
-                </td>
-                <td>{{item.handlerName}}</td>
-                <td>{{item.createTime}}</td>
-                <td>{{item.updateTime}}</td>
-                <td>
-                    <a routerLink="../process-detail" [queryParams]="{id:item.id}">
-                        <span nz-icon nzType="eye"></span>
-                        详情
-                    </a>
-                    <ng-container *ngIf="item.status=='RUNNING'">
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a nz-popconfirm nzPopconfirmTitle="撤销之前请自行通知相关审批人，以免造成损失，确定撤销吗？"
-                           nzOkDanger
-                           (nzOnConfirm)="cancel(item.id)" class="text-red-500  hover:text-red-400">
-                            <span nz-icon nzType="rollback"></span>
-                            撤销
-                        </a>
-                    </ng-container>
-                    <ng-container *ngIf="item.status=='RETURN'&&item.returnable">
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a [routerLink]="'/process/process-start'" [queryParams]="{instanceId:item.id}"
-                           class="text-purple-5 hover:text-purple-4">
-                            <span nz-icon nzType="edit"></span>
-                            编辑
-                        </a>
-                    </ng-container>
-                </td>
-            </tr>
+                @for (item of basicTable.data; track item.id) {
+                    <tr>
+                        <td><span class="text-gradient bg-gradient-danger fw-bold">{{ item.id }}</span></td>
+                        <td>{{ item.name }}</td>
+                        <td>
+                            <nz-tag [nzColor]="item.status|dict:'instanceStatus':'color'">
+                                {{ item.status|dict:'instanceStatus':'status' }}
+                            </nz-tag>
+                        </td>
+                        <td>{{ item.handlerName }}</td>
+                        <td>{{ item.createTime }}</td>
+                        <td>{{ item.updateTime }}</td>
+                        <td>
+                            <a routerLink="../process-detail" [queryParams]="{id:item.id}">
+                                <span nz-icon nzType="eye"></span>
+                                详情
+                            </a>
+                            @if (item.status == 'RUNNING') {
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <a nz-popconfirm
+                                   nzPopconfirmTitle="撤销之前请自行通知相关审批人，以免造成损失，确定撤销吗？"
+                                   nzOkDanger
+                                   (nzOnConfirm)="cancel(item.id)" class="text-red-500  hover:text-red-400">
+                                    <span nz-icon nzType="rollback"></span>
+                                    撤销
+                                </a>
+                            } @else if (item.status == 'RETURN' && item.returnable) {
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <a [routerLink]="'/process/process-start'" [queryParams]="{instanceId:item.id}"
+                                   class="text-purple-5 hover:text-purple-4">
+                                    <span nz-icon nzType="edit"></span>
+                                    编辑
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
             </tbody>
         </nz-table>
     </nz-card>

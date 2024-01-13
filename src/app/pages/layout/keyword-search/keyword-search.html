@@ -1,5 +1,5 @@
 <div nz-popover [nzPopoverTrigger]="trigger" [nzPopoverContent]="searchContent"
-    [(nzPopoverVisible)]="visible" (nzPopoverVisibleChange)="changeTrigger($event)">
+     [(nzPopoverVisible)]="visible" (nzPopoverVisibleChange)="changeTrigger($event)">
     <nz-input-group [nzSuffix]="suffixTemplate">
         <input [(ngModel)]="keyword" class="search-input" type="text" nz-input
                placeholder="请输入申请编号" (input)="keywordChange()"/>
@@ -8,16 +8,19 @@
 </div>
 <ng-template #searchContent>
     <nz-spin [nzSpinning]="fetching">
-        <ul class="search-input" *ngIf="list.length>0;else empty">
-            <li *ngFor="let item of list">
-                <a (click)="routeToDetails(item.id)"> <!-- 跳转到详情页 -->
-                    <h3 class="ellipsis">申请人: {{item.starterName}}</h3>
-                    <div>单号: {{item.id}}</div>
-                </a>
-            </li>
-        </ul>
-        <ng-template #empty>
+        @if (list.length > 0) {
+            <ul class="search-input">
+                @for (item of list; track item.id) {
+                    <li>
+                        <a (click)="routeToDetails(item.id)"> <!-- 跳转到详情页 -->
+                            <h3 class="ellipsis">申请人: {{ item.starterName }}</h3>
+                            <div>单号: {{ item.id }}</div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        } @else {
             <nz-empty class="search-input"></nz-empty>
-        </ng-template>
+        }
     </nz-spin>
 </ng-template>

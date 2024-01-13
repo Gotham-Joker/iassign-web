@@ -4,10 +4,11 @@
                 ring-1 ring-indigo-400 text-left text-gray-900  b-0"
             style="min-height: 40px">
         <div class="flex items-center flex-wrap">
-                <span *ngFor="let item of value" class="flex items-center b-rd-md b-1 b-gray b-solid px-2 m-1 py-1">
+            @for (item of value; track $index) {
+                <span class="flex items-center b-rd-md b-1 b-gray b-solid px-2 m-1 py-1">
                     <nz-avatar [nzSrc]="item.avatar" nzSize="small"></nz-avatar>
-                  <span class="ml-2 block truncate select-text">{{item.username}}</span>
-                  <span class="px-2 block truncate select-text">{{item.email}}</span>
+                  <span class="ml-2 block truncate select-text">{{ item.username }}</span>
+                  <span class="px-2 block truncate select-text">{{ item.email }}</span>
                   <span class="flex items-center cursor-pointer" (click)="remove(item)">
                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" class="h-4 w-4 text-red-600">
                           <path d="M8.28596 6.51819C7.7978 6.03003 7.00634 6.03003 6.51819 6.51819C6.03003 7.00634 6.03003 7.7978 6.51819 8.28596L11.2322 13L6.51819 17.714C6.03003 18.2022 6.03003 18.9937 6.51819 19.4818C7.00634 19.97 7.7978 19.97 8.28596 19.4818L13 14.7678L17.714 19.4818C18.2022 19.97 18.9937 19.97 19.4818 19.4818C19.97 18.9937 19.97 18.2022 19.4818 17.714L14.7678 13L19.4818 8.28596C19.97 7.7978 19.97 7.00634 19.4818 6.51819C18.9937 6.03003 18.2022 6.03003 17.714 6.51819L13 11.2322L8.28596 6.51819Z"
@@ -15,6 +16,7 @@
                        </svg>
                   </span>
                 </span>
+            }
             <!-- 搜索框 -->
             <div class="flex items-center flex-grow-1 min-w-10" (click)="toggle()">
                 <input nz-input class="mailSearchInput" placeholder="邮件搜索" [(ngModel)]="keyword"
@@ -33,14 +35,14 @@
             <cdk-virtual-scroll-viewport [itemSize]="10"
                                          [style]="{'min-height':minHeight,'max-height':maxHeight}">
                 <div *cdkVirtualFor="let item of options">
-                    <ng-container *ngIf="isChecked(item.email);else unCheckTpl">
+                    @if (isChecked(item.email)) {
                         <li class="cursor-pointer text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9 bg-#e6f7ff"
                             (click)="remove(item)">
                             <div class="flex items-center">
                                 <nz-avatar [nzSrc]="item.avatar" nzSize="small"></nz-avatar>
-                                <span class="semibold ml-3 block truncate">{{item.username}}</span>
-                                <span class="text-indigo-600 semibold ml-3 block truncate">{{item.deptName}}</span>
-                                <span class="text-indigo-600 font-normal ml-3 block truncate">{{item.email}}</span>
+                                <span class="semibold ml-3 block truncate">{{ item.username }}</span>
+                                <span class="text-indigo-600 semibold ml-3 block truncate">{{ item.deptName }}</span>
+                                <span class="text-indigo-600 font-normal ml-3 block truncate">{{ item.email }}</span>
                             </div>
                             <span class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4">
                             <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -50,22 +52,23 @@
                             </svg>
                             </span>
                         </li>
-                    </ng-container>
-                    <ng-template #unCheckTpl>
+                    } @else {
                         <li class="cursor-pointer text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9 hover:bg-#e6f7ff"
                             (click)="add(item)">
                             <div class="flex items-center">
                                 <nz-avatar [nzSrc]="item.avatar" nzSize="small"></nz-avatar>
-                                <span class="font-normal ml-3 block truncate">{{item.username}}</span>
-                                <span class="text-indigo-600 font-normal ml-3 block truncate">{{item.deptName}}</span>
-                                <span class="text-indigo-600 font-normal ml-3 block truncate">{{item.email}}</span>
+                                <span class="font-normal ml-3 block truncate">{{ item.username }}</span>
+                                <span class="text-indigo-600 font-normal ml-3 block truncate">{{ item.deptName }}</span>
+                                <span class="text-indigo-600 font-normal ml-3 block truncate">{{ item.email }}</span>
                             </div>
                         </li>
-                    </ng-template>
+                    }
                 </div>
-                <div class="mt-10" *ngIf="options.length==0">
-                    <nz-empty></nz-empty>
-                </div>
+                @if (options.length == 0) {
+                    <div class="mt-10">
+                        <nz-empty></nz-empty>
+                    </div>
+                }
             </cdk-virtual-scroll-viewport>
         </ul>
     </ng-template>

@@ -1,9 +1,12 @@
 <nz-form-item>
-  <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
-                 [nzRequired]="config.required">{{config.label}}</nz-form-label>
-  <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
-    <nz-select [nzPlaceHolder]="config.placeholder" [(ngModel)]="config.value" [nzDisabled]="config.readOnly">
-      <nz-option *ngFor="let item of opts" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
-    </nz-select>
-  </nz-form-control>
+    <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
+                   [nzRequired]="config.required">{{ config.label }}
+    </nz-form-label>
+    <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
+        <nz-select [nzPlaceHolder]="config.placeholder" [(ngModel)]="config.value" [nzDisabled]="config.readOnly">
+            @for (item of opts; track item.value) {
+                <nz-option [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+            }
+        </nz-select>
+    </nz-form-control>
 </nz-form-item>

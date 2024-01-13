@@ -22,7 +22,7 @@ import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzButtonModule} from 'ng-zorro-antd/button';
-import {NgClass, NgIf} from '@angular/common';
+import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 
@@ -33,7 +33,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
     styleUrls: ['./user-task-node.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzSelectModule, NzWaveModule, NzCheckboxModule, NzRadioModule]
+    imports: [NgClass, NzButtonModule, NzIconModule, NgIf, NzDrawerModule, NzTabsModule, NzFormModule, NzGridModule, NzInputModule, FormsModule, NzSelectModule, NzWaveModule, NzCheckboxModule, NzRadioModule, NgOptimizedImage]
 })
 export class UserTaskNode implements OnInit, DagNode {
     // 当前dag节点的数据

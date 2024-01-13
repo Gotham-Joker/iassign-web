@@ -32,10 +32,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of basicTable.data">
-        <td>{{item.id}}</td>
-        <td>{{item.username}}</td>
-        <td>{{item.email}}</td>
-    </tr>
+        @for (item of basicTable.data; track item.id) {
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.username }}</td>
+                <td>{{ item.email }}</td>
+            </tr>
+        }
     </tbody>
 </nz-table>

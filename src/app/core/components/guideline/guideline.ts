@@ -22,8 +22,11 @@ export declare type GuideLineStep = {
 
 /**
  * 用法:
- * <app-guideline *ngIf="visible" [steps]="steps" (onFinish)="visible=false"></app-guideline>
- *
+ * <p>
+ * @if(visible){
+ *   <app-guideline [steps]="steps" (onFinish)="visible=false"></app-guideline>
+ * }
+ * </p>
  */
 @Component({
     selector: 'app-guideline',

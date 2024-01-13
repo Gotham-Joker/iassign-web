@@ -1,9 +1,14 @@
 <nz-form-item>
-  <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
-                 [nzRequired]="config.required">{{config.label}}</nz-form-label>
-  <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
-    <nz-radio-group  *ngIf="config.options?.length>0" [disabled]="config.readOnly" [(ngModel)]="value">
-      <label nz-radio *ngFor="let item of opts" [nzValue]="item.value">{{item.label}}</label>
-    </nz-radio-group>
-  </nz-form-control>
+    <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
+                   [nzRequired]="config.required">{{ config.label }}
+    </nz-form-label>
+    <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
+        @if (config.options?.length > 0) {
+            <nz-radio-group [disabled]="config.readOnly" [(ngModel)]="value">
+                @for (item of opts; track item.value) {
+                    <label nz-radio [nzValue]="item.value">{{ item.label }}</label>
+                }
+            </nz-radio-group>
+        }
+    </nz-form-control>
 </nz-form-item>

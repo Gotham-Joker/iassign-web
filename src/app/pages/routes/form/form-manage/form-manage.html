@@ -53,30 +53,32 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of basicTable.data">
-                <td>{{item.id}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.description}}</td>
-                <td>{{item.creator}}</td>
-                <td>{{item.updater}}</td>
-                <td>{{item.createTime}}</td>
-                <td>{{item.updateTime}}</td>
-                <td>
-                    <a [routerLink]="'../form-preview'" [queryParams]="{id:item.id}">
-                        <span nz-icon [nzType]="'eye'"></span> 预览</a>
-                    <nz-divider [nzType]="'vertical'"></nz-divider>
-                    <a [routerLink]="'/form-designer'" [queryParams]="{id:item.id}">
-                        <span nz-icon [nzType]="'edit'"></span>
-                        修改</a>
-                    <ng-container *acl="'outForm'">
-                        <nz-divider [nzType]="'vertical'"></nz-divider>
-                        <a (click)="exportForm(item.id)"><span nz-icon nzType="download"></span> 导出</a>
-                    </ng-container>
-                    <nz-divider [nzType]="'vertical'"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                       (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'user-delete'"></span> 删除</a>
-                </td>
-            </tr>
+                @for (item of basicTable.data; track $index) {
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.creator }}</td>
+                        <td>{{ item.updater }}</td>
+                        <td>{{ item.createTime }}</td>
+                        <td>{{ item.updateTime }}</td>
+                        <td>
+                            <a [routerLink]="'../form-preview'" [queryParams]="{id:item.id}">
+                                <span nz-icon [nzType]="'eye'"></span> 预览</a>
+                            <nz-divider [nzType]="'vertical'"></nz-divider>
+                            <a [routerLink]="'/form-designer'" [queryParams]="{id:item.id}">
+                                <span nz-icon [nzType]="'edit'"></span>
+                                修改</a>
+                            <ng-container *acl="'outForm'">
+                                <nz-divider [nzType]="'vertical'"></nz-divider>
+                                <a (click)="exportForm(item.id)"><span nz-icon nzType="download"></span> 导出</a>
+                            </ng-container>
+                            <nz-divider [nzType]="'vertical'"></nz-divider>
+                            <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
+                               (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'user-delete'"></span> 删除</a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </nz-table>
     </nz-card>

@@ -38,18 +38,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of basicTable.data">
-                <td>{{item.id}}</td>
-                <td>{{item.name}}</td>
-                <td>
-                    <a (click)="navigateToUserRole(item)"><span nz-icon [nzType]="'user'"></span> 用户</a>
-                    <nz-divider [nzType]="'vertical'"></nz-divider>
-                    <a (click)="edit(item)"><span nz-icon [nzType]="'file-search'"></span> 编辑</a>
-                    <nz-divider [nzType]="'vertical'"></nz-divider>
-                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                       (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'delete'"></span> 删除</a>
-                </td>
-            </tr>
+                @for (item of basicTable.data; track item.id) {
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>
+                            <a (click)="navigateToUserRole(item)"><span nz-icon [nzType]="'user'"></span> 用户</a>
+                            <nz-divider [nzType]="'vertical'"></nz-divider>
+                            <a (click)="edit(item)"><span nz-icon [nzType]="'file-search'"></span> 编辑</a>
+                            <nz-divider [nzType]="'vertical'"></nz-divider>
+                            <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
+                               (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'delete'"></span> 删除</a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </nz-table>
     </nz-card>
