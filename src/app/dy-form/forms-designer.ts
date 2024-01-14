@@ -190,6 +190,7 @@ export class FormsDesigner implements OnInit, AfterViewInit {
                 // 创建一个主题，并订阅它，当发生drop事件时，通知component实例
                 dropList.dropped.subscribe(next => inst.onDrop(next));
                 dropList.data = id;
+                // 菜单上的组件也可以挪动到栅格布局里
                 this.dropListConnectedTo = [dropList, ...this.dropListConnectedTo];
             }
 
