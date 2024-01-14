@@ -52,6 +52,7 @@ export class ProcessStart implements OnInit {
     visible: boolean = false;
     dag: any;
     isEdit: boolean = false; // 判断是否是编辑操作
+    readonly: boolean = false;
 
     constructor(protected formSvc: DyformService,
                 protected processSvc: ProcessService,
@@ -113,6 +114,7 @@ export class ProcessStart implements OnInit {
             }
             http.pipe(catchError(err => {
                 this.loading = false;
+                this.readonly = true; // 去到服务器出错了不能编辑，需要刷新页面重新填写
                 return EMPTY;
             })).subscribe(res => {
                 this.instanceId = res.data;

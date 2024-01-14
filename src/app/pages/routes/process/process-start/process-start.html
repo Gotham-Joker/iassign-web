@@ -21,7 +21,7 @@
                     <h2 class="text-center mt-3">{{ data.name }}</h2>
                     <small class="text-center description mb-3">{{ data.description }}</small>
 
-                    <dy-form [form]="data" #dynamicForm></dy-form>
+                    <dy-form [form]="data" [readonly]="readonly" #dynamicForm></dy-form>
 
                     <div class="flex justify-center items-center mt-4">
                         <button nz-button nzType="primary" nzGhost (click)="viewGraph()">
