@@ -1,6 +1,6 @@
 <!-- 通用模板开始，用于复用，可减少重复代码 let-config的意思是将外部传进来的"$implicit"参数定义为config -->
 <ng-template #configTemplate let-config>
-    <nz-form-item>
+    <nz-form-item [ngClass]="{'important-hidden':config.hidden}">
         @if (config.label ?? false) {
             <nz-form-label [nzRequired]="config.required"
                            [nzNoColon]="config.noColon">{{ config.label }}
@@ -10,8 +10,7 @@
             @switch (config.type) {
                 @case ("input") {
                     <!--输入框，支持联动隐藏 -->
-                    <input nz-input [(ngModel)]="config.value"
-                           [ngClass]="{'hidden':config.hidden}" [disabled]="readonly||config.readOnly"
+                    <input nz-input [(ngModel)]="config.value" [disabled]="readonly||config.readOnly"
                            [placeholder]="config.placeholder">
                 }
                 @case ("number") {
@@ -26,7 +25,6 @@
                 @case ("textarea") {
                     <!-- 文本框，支持联动隐藏 -->
                     <textarea nz-input [(ngModel)]="config.value"
-                              [ngClass]="{'hidden':config.hidden}"
                               [disabled]="readonly||config.readOnly" [placeholder]="config.placeholder"></textarea>
                 }
                 @case ("datepicker") {

@@ -1,16 +1,17 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {HttpBackend, HttpClient} from "@angular/common/http";
 import {delay, mergeMap, of, Subject} from "rxjs";
-import {FormControl, Validators, FormsModule} from "@angular/forms";
+import {FormControl, FormsModule, Validators} from "@angular/forms";
 import {
+    formatDate,
     formatNumber,
+    NgClass,
+    NgFor,
     NgIf,
     NgSwitch,
     NgSwitchCase,
-    NgFor,
-    NgTemplateOutlet,
     NgSwitchDefault,
-    formatDate, NgClass
+    NgTemplateOutlet
 } from "@angular/common";
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzWaveModule} from 'ng-zorro-antd/core/wave';
@@ -101,14 +102,17 @@ export class DyForm implements OnInit, OnChanges {
                 this.renderForm();
             }
         }
-
     }
 
     private renderForm() {
         const richTextItem = [];
+        const val = {};
         this.formIterate((item) => {
             if (item.cascade != null && item.cascade != "") {
                 this.cascade = true; // 存在联动关系，启用联动
+            }
+            if (item.field) {
+                val[item.field] = item.value;
             }
             if (item.type == 'select' || item.type == 'checkbox' || item.type == 'radio') {
                 this.options[item.field] = [];
@@ -118,6 +122,9 @@ export class DyForm implements OnInit, OnChanges {
             }
         });
         this.$subject.next(richTextItem);
+        if (this.cascade) {
+            this.evaluateHidden(val);
+        }
     }
 
     upload(config: any) {
@@ -350,17 +357,19 @@ export class DyForm implements OnInit, OnChanges {
                 val[item['field']] = item['value'];
                 return false;
             })
-            const ctxKeys = Object.keys(val);
-            const ctxValues = [];
-            ctxKeys.forEach(key => ctxValues.push(val[key]));
-            this.formIterate((item) => {
-                // 只有这三种组件可以被隐藏或展示
-                if (item.type == 'row' || item.type == 'input' || item.type == 'textarea') {
-                    const func = new Function(...ctxKeys, "return " + item.cascade);
-                    item.hidden = func(...ctxValues);
-                }
-            });
+            this.evaluateHidden(val);
         }
     }
 
+    private evaluateHidden(val) {
+        const ctxKeys = Object.keys(val);
+        const ctxValues = [];
+        ctxKeys.forEach(key => ctxValues.push(val[key]));
+        this.formIterate((item) => {
+            // 隐藏或展示
+            if (item.cascade != null && item.cascade.trim() != '') {
+                item.hidden = new Function(...ctxKeys, "return " + item.cascade)(...ctxValues);
+            }
+        });
+    }
 }
