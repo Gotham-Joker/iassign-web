@@ -6,7 +6,7 @@ import {
     formatDate,
     formatNumber,
     NgClass,
-    NgFor,
+    NgFor,r
     NgIf,
     NgSwitch,
     NgSwitchCase,

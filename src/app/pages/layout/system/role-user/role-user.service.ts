@@ -18,4 +18,12 @@ export class RoleUserService {
     query(queryParams: any): Observable<any> {
         return this.http.get('/api/role-users', {params: queryParams});
     }
+
+    /**
+     * 重新绑定角色和用户
+     * @param data
+     */
+    rebindRoleUsers(data: { roleId: string, delUserIds?: string[], addUserIds?: string[] }[]): Observable<any> {
+        return this.http.put('/api/role-users', data);
+    }
 }

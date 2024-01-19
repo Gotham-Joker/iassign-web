@@ -12,6 +12,8 @@ import {NzInputModule} from "ng-zorro-antd/input";
 import {NzWaveModule} from "ng-zorro-antd/core/wave";
 import {ActivatedRoute} from "@angular/router";
 import {Backward} from "../../../../core/components/backward/backward";
+import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
     selector: 'role-user',
@@ -27,7 +29,8 @@ import {Backward} from "../../../../core/components/backward/backward";
         NzIconModule,
         NzInputModule,
         NzWaveModule,
-        Backward
+        Backward,
+        NzPopconfirmDirective
     ],
     standalone: true
 })
@@ -42,7 +45,7 @@ export class RoleUser implements OnInit {
     }
     roleName: any = '';
 
-    constructor(private roleUserSvc: RoleUserService, private route: ActivatedRoute) {
+    constructor(private roleUserSvc: RoleUserService, private route: ActivatedRoute, private message: NzMessageService) {
     }
 
     ngOnInit() {
@@ -66,6 +69,34 @@ export class RoleUser implements OnInit {
             this.list = res.data.list;
             this.total = res.data.total;
             this.loading = false;
+        })
+    }
+
+    add() {
+        if (this.queryParams.id == null || this.queryParams.id == '') {
+            this.message.warning("请输入用户ID");
+            return;
+        }
+        if (this.queryParams.roleId == null || this.queryParams.roleId == '') {
+            this.message.warning("请输入角色ID");
+            return;
+        }
+        this.roleUserSvc.rebindRoleUsers([{roleId: this.queryParams.roleId, addUserIds: [this.queryParams.roleId]}])
+            .subscribe(res => {
+                this.message.success("添加成功");
+                this.query();
+            })
+    }
+
+    remove(id) {
+        if (this.queryParams.roleId == null || this.queryParams.roleId == '') {
+            this.message.error("操作有误，请提供roleId");
+            return;
+        }
+        const data = [{roleId: this.queryParams.roleId, delUserIds: [id]}];
+        this.roleUserSvc.rebindRoleUsers(data).subscribe(res => {
+            this.message.success("保存成功");
+            this.query();
         })
     }
 }
