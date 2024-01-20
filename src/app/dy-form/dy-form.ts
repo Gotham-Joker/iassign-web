@@ -16,7 +16,7 @@ import {
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzWaveModule} from 'ng-zorro-antd/core/wave';
 import {NzButtonModule} from 'ng-zorro-antd/button';
-import {NzUploadModule} from 'ng-zorro-antd/upload';
+import {NzUploadFile, NzUploadModule} from 'ng-zorro-antd/upload';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
 import {NzSelectModule} from 'ng-zorro-antd/select';
@@ -26,6 +26,7 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {RichText} from "../core/components/rich-text/rich-text";
+import {NzCascaderComponent, NzCascaderOption} from "ng-zorro-antd/cascader";
 
 @Component({
     selector: 'dy-form',
@@ -53,6 +54,7 @@ import {RichText} from "../core/components/rich-text/rich-text";
         NgSwitchDefault,
         RichText,
         NgClass,
+        NzCascaderComponent,
     ],
 })
 export class DyForm implements OnInit, OnChanges {
@@ -77,6 +79,11 @@ export class DyForm implements OnInit, OnChanges {
     numberParser: (value: string) => string = (value: string) => {
         return value.replaceAll(",", '');
     };
+    preview = (file: NzUploadFile) => {
+        window.open(file.url + "?preview=1");
+    };
+    // 级联组件
+    cascaders: any = {};
 
 
     constructor(private httpBackend: HttpBackend, private httpClient: HttpClient) {
@@ -119,6 +126,8 @@ export class DyForm implements OnInit, OnChanges {
                 this.fetchOptions(this.options[item.field], item);
             } else if (item.type == 'richtext') {
                 richTextItem.push(item);
+            } else if (item.type == "cascader") {
+                this.initCascaders(item);
             }
         });
         this.$subject.next(richTextItem);
@@ -371,5 +380,27 @@ export class DyForm implements OnInit, OnChanges {
                 item.hidden = new Function(...ctxKeys, "return " + item.cascade)(...ctxValues);
             }
         });
+    }
+
+    private initCascaders(item) {
+        let http = this.http;
+        if (item.url != null && item.url.startsWith("/")) {
+            http = this.httpClient;
+        }
+        this.cascaders[item.field] = (node: NzCascaderOption, index: number) => {
+            const val = node.value == null ? (item.dv ?? "") : node.value;
+            const url = item.url.replace("$$", val);
+            return http.get(url).pipe(mergeMap(res => {
+                let data = [];
+                if (item.res) {
+                    const resData = res[item.res];
+                    for (let i = 0; i < resData.length; i++) {
+                        const d = resData[i];
+                        data.push({label: d[item.resLabel], value: d[item.resValue]})
+                    }
+                }
+                return of(data);
+            }));
+        }
     }
 }

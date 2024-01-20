@@ -1,19 +1,27 @@
-import {Component, OnInit,} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild,} from '@angular/core';
 import {FormControl, Validators, FormsModule} from '@angular/forms';
 import {formatDate} from '@angular/common';
 import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzGridModule} from 'ng-zorro-antd/grid';
+import {DyComponent} from "../../../interface/dy-form-interface";
+import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {NzInputDirective} from "ng-zorro-antd/input";
+import {NzTabComponent, NzTabSetComponent} from "ng-zorro-antd/tabs";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 
 @Component({
     selector: 'dy-datepicker',
     templateUrl: './dy-datepicker.html',
     styles: [':host{display: block;}'],
     standalone: true,
-    imports: [NzGridModule, NzFormModule, NzDatePickerModule, FormsModule]
+    imports: [NzGridModule, NzFormModule, NzDatePickerModule, FormsModule, NzDividerComponent, NzInputDirective, NzTabComponent, NzButtonComponent, NzSwitchComponent, NzInputNumberComponent, NzTabSetComponent]
 })
-export class DyDatepicker implements OnInit {
-
+export class DyDatepicker implements OnInit , DyComponent {
+    @ViewChild('cfgTpl', {read: TemplateRef, static: true})
+    templateRef;
     value: any = null;
     // 默认配置
     config: any = {

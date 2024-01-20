@@ -1,19 +1,26 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormControl, Validators, FormsModule} from '@angular/forms';
 import {formatNumber} from "@angular/common";
 import {NzInputNumberModule} from 'ng-zorro-antd/input-number';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzGridModule} from 'ng-zorro-antd/grid';
+import {DyComponent} from "../../../interface/dy-form-interface";
+import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {NzTabComponent, NzTabSetComponent} from "ng-zorro-antd/tabs";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzInputDirective} from "ng-zorro-antd/input";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
 
 @Component({
     selector: 'dy-input-number',
     templateUrl: './dy-input-number.html',
     styles: [':host{display: block;}'],
     standalone: true,
-    imports: [NzGridModule, NzFormModule, NzInputNumberModule, FormsModule]
+    imports: [NzGridModule, NzFormModule, NzInputNumberModule, FormsModule, NzDividerComponent, NzTabComponent, NzButtonComponent, NzInputDirective, NzSwitchComponent, NzTabSetComponent]
 })
-export class DyInputNumber implements OnInit {
-
+export class DyInputNumber implements OnInit , DyComponent {
+    @ViewChild('cfgTpl', {read: TemplateRef, static: true})
+    templateRef;
     // 默认配置
     config: any = {
         type: 'number',

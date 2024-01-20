@@ -1,10 +1,142 @@
 <nz-form-item>
     <nz-form-label [nzSpan]="config.labelSpan" [nzNoColon]="config.noColon"
-                   [nzRequired]="config.required">{{config.label}}</nz-form-label>
+                   [nzRequired]="config.required">{{ config.label }}
+    </nz-form-label>
     <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
         <nz-upload [nzDisabled]="config.readOnly" [nzAction]="config.url" [nzName]="config.name"
-                   [(nzFileList)]="config.value" [nzBeforeUpload]="upload">
-            <button nz-button><span nz-icon [nzType]="'upload'"></span>点击上传</button>
+                   [(nzFileList)]="config.value" [nzBeforeUpload]="upload" [nzListType]="config.listType">
+            @if (config.listType == "picture-card") {
+                <span nz-icon [nzType]="'plus'"></span>
+                <div class="ant-upload-text">Upload</div>
+            } @else {
+                <button nz-button><span nz-icon [nzType]="'upload'"></span>点击上传</button>
+            }
         </nz-upload>
     </nz-form-control>
 </nz-form-item>
+
+<ng-template #cfgTpl>
+    <nz-tabset [(nzSelectedIndex)]="config.tabIndex">
+        <nz-tab nzTitle="外观">
+
+            <nz-form-item>
+                <nz-form-label [nzRequired]="true">字段</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="config.field" placeholder="field(表单内唯一)">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>标签</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="config.label" placeholder="请输入标签">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>文件格式</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="config.accept" placeholder="image/png,images/jpg">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>列表类型</nz-form-label>
+                <nz-form-control>
+                    <nz-select [(ngModel)]="config.listType">
+                        <nz-option nzLabel="文本" nzValue="text"></nz-option>
+                        <nz-option nzLabel="图片" nzValue="picture"></nz-option>
+                        <nz-option nzLabel="图片卡片" nzValue="picture-card"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>栅格宽度</nz-form-label>
+                <nz-form-control>
+                    <nz-input-number style="width: 100%" [nzMin]="0" [nzMax]="24"
+                                     [(ngModel)]="config.dyColSpan"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>标签宽度</nz-form-label>
+                <nz-form-control>
+                    <nz-input-number style="width: 100%" [nzMin]="0" [nzMax]="24"
+                                     [(ngModel)]="config.labelSpan"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>控件宽度</nz-form-label>
+                <nz-form-control>
+                    <nz-input-number style="width: 100%" [nzMin]="0" [nzMax]="24"
+                                     [(ngModel)]="config.span"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>隐藏冒号</nz-form-label>
+                <nz-form-control>
+                    <nz-switch [(ngModel)]="config.noColon"></nz-switch>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label>是否必填</nz-form-label>
+                <nz-form-control>
+                    <nz-switch [(ngModel)]="config.required"></nz-switch>
+                </nz-form-control>
+                <nz-form-label>是否只读</nz-form-label>
+                <nz-form-control>
+                    <nz-switch [(ngModel)]="config.readOnly"></nz-switch>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>错误提示</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="config.msg">
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <button nz-button nzType="primary" nzBlock (click)="validate()">验证</button>
+            </nz-form-item>
+        </nz-tab>
+
+        <nz-tab nzTitle="高级">
+            <div nz-form [nzLayout]="'vertical'">
+                <nz-form-item>
+                    <nz-form-label>上传地址(url)</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input placeholder="http://api.xxx.com/upload" [(ngModel)]="config.url">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>上传参数</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [(ngModel)]="config.name">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label>响应字段</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input placeholder="eg: data" [(ngModel)]="config.res">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-descriptions nzSize="small" nzTitle="响应字段应包含以下信息" nzBordered>
+                    <nz-descriptions-item nzTitle="uid" [nzSpan]="3">文件uid</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="name" [nzSpan]="3">文件名</nz-descriptions-item>
+                    <nz-descriptions-item nzTitle="url" [nzSpan]="3">文件下载地址</nz-descriptions-item>
+                </nz-descriptions>
+                <nz-divider nzPlain nzText="联动" nzOrientation="center"></nz-divider>
+                <nz-form-item>
+                    <nz-form-label>隐匿触发条件</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input placeholder="eg: field=='123'" [(ngModel)]="config.cascade"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+        </nz-tab>
+
+    </nz-tabset>
+
+</ng-template>

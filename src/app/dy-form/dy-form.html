@@ -78,13 +78,18 @@
                 }
                 @case ("upload") {
                     <!-- 上传组件 -->
-                    <nz-upload [nzDisabled]="readonly||config.readOnly"
-                               [(nzFileList)]="config.value" [nzBeforeUpload]="upload(config)">
-                        <button nz-button>
-                            <span nz-icon [nzType]="'upload'"></span>
-                            点击上传
-                        </button>
+                    <nz-upload [nzDisabled]="readonly||config.readOnly" [nzListType]="config.listType"
+                               [(nzFileList)]="config.value" [nzBeforeUpload]="upload(config)" [nzPreview]="preview">
+                        @if (config.listType == "picture-card") {
+                            <span nz-icon [nzType]="'plus'"></span>
+                            <div class="ant-upload-text">Upload</div>
+                        } @else {
+                            <button nz-button><span nz-icon [nzType]="'upload'"></span>点击上传</button>
+                        }
                     </nz-upload>
+                }
+                @case ("cascader"){
+                    <nz-cascader nzAllowClear nzChangeOnSelect [(ngModel)]="config.value" [nzLoadData]="cascaders[config.field]"></nz-cascader>
                 }
             }
         </nz-form-control>

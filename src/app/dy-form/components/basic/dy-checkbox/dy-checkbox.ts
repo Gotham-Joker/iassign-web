@@ -1,18 +1,32 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
-import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
-import {NgFor} from '@angular/common';
-import {NzFormModule} from 'ng-zorro-antd/form';
-import {NzGridModule} from 'ng-zorro-antd/grid';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {FormControl, FormsModule} from '@angular/forms';
+import {DyComponent} from "../../../interface/dy-form-interface";
+import {NzFormControlComponent, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
+import {NzTabComponent, NzTabSetComponent} from "ng-zorro-antd/tabs";
+import {NzCheckboxComponent} from "ng-zorro-antd/checkbox";
+import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
+import {NzInputDirective} from "ng-zorro-antd/input";
+import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzDividerComponent} from "ng-zorro-antd/divider";
 
 @Component({
     selector: 'dy-checkbox',
     templateUrl: './dy-checkbox.html',
     styles: [':host{display: block;}'],
     standalone: true,
-    imports: [NzGridModule, NzFormModule, NgFor, NzCheckboxModule]
+    imports: [
+        NzFormItemComponent,
+        NzTabSetComponent,
+        NzFormLabelComponent,
+        NzFormControlComponent,
+        NzCheckboxComponent, NzRowDirective, NzColDirective, NzTabComponent, NzInputDirective, FormsModule, NzInputNumberComponent, NzSwitchComponent, NzButtonComponent, NzDividerComponent
+    ]
 })
-export class DyCheckbox implements OnInit {
+export class DyCheckbox implements OnInit, DyComponent {
+    @ViewChild('cfgTpl', {static: true, read: TemplateRef})
+    templateRef;
 
     value: any = [];
     // 默认配置
@@ -26,6 +40,7 @@ export class DyCheckbox implements OnInit {
     };
     status: any;  // 校验结果
     opts: any[] = [];
+
 
     constructor() {
     }

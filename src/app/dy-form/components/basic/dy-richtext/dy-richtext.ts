@@ -1,18 +1,24 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormControl, FormsModule, Validators} from "@angular/forms";
 import {NzGridModule} from "ng-zorro-antd/grid";
 import {NzFormModule} from "ng-zorro-antd/form";
 import {NzInputModule} from "ng-zorro-antd/input";
+import {DyComponent} from "../../../interface/dy-form-interface";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzTabComponent, NzTabSetComponent} from "ng-zorro-antd/tabs";
 
 @Component({
     selector: 'dy-richtext',
     templateUrl: 'dy-richtext.html',
     styles: [':host{display: block;}'],
     standalone: true,
-    imports: [NzGridModule, NzFormModule, NzInputModule, FormsModule]
+    imports: [NzGridModule, NzFormModule, NzInputModule, FormsModule, NzButtonComponent, NzSwitchComponent, NzTabComponent, NzTabSetComponent]
 })
 
-export class DyRichtext implements OnInit {
+export class DyRichtext implements OnInit , DyComponent {
+    @ViewChild('cfgTpl', {read: TemplateRef, static: true})
+    templateRef;
     config: any = {
         type: 'richtext',
         noColon: false,

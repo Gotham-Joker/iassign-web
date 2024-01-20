@@ -1,18 +1,28 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormControl, Validators, FormsModule} from '@angular/forms';
 import {NgFor} from '@angular/common';
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzGridModule} from 'ng-zorro-antd/grid';
+import {DyComponent} from "../../../interface/dy-form-interface";
+import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {NzInputDirective} from "ng-zorro-antd/input";
+import {NzTabComponent, NzTabSetComponent} from "ng-zorro-antd/tabs";
+import {NzCheckboxComponent} from "ng-zorro-antd/checkbox";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 
 @Component({
     selector: 'dy-select',
     templateUrl: './dy-select.html',
     styles: [':host{display: block;}'],
     standalone: true,
-    imports: [NzGridModule, NzFormModule, NzSelectModule, FormsModule, NgFor]
+    imports: [NzGridModule, NzFormModule, NzSelectModule, FormsModule, NgFor, NzDividerComponent, NzInputDirective, NzTabComponent, NzCheckboxComponent, NzButtonComponent, NzSwitchComponent, NzInputNumberComponent, NzTabSetComponent]
 })
-export class DySelect implements OnInit {
+export class DySelect implements OnInit , DyComponent {
+    @ViewChild('cfgTpl', {read: TemplateRef, static: true})
+    templateRef;
     config: any = {
         type: 'select',
         label: '选择',
@@ -72,6 +82,22 @@ export class DySelect implements OnInit {
             opts.push({label: label, value: value});
         }
         this.opts = opts;
+    }
+
+    /**
+     * 修改模式
+     * @param $event
+     */
+    changeMode($event: any) {
+        if ($event == 'multiple') {
+            if (this.config.value == '') {
+                this.config.value = [];
+            }
+        } else {
+            if (Array.isArray(this.config.value) && this.config.value.length == 0) {
+                this.config.value = '';
+            }
+        }
     }
 
 }

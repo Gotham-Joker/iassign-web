@@ -16,31 +16,21 @@ import {ScrollDispatcher, ViewportRuler} from "@angular/cdk/overlay";
 import {Dir} from "@angular/cdk/bidi";
 import * as _ from "lodash";
 import {DyInput} from "./components/basic/dy-input/dy-input";
-import {DyInputConfig} from "./components/basic/dy-input/dy-input-config";
 import {
-    DyConfigComponent,
     DyFormDragGroup,
     DyFormDragItem,
     FormItemsHolder,
     ItemContext
 } from "./interface/dy-form-interface";
 import {DySelect} from "./components/basic/dy-select/dy-select";
-import {DySelectConfig} from "./components/basic/dy-select/dy-select-config";
-import {DyDatepickerConfig} from "./components/basic/dy-datepicker/dy-datepicker-config";
-import {DyUploadConfig} from "./components/basic/dy-upload/dy-upload-config";
 import {DyRadio} from "./components/basic/dy-radio/dy-radio";
-import {DyRadioConfig} from "./components/basic/dy-radio/dy-radio-config";
 import {DyCheckbox} from "./components/basic/dy-checkbox/dy-checkbox";
-import {DyCheckboxConfig} from "./components/basic/dy-checkbox/dy-checkbox-config";
 import {DyDatepicker} from "./components/basic/dy-datepicker/dy-datepicker";
 import {DyUpload} from "./components/basic/dy-upload/dy-upload";
 import {DyRow} from "./components/layout/dy-row/dy-row";
-import {DyRowConfig} from "./components/layout/dy-row/dy-row-config";
 import {IdWorker} from "../core/snowflake-id/id-worker";
 import {DyTextarea} from "./components/basic/dy-textarea/dy-textarea";
-import {DyTextareaConfig} from "./components/basic/dy-textarea/dy-textarea-config";
 import {DyInputNumber} from "./components/basic/dy-input-number/dy-input-number";
-import {DyInputNumberConfig} from "./components/basic/dy-input-number/dy-input-number-config";
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {FormsModule} from '@angular/forms';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
@@ -55,7 +45,7 @@ import {NzMenuModule} from 'ng-zorro-antd/menu';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzMessageModule} from "ng-zorro-antd/message";
 import {DyRichtext} from "./components/basic/dy-richtext/dy-richtext";
-import {DyRichtextConfig} from "./components/basic/dy-richtext/dy-richtext-config";
+import {DyCascader} from "./components/basic/dy-cascader/dy-cascader";
 
 export declare interface FormConfig {
     id?: string, // 表单编辑的话应该要填id
@@ -83,20 +73,21 @@ export class FormsDesigner implements OnInit, AfterViewInit {
             title: '基本组件',
             icon: 'form',
             items: [
-                {name: '输入框', type: 'input', itemComponent: DyInput, configComponent: DyInputConfig},
-                {name: '文本框', type: 'textarea', itemComponent: DyTextarea, configComponent: DyTextareaConfig},
-                {name: '数字框', type: 'number', itemComponent: DyInputNumber, configComponent: DyInputNumberConfig},
-                {name: '单选框', type: 'radio', itemComponent: DyRadio, configComponent: DyRadioConfig},
-                {name: '复选框', type: 'checkbox', itemComponent: DyCheckbox, configComponent: DyCheckboxConfig},
-                {name: '下拉框', type: 'select', itemComponent: DySelect, configComponent: DySelectConfig},
-                {name: '日期', type: 'datepicker', itemComponent: DyDatepicker, configComponent: DyDatepickerConfig},
-                {name: '上传', type: 'upload', itemComponent: DyUpload, configComponent: DyUploadConfig},
-                {name: '富文本', type: 'richtext', itemComponent: DyRichtext, configComponent: DyRichtextConfig}
+                {name: '输入框', type: 'input', component: DyInput},
+                {name: '数字', type: 'number', component: DyInputNumber},
+                {name: '文本域', type: 'textarea', component: DyTextarea},
+                {name: '日期', type: 'datepicker', component: DyDatepicker},
+                {name: '单选', type: 'radio', component: DyRadio},
+                {name: '多选', type: 'checkbox', component: DyCheckbox},
+                {name: '下拉', type: 'select', component: DySelect},
+                {name: '级联', type: 'cascader', component: DyCascader},
+                {name: '上传', type: 'upload', component: DyUpload},
+                {name: '富文本', type: 'richtext', component: DyRichtext}
             ]
         }, {
             title: '布局组件',
             icon: 'layout',
-            items: [{name: '栅格布局', type: 'row', itemComponent: DyRow, configComponent: DyRowConfig}]
+            items: [{name: '栅格布局', type: 'row', component: DyRow}]
         }
     ];
 
@@ -149,8 +140,7 @@ export class FormsDesigner implements OnInit, AfterViewInit {
     drop(event: CdkDragDrop<string[]> | any, config?: any) {
         const item: DyFormDragItem = event.item.data;
         if (item != null) {
-            const configClazz = item?.configComponent;
-            const componentClazz = item?.itemComponent;
+            const componentClazz = item?.component;
             // 创建表单组件
             const component = this.formItemContainer.createComponent(componentClazz);
 
@@ -175,7 +165,7 @@ export class FormsDesigner implements OnInit, AfterViewInit {
                     return;
                 }
                 this.formItemId = id;
-                this.showConfigPanel(component, configClazz);
+                this.showConfigPanel(component);
             });
             // 绑定函数：右键菜单，用于删除组件
             const contextMenu = this.render.listen(el, 'contextmenu', (ev) => {
@@ -200,7 +190,7 @@ export class FormsDesigner implements OnInit, AfterViewInit {
                 cdkDrag
             };
             this.formItemId = id;
-            this.showConfigPanel(component, configClazz);
+            this.showConfigPanel(component);
             this.formItemContainer.insert(this.formItemContainer.get(this.formItemContainer.length - 1) as any, event.currentIndex);
         } else {
             this.formItemContainer.move(this.formItemContainer.get(event.previousIndex) as any, event.currentIndex);
@@ -227,10 +217,10 @@ export class FormsDesigner implements OnInit, AfterViewInit {
 
 
     // 切换表单项的配置
-    showConfigPanel(component: any, configClazz: any) {
+    showConfigPanel(component: any) {
         this.configPanelContainer.clear();
-        const configComponent = this.configPanelContainer.createComponent(configClazz);
-        (configComponent.instance as DyConfigComponent<any>).ref = component.instance;
+        const inst = component.instance;
+        this.configPanelContainer.createEmbeddedView(inst.templateRef);
     }
 
     // 显示右键菜单

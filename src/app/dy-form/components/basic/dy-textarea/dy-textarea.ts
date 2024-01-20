@@ -1,17 +1,25 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormControl, Validators, FormsModule} from "@angular/forms";
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzGridModule} from 'ng-zorro-antd/grid';
+import {DyComponent} from "../../../interface/dy-form-interface";
+import {NzTabComponent, NzTabSetComponent} from "ng-zorro-antd/tabs";
+import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 
 @Component({
     selector: 'dy-textarea',
     templateUrl: './dy-textarea.html',
     styles: [':host{display: block;}'],
     standalone: true,
-    imports: [NzGridModule, NzFormModule, NzInputModule, FormsModule]
+    imports: [NzGridModule, NzFormModule, NzInputModule, FormsModule, NzTabComponent, NzDividerComponent, NzButtonComponent, NzSwitchComponent, NzInputNumberComponent, NzTabSetComponent]
 })
-export class DyTextarea implements OnInit {
+export class DyTextarea implements OnInit , DyComponent {
+    @ViewChild('cfgTpl', {read: TemplateRef, static: true})
+    templateRef;
     config: any = {
         type: 'textarea',
         noColon: false,

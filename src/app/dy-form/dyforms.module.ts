@@ -6,20 +6,12 @@ import {FormsDesigner} from "./forms-designer";
 import {DyRow} from "./components/layout/dy-row/dy-row";
 import {DySelect} from "./components/basic/dy-select/dy-select";
 import {DyInput} from "./components/basic/dy-input/dy-input";
-import {DyRowConfig} from "./components/layout/dy-row/dy-row-config";
-import {DyInputConfig} from "./components/basic/dy-input/dy-input-config";
-import {DySelectConfig} from "./components/basic/dy-select/dy-select-config";
 import {DyRadio} from "./components/basic/dy-radio/dy-radio";
-import {DyRadioConfig} from "./components/basic/dy-radio/dy-radio-config";
 import {DyCheckbox} from "./components/basic/dy-checkbox/dy-checkbox";
-import {DyCheckboxConfig} from "./components/basic/dy-checkbox/dy-checkbox-config";
 import {DyDatepicker} from "./components/basic/dy-datepicker/dy-datepicker";
-import {DyDatepickerConfig} from "./components/basic/dy-datepicker/dy-datepicker-config";
 import {DyForm} from "./dy-form";
 import {DyTextarea} from "./components/basic/dy-textarea/dy-textarea";
-import {DyTextareaConfig} from "./components/basic/dy-textarea/dy-textarea-config";
 import {DyUpload} from "./components/basic/dy-upload/dy-upload";
-import {DyUploadConfig} from "./components/basic/dy-upload/dy-upload-config";
 import {NzFormModule} from "ng-zorro-antd/form";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzInputNumberModule} from "ng-zorro-antd/input-number";
@@ -69,7 +61,6 @@ import {
     QuestionCircleOutline
 } from '@ant-design/icons-angular/icons';
 import {DyInputNumber} from "./components/basic/dy-input-number/dy-input-number";
-import {DyInputNumberConfig} from "./components/basic/dy-input-number/dy-input-number-config";
 import {DyColDirective} from "./dy-col.directive";
 
 const icons: any[] = [
@@ -90,9 +81,8 @@ const MODULES = [
     NzDescriptionsModule, NzStepsModule, NzResultModule, NzTimelineModule
 ]
 
-const COMPONENTS = [DyForm, FormsDesigner, DyRow, DyRowConfig, DyInput, DyInputConfig, DyInputNumber, DyInputNumberConfig,
-    DyTextarea, DyTextareaConfig, DySelect, DySelectConfig, DyRadio, DyRadioConfig, DyColDirective,
-    DyCheckbox, DyCheckboxConfig, DyDatepicker, DyDatepickerConfig, DyUpload, DyUploadConfig];
+const COMPONENTS = [DyForm, FormsDesigner, DyRow, DyInput, DyInputNumber,
+    DyTextarea, DySelect, DyRadio, DyColDirective, DyCheckbox, DyDatepicker, DyUpload];
 
 @NgModule({
     imports: [

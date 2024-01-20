@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {FormControl, FormsModule, Validators} from '@angular/forms';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzWaveModule} from 'ng-zorro-antd/core/wave';
 import {NzButtonModule} from 'ng-zorro-antd/button';
@@ -8,16 +8,25 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {mergeMap, Observable, of} from "rxjs";
 import {HttpBackend, HttpClient} from "@angular/common/http";
+import {DyComponent} from "../../../interface/dy-form-interface";
+import {NzDescriptionsComponent, NzDescriptionsItemComponent} from "ng-zorro-antd/descriptions";
+import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {NzInputDirective} from "ng-zorro-antd/input";
+import {NzTabComponent, NzTabSetComponent} from "ng-zorro-antd/tabs";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 
 @Component({
     selector: 'dy-upload',
     templateUrl: './dy-upload.html',
     styles: [':host{display: block;}'],
     standalone: true,
-    imports: [NzGridModule, NzFormModule, NzUploadModule, NzButtonModule, NzWaveModule, NzIconModule]
+    imports: [NzGridModule, NzFormModule, NzUploadModule, NzButtonModule, NzWaveModule, NzIconModule, NzDescriptionsComponent, NzDescriptionsItemComponent, NzDividerComponent, NzInputDirective, FormsModule, NzTabComponent, NzSwitchComponent, NzInputNumberComponent, NzOptionComponent, NzSelectComponent, NzTabSetComponent]
 })
-export class DyUpload implements OnInit {
-
+export class DyUpload implements OnInit , DyComponent {
+    @ViewChild('cfgTpl', {read: TemplateRef, static: true})
+    templateRef;
     // 默认配置
     config: any = {
         type: 'upload',
