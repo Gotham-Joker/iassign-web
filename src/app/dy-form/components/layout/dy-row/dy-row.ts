@@ -4,8 +4,7 @@ import {
     NgZone,
     OnInit,
     Renderer2, TemplateRef,
-    ViewChild,
-    ViewContainerRef
+    ViewChild
 } from '@angular/core';
 import {CdkDragDrop, CdkDropList, DragDrop, moveItemInArray, CdkDrag} from '@angular/cdk/drag-drop';
 import {timer} from 'rxjs';
@@ -47,7 +46,7 @@ export class DyRow implements OnInit, AfterViewInit, DyComponent {
     cdkDropList: CdkDropList;
     @ViewChild('nzRow', {read: NzRowDirective})
     nzRow: NzRowDirective;
-    cols: { ctx: DyRow, comp: any, configComp: any, config: any }[] = []; // 列
+    cols: { ctx: DyRow, comp: any, config: any }[] = []; // 列
 
     constructor(public ngZone: NgZone,
                 public dragDrop: DragDrop,
@@ -56,22 +55,18 @@ export class DyRow implements OnInit, AfterViewInit, DyComponent {
 
 
     ngOnInit(): void {
-        // 回显的时候，要异步，不然angular会报错，于是就有了timer(0)
-        timer(0).subscribe(() => {
-            for (let i = 0; i < this.config.children.length; i++) {
-                const config = this.config.children[i];
-                const event = this.app.resolveType(config);
-                this.onDrop(event, config);
-            }
-        });
+        for (let i = 0; i < this.config.children.length; i++) {
+            const config = this.config.children[i];
+            const event = this.app.resolveType(config);
+            this.onDrop(event, config);
+        }
     }
 
     onDrop(event: CdkDragDrop<string[]> | any, config?: any) {
         const item: DyFormDragItem = event.item.data;
         if (item != null) {
-            const configClazz = item.configComponent;
-            const componentClazz = item.itemComponent;
-            this.cols.push({ctx: this, comp: componentClazz, configComp: configClazz, config});
+            const configClazz = item.component;
+            this.cols.push({ctx: this, comp: configClazz, config});
         } else {
             // if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -118,7 +113,7 @@ export class DyRow implements OnInit, AfterViewInit, DyComponent {
                 return;
             }
             that.app.formItemId = id;
-            that.app.showConfigPanel(component, dyCol.configComp);
+            that.app.showConfigPanel(component);
         });
 
         // 绑定函数：右键菜单
@@ -131,7 +126,7 @@ export class DyRow implements OnInit, AfterViewInit, DyComponent {
             instance: component
         };
         that.app.formItemId = id;
-        that.app.showConfigPanel(component, dyCol.configComp);
+        that.app.showConfigPanel(component);
         // 让nz-col重新绑定config，不过这样数据会反向流动到父级元素(nz-col)，angular是不允许这样的
         // 所以，搞个异步timer，即setTimeout来解决此问题。理论上onPush策略性能应该更好，但是现在的情况太复杂了，手动检测不现实。
         timer(0).subscribe(() => {

@@ -317,8 +317,7 @@ export class FormsDesigner implements OnInit, AfterViewInit {
             for (let j = 0; j < items.length; j++) {
                 const item = items[j];
                 if (item.type == config.type) {
-                    event.item.data.itemComponent = item.itemComponent;
-                    event.item.data.configComponent = item.configComponent;
+                    event.item.data.component = item.component;
                     return event;
                 }
             }
