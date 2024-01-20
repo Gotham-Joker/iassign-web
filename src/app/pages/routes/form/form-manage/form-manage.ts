@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from "ng-zorro-antd/message";
-import {RouterLink} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {DyformService} from "../dyform.service";
 import {NzPopconfirmModule} from 'ng-zorro-antd/popconfirm';
 import {NzDividerModule} from 'ng-zorro-antd/divider';
@@ -33,6 +33,7 @@ export class FormManage implements OnInit, OnReuseRetrieve {
     queryParams: any = {
         page: 1,
         size: 10,
+        id: "",
         flag: "",
         createTime_odd: "1"
     };
@@ -48,11 +49,16 @@ export class FormManage implements OnInit, OnReuseRetrieve {
         }))
     };
 
-    constructor(private formSvc: DyformService, private message: NzMessageService) {
+    constructor(private formSvc: DyformService, private message: NzMessageService, private route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
-        this.query(1)
+        this.route.queryParams.subscribe(params => {
+            if (params["id"]) {
+                this.queryParams.id = params["id"];
+            }
+            this.query(1)
+        })
     }
 
     query(page?: number) {

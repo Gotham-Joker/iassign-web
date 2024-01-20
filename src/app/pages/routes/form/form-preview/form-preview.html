@@ -4,8 +4,8 @@
         <h2 class="text-center">{{data.name}}</h2>
         <span class="text-center description mb-5 text-gray-700">{{data.description}}</span>
 
-        <dy-form [form]="data"></dy-form>
+        <dy-form [form]="data" #dynamicForm></dy-form>
 
-        <button nz-button nzType="primary" nzShape="round" nzBlock>提 交</button>
+        <button nz-button nzType="primary" nzShape="round" nzBlock (click)="mockSubmit()">提 交</button>
     </div>
 </nz-card>

@@ -84,7 +84,15 @@
                         <td><a nz-tooltip [nzTooltipTitle]="item.description">{{ item.name }}</a></td>
                         <!--                <td>{{item.description}}</td>-->
                         <td>{{ item.groupName }}</td>
-                        <td>{{ item.formId }}</td>
+                        <td>
+                            {{ item.formId }}
+                            <ng-container *ngIf="item.formId">
+                                <ng-container *acl="'formMgm'">
+                                    <nz-divider nzType="vertical"></nz-divider>
+                                    <a [routerLink]="'/form/form-manage'" [queryParams]="{id:item.formId}">link</a>
+                                </ng-container>
+                            </ng-container>
+                        </td>
                         <!--                <td>{{item.creator}}</td>-->
                         <td>{{ item.createTime }}</td>
                         <!--                <td>{{item.updateTime}}</td>-->

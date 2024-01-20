@@ -2,6 +2,12 @@
     <nz-card class="card-shadow search-card">
         <div nz-form [nzLayout]="'inline'">
             <nz-form-item>
+                <nz-form-label>表单ID</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [(ngModel)]="queryParams.id">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
                 <nz-form-label>表单名称</nz-form-label>
                 <nz-form-control>
                     <input nz-input [(ngModel)]="queryParams.name_like">
