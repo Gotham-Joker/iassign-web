@@ -13,6 +13,22 @@
                 <input nz-input [(ngModel)]="config.label" placeholder="请输入标签">
             </nz-form-control>
         </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>文件格式</nz-form-label>
+            <nz-form-control>
+                <input nz-input [(ngModel)]="config.accept">
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>列表类型</nz-form-label>
+            <nz-form-control>
+                <nz-select [(ngModel)]="config.listType">
+                    <nz-option nzLabel="文本" nzValue="text"></nz-option>
+                    <nz-option nzLabel="图片" nzValue="picture"></nz-option>
+                    <nz-option nzLabel="图片卡片" nzValue="picture-card"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
 
         <nz-form-item>
             <nz-form-label>栅格宽度</nz-form-label>
@@ -92,6 +108,13 @@
                 <nz-descriptions-item nzTitle="name" [nzSpan]="3">文件名</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="url" [nzSpan]="3">文件下载地址</nz-descriptions-item>
             </nz-descriptions>
+            <nz-divider nzPlain nzText="联动" nzOrientation="center"></nz-divider>
+            <nz-form-item>
+                <nz-form-label>隐匿触发条件</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="eg: field=='123'" [(ngModel)]="config.cascade"/>
+                </nz-form-control>
+            </nz-form-item>
         </div>
 
     </nz-tab>

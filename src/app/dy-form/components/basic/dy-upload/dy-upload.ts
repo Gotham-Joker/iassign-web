@@ -1,13 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {environment} from "../../../../../environments/environment";
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzWaveModule} from 'ng-zorro-antd/core/wave';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzUploadModule} from 'ng-zorro-antd/upload';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzGridModule} from 'ng-zorro-antd/grid';
-import {UploadService} from "../../../../core/upload.service";
 import {mergeMap, Observable, of} from "rxjs";
 import {HttpBackend, HttpClient} from "@angular/common/http";
 
@@ -25,6 +23,8 @@ export class DyUpload implements OnInit {
         type: 'upload',
         noColon: false,
         label: '附件',
+        listType: 'text',
+        accept: '',
         name: 'file', // 上传到后端的参数名
         dyColSpan: 12,
         required: false,

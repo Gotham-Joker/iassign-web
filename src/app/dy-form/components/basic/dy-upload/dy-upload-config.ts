@@ -11,12 +11,14 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import {NzDividerComponent} from "ng-zorro-antd/divider";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 
 @Component({
     selector: 'dy-upload-config',
     templateUrl: './dy-upload-config.html',
     standalone: true,
-    imports: [NzTabsModule, NzGridModule, NzFormModule, NzInputModule, FormsModule, NzInputNumberModule, NzSwitchModule, NzButtonModule, NzWaveModule, NzDescriptionsModule]
+    imports: [NzTabsModule, NzGridModule, NzFormModule, NzInputModule, FormsModule, NzInputNumberModule, NzSwitchModule, NzButtonModule, NzWaveModule, NzDescriptionsModule, NzDividerComponent, NzSelectComponent, NzOptionComponent]
 })
 export class DyUploadConfig implements OnInit, DyConfigComponent<DyUpload> {
     ref: DyUpload;

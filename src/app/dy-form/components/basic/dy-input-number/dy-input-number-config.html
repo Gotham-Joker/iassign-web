@@ -103,7 +103,13 @@
                 <input nz-input placeholder="eg: data.ssicId" [(ngModel)]="config.res"/>
             </nz-form-control>
         </nz-form-item>
-
+        <nz-divider nzPlain nzText="联动" nzOrientation="center"></nz-divider>
+        <nz-form-item>
+            <nz-form-label>隐匿触发条件</nz-form-label>
+            <nz-form-control>
+                <input nz-input placeholder="eg: field=='123'" [(ngModel)]="config.cascade"/>
+            </nz-form-control>
+        </nz-form-item>
     </nz-tab>
 
 </nz-tabset>
