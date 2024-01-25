@@ -61,10 +61,10 @@
                         <td>{{ item.deptCode }}</td>
                         <td>{{ item.deptTw }}</td>
                         <td>
-                            <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 编辑</a>
+                            <a (click)="edit(item)"><span nz-icon [nzType]="'file-search'"></span> 编辑</a>
                             <nz-divider [nzType]="'vertical'"></nz-divider>
                             <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                               (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
+                               (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'delete'"></span> 删除</a>
                         </td>
                     </tr>
                 }

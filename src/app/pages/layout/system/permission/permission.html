@@ -28,11 +28,11 @@
             </nz-form-item>
             <nz-form-item>
                 <button nz-button [nzType]="'primary'" (click)="query(true)">
-                    <i nz-icon [nzType]="'search'"></i>查询
+                    <span nz-icon [nzType]="'search'"></span>查询
                 </button>
             </nz-form-item>
             <nz-form-item>
-                <button nz-button (click)="edit(null)"><i nz-icon [nzType]="'plus'"></i>添加权限</button>
+                <button nz-button (click)="edit(null)"><span nz-icon [nzType]="'plus'"></span>添加权限</button>
             </nz-form-item>
         </div>
     </nz-card>
@@ -62,10 +62,10 @@
                         <td>{{ item.url }}</td>
                         <td>{{ item.method }}</td>
                         <td>
-                            <a (click)="edit(item)"><i nz-icon [nzType]="'file-search'"></i> 编辑</a>
+                            <a (click)="edit(item)"><span nz-icon [nzType]="'file-search'"></span> 编辑</a>
                             <nz-divider [nzType]="'vertical'"></nz-divider>
                             <a nz-popconfirm nzPopconfirmTitle="确定删除吗？"
-                               (nzOnConfirm)="remove(item.id)"><i nz-icon [nzType]="'delete'"></i> 删除</a>
+                               (nzOnConfirm)="remove(item.id)"><span nz-icon [nzType]="'delete'"></span> 删除</a>
                         </td>
                     </tr>
                 }

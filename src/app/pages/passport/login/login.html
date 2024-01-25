@@ -9,7 +9,7 @@
                 </div>
                 <nz-spin [nzSpinning]="isLoading" [nzIndicator]="loadingIndicator">
                     <ng-template #loadingIndicator>
-                        <div class="loading-wrapper"><i nz-icon nzType="loading"></i></div>
+                        <div class="loading-wrapper"><span nz-icon nzType="loading"></span></div>
                     </ng-template>
                     <h5 class="card-title mb-2 text-gradient text-info font-weight-bolder">Welcome back</h5>
                     <p class="card-text mb-3">请使用最新版edge或chrome以获得更好的体验</p>
@@ -20,7 +20,7 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="请输入账号">
                                 <nz-input-group [nzPrefix]="iconUser">
-                                    <ng-template #iconUser><i nz-icon nzType="user"></i></ng-template>
+                                    <ng-template #iconUser><span nz-icon nzType="user"></span></ng-template>
                                     <input nz-input formControlName="id" placeholder="please enter your account"
                                            autofocus/>
                                 </nz-input-group>
@@ -35,7 +35,7 @@
                         <nz-form-item>
                             <nz-form-control nzErrorTip="请输入密码">
                                 <nz-input-group [nzPrefix]="iconLock">
-                                    <ng-template #iconLock><i nz-icon nzType="lock"></i></ng-template>
+                                    <ng-template #iconLock><span nz-icon nzType="lock"></span></ng-template>
                                     <input nz-input formControlName="password" type="password"
                                            placeholder="please enter password"/>
                                 </nz-input-group>

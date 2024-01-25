@@ -4,7 +4,7 @@
         <input [(ngModel)]="keyword" class="search-input" type="text" nz-input
                placeholder="请输入申请编号" (input)="keywordChange()"/>
     </nz-input-group>
-    <ng-template #suffixTemplate><i nz-icon nzType="search" (click)="keywordSearch()"></i></ng-template>
+    <ng-template #suffixTemplate><span nz-icon nzType="search" (click)="keywordSearch()"></span></ng-template>
 </div>
 <ng-template #searchContent>
     <nz-spin [nzSpinning]="fetching">
