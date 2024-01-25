@@ -8,9 +8,10 @@ export declare interface DyFormDragGroup {
 }
 
 /**
- * 配置类实现这个接口
+ * 可配置的组件实现这个接口
  */
 export declare interface DyComponent {
+    config:any;
     templateRef: TemplateRef<any>
 }
 
@@ -23,9 +24,8 @@ export declare interface DyFormDragItem {
 }
 
 export interface ItemContext {
-    listeners?: any[];
     instance?: any;
-    cdkDrag: CdkDrag<any>;
+    cdkDrag: CdkDrag;
 }
 
 export interface FormItemsHolder {

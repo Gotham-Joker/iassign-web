@@ -399,6 +399,7 @@ export class DyForm implements OnInit, OnChanges {
                         data.push({label: d[item.resLabel], value: d[item.resValue]})
                     }
                 }
+                node.children = data;
                 return of(data);
             }));
         }

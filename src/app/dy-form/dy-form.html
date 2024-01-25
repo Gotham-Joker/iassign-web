@@ -78,7 +78,7 @@
                 }
                 @case ("upload") {
                     <!-- 上传组件 -->
-                    <nz-upload [nzDisabled]="readonly||config.readOnly" [nzListType]="config.listType"
+                    <nz-upload [nzDisabled]="readonly||config.readOnly" [nzListType]="config.listType" [nzAccept]="config.accept"
                                [(nzFileList)]="config.value" [nzBeforeUpload]="upload(config)" [nzPreview]="preview">
                         @if (config.listType == "picture-card") {
                             <span nz-icon [nzType]="'plus'"></span>

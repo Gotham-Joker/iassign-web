@@ -4,8 +4,8 @@
         style="min-height: 70px;border-radius: 4px;margin: 1px 0;padding: 15px 4px">
 
     @for (item of cols; let i = $index; track item) {
-        <div nz-col [nzSpan]="item.config?.dyColSpan" class="cdk-drag py-3 indicator-bd" cdkDrag>
-            <ng-container *dyCol="item;index:i;create: onCreate;destroy:onDestroy"></ng-container>
+        <div #ele nz-col [nzSpan]="item.config?.dyColSpan" class="cdk-drag py-3 indicator-bd" cdkDrag>
+            <ng-container *dyCol="item;index:i;parent:ele"></ng-container>
         </div>
     }
 
@@ -15,7 +15,7 @@
 <ng-template #cfgTpl>
     <nz-tabset [(nzSelectedIndex)]="config.tabIndex">
         <nz-tab nzTitle="外观">
-            <div nz-form layout="horizontal">
+            <div nz-form nzLayout="horizontal">
 
                 <nz-form-item>
                     <nz-form-label>列间隔<span nz-icon [nzType]="'question-circle'" nz-popover
@@ -43,7 +43,7 @@
         <nz-tab nzTitle="高级">
             <nz-divider nzPlain nzText="联动" nzOrientation="center"></nz-divider>
             <nz-form-item>
-                <nz-form-label>隐匿触发条件</nz-form-label>
+                <nz-form-label>true时隐藏</nz-form-label>
                 <nz-form-control>
                     <input nz-input placeholder="eg: field=='123'" [(ngModel)]="config.cascade"/>
                 </nz-form-control>

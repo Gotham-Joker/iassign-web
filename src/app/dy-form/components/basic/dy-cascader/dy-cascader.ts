@@ -10,6 +10,7 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
+import {DyComponent} from "../../../interface/dy-form-interface";
 
 @Component({
     selector: 'dy-cascader',
@@ -34,7 +35,7 @@ import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
     templateUrl: 'dy-cascader.html'
 })
 
-export class DyCascader implements OnInit {
+export class DyCascader implements OnInit, DyComponent {
     config: any = {
         type: 'cascader',
         label: '级联',

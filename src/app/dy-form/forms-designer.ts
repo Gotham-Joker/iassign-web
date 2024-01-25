@@ -124,9 +124,7 @@ export class FormsDesigner implements OnInit, AfterViewInit {
     // 保存弹窗是否可见
     visible: boolean = false;
 
-    constructor(private platform: Platform,
-                private ngZone: NgZone,
-                private vr: ViewportRuler,
+    constructor(private ngZone: NgZone,
                 private render: Renderer2,
                 private dragDrop: DragDrop,
                 private scroll: ScrollDispatcher,
@@ -160,7 +158,7 @@ export class FormsDesigner implements OnInit, AfterViewInit {
             // 生成ID，根据这个定位组件
             const id = this.genId();
             // 绑定函数：点击该组件实例的时候，在右边显示配置面板
-            const mouseDown = this.render.listen(el, 'mousedown', () => {
+            this.render.listen(el, 'mousedown', () => {
                 if (id == this.formItemId) {
                     return;
                 }
@@ -168,7 +166,8 @@ export class FormsDesigner implements OnInit, AfterViewInit {
                 this.showConfigPanel(component);
             });
             // 绑定函数：右键菜单，用于删除组件
-            const contextMenu = this.render.listen(el, 'contextmenu', (ev) => {
+            this.render.listen(el, 'contextmenu', (ev) => {
+                this.formItemId = id;
                 this.showContextMenu(ev);
             });
 
@@ -185,7 +184,6 @@ export class FormsDesigner implements OnInit, AfterViewInit {
             }
 
             this.formItemsHolder[id] = {
-                listeners: [mouseDown, contextMenu],
                 instance: component,
                 cdkDrag
             };
@@ -231,12 +229,12 @@ export class FormsDesigner implements OnInit, AfterViewInit {
     // 删除表单项
     removeFormItem(id: any) {
         const itemContext: ItemContext = this.formItemsHolder[id];
-        // 移除监听器
-        // itemContext.listeners.forEach(l => removeListener(l));
         // 删除配置面板
         this.configPanelContainer.clear();
-        // 删除cdkDrag
-        this.formContainer.removeItem(itemContext.cdkDrag);
+        if (itemContext.cdkDrag) {
+            // 删除cdkDrag
+            this.formContainer.removeItem(itemContext.cdkDrag);
+        }
 
         // 更新cdkDropListConnectedTo
         if (itemContext.instance.instance instanceof DyRow) {

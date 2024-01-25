@@ -29,7 +29,7 @@ import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
     standalone: true,
     imports: [NzGridModule, CdkDropList, NzFormModule, NgFor, CdkDrag, DyColDirective, NzDividerComponent, NzTabComponent, FormsModule, NzInputDirective, NzRadioGroupComponent, NzRadioComponent, NzIconDirective, NzPopoverDirective, NzInputNumberComponent, NzTabSetComponent]
 })
-export class DyRow implements OnInit, AfterViewInit, DyComponent {
+export class DyRow implements OnInit, DyComponent {
     @ViewChild('cfgTpl', {static: true, read: TemplateRef})
     templateRef;
 
@@ -48,9 +48,7 @@ export class DyRow implements OnInit, AfterViewInit, DyComponent {
     nzRow: NzRowDirective;
     cols: { ctx: DyRow, comp: any, config: any }[] = []; // 列
 
-    constructor(public ngZone: NgZone,
-                public dragDrop: DragDrop,
-                public render: Renderer2) {
+    constructor() {
     }
 
 
@@ -65,25 +63,16 @@ export class DyRow implements OnInit, AfterViewInit, DyComponent {
     onDrop(event: CdkDragDrop<string[]> | any, config?: any) {
         const item: DyFormDragItem = event.item.data;
         if (item != null) {
-            const configClazz = item.component;
-            this.cols.push({ctx: this, comp: configClazz, config});
+            const Class = item.component;
+            if (config == null) {
+                config = Object.assign({}, new Class().config)
+            }
+            this.cols.push({ctx: this, comp: Class, config});
         } else {
-            // if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-            /*   } else {
-                   transferArrayItem(
-                       event.previousContainer.data,
-                       event.container.data,
-                       event.previousIndex,
-                       event.currentIndex);
-               }*/
         }
 
     }
-
-    ngAfterViewInit(): void {
-    }
-
 
     toJson(children: any[]) {
         const len = this.cols.length;
@@ -93,53 +82,4 @@ export class DyRow implements OnInit, AfterViewInit, DyComponent {
         }
     }
 
-    /**
-     * 创建组件，并在组件上一级的列中绑定组件span配置项
-     * @param that
-     * @param idx
-     * @param component
-     * @param dyCol
-     */
-    onCreate(that: DyRow, idx: number, component: any, dyCol: { comp: any, configComp: any, config: any }) {
-        if (dyCol.config != null) {
-            component.instance['config'] = dyCol.config;
-        }
-        const el = component.location.nativeElement;
-        const id = that.app.genId();
-        // 绑定函数：显示配置面板
-        const mouseDown = that.render.listen(el, 'mousedown', (event) => {
-            event.stopPropagation(); // 阻止事件继续传播
-            if (id == that.app.formItemId) {
-                return;
-            }
-            that.app.formItemId = id;
-            that.app.showConfigPanel(component);
-        });
-
-        // 绑定函数：右键菜单
-        const contextMenu = that.render.listen(el, 'contextmenu', (ev) => {
-            ev.stopPropagation(); // 阻止事件继续传播
-            that.app.showContextMenu(ev);
-        });
-        that.app.formItemsHolder[id] = {
-            listeners: [mouseDown, contextMenu],
-            instance: component
-        };
-        that.app.formItemId = id;
-        that.app.showConfigPanel(component);
-        // 让nz-col重新绑定config，不过这样数据会反向流动到父级元素(nz-col)，angular是不允许这样的
-        // 所以，搞个异步timer，即setTimeout来解决此问题。理论上onPush策略性能应该更好，但是现在的情况太复杂了，手动检测不现实。
-        timer(0).subscribe(() => {
-            that.cols[idx]['config'] = component.instance['config'];
-        })
-    }
-
-    /**
-     * 销毁列
-     * @param that
-     * @param idx
-     */
-    onDestroy(that: DyRow, idx: number) {
-        that.cols.splice(idx, 1);
-    };
 }
