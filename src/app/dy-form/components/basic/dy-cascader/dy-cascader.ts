@@ -11,6 +11,8 @@ import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {DyComponent} from "../../../interface/dy-form-interface";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 
 @Component({
     selector: 'dy-cascader',
@@ -30,7 +32,9 @@ import {DyComponent} from "../../../interface/dy-form-interface";
         NzButtonComponent,
         NzFormDirective,
         NzColDirective,
-        NzRowDirective
+        NzRowDirective,
+        NzIconDirective,
+        NzTooltipDirective
     ],
     templateUrl: 'dy-cascader.html'
 })

@@ -388,6 +388,15 @@ export class DyForm implements OnInit, OnChanges {
             http = this.httpClient;
         }
         this.cascaders[item.field] = (node: NzCascaderOption, index: number) => {
+            // 访问过的节点做个标记，避免重复加载
+            if (node.isCached) {
+                return of(1);
+            } else {
+                node['isCached'] = true;
+            }
+            if (node.children != null && node.children.length == 0) {
+                return of(1); // don't request anymore
+            }
             const val = node.value == null ? (item.dv ?? "") : node.value;
             const url = item.url.replace("$$", val);
             return http.get(url).pipe(mergeMap(res => {
@@ -396,7 +405,12 @@ export class DyForm implements OnInit, OnChanges {
                     const resData = res[item.res];
                     for (let i = 0; i < resData.length; i++) {
                         const d = resData[i];
-                        data.push({label: d[item.resLabel], value: d[item.resValue]})
+                        data.push({
+                            label: d[item.resLabel],
+                            value: d[item.resValue],
+                            children: d['children'],
+                            isLeaf: d[item.isLeaf??'']
+                        });
                     }
                 }
                 node.children = data;

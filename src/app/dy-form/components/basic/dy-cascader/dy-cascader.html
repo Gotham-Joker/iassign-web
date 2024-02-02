@@ -94,7 +94,7 @@
 
         <nz-tab nzTitle="高级">
             <nz-divider nzPlain nzText="数据源" nzOrientation="center"></nz-divider>
-            <p>url中可以用$$表示value的placeholder</p>
+            <p>url中可以用$$表示选中的value，以便懒加载子节点</p>
             <nz-form-item>
                 <nz-form-label>URL</nz-form-label>
                 <nz-form-control>
@@ -123,6 +123,13 @@
                 <nz-form-label>VALUE</nz-form-label>
                 <nz-form-control>
                     <input nz-input placeholder="eg: value" [(ngModel)]="config.resValue"/>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>isLeaf<span nz-icon nzType="question-circle" class="ml-1" nz-tooltip
+                                           nzTooltipTitle="叶子节点字段，数据类型必须是布尔值"></span></nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="eg: value" [(ngModel)]="config.isLeaf"/>
                 </nz-form-control>
             </nz-form-item>
             <nz-divider nzPlain nzText="联动" nzOrientation="center"></nz-divider>
