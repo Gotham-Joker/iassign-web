@@ -4,7 +4,7 @@
     <span class="label">{{ data?.label }}</span>
     @if (data.status != null && data.status != 'default') {
         <span class="status">
-        <img [ngSrc]="image[data.status]" fill="">
+        <img [src]="image[data.status]">
     </span>
     }
 </div>
