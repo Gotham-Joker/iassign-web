@@ -169,7 +169,7 @@ export class ProcessIndex implements OnInit {
             this.message.warning("日期开始时间不能超过结束时间");
             return false;
         }
-        if (startDate.add(180, "day").isAfter(endDate)) {
+        if (startDate.add(180, "day").isBefore(endDate)) {
             this.message.warning("选择的日期范围不能超过180天");
             return false;
         }
