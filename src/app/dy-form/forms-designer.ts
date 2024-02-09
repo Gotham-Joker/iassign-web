@@ -1,11 +1,11 @@
 import {
     AfterViewInit,
-    Component,
-    EventEmitter,
+    Component, effect,
+    EventEmitter, HostListener, Injector,
     NgZone,
     OnInit,
     Output,
-    Renderer2,
+    Renderer2, signal,
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
@@ -67,6 +67,22 @@ export declare interface FormConfig {
         NzDropDownModule, NzMessageModule]
 })
 export class FormsDesigner implements OnInit, AfterViewInit {
+    @HostListener("window:keydown", ['$event'])
+    onControlDown(event: KeyboardEvent) {
+        if (event.key == "Control" && this.dragDisabled()) {
+            this.dragDisabled.set(false);
+        }
+    }
+
+    @HostListener("window:keyup", ['$event'])
+    onControlUp(event: KeyboardEvent) {
+        if (event.key == "Control") {
+            this.dragDisabled.set(true);
+        }
+    }
+
+    dragDisabled = signal(true);
+
     // 左侧可拖动的组
     dragGroups: DyFormDragGroup[] = [
         {
@@ -125,6 +141,7 @@ export class FormsDesigner implements OnInit, AfterViewInit {
     visible: boolean = false;
 
     constructor(private ngZone: NgZone,
+                private injector: Injector,
                 private render: Renderer2,
                 private dragDrop: DragDrop,
                 private scroll: ScrollDispatcher,
@@ -154,6 +171,10 @@ export class FormsDesigner implements OnInit, AfterViewInit {
             // 给它绑定拖拽指令
             const cdkDrag = new CdkDrag(component.location, this.formContainer, document, this.ngZone, this.formItemContainer,
                 {}, new Dir(), this.dragDrop, component.changeDetectorRef);
+            const effectRef = effect(() => {
+                cdkDrag.disabled = this.dragDisabled();
+            }, {injector: this.injector})
+            component.onDestroy(() => effectRef.destroy());
 
             // 生成ID，根据这个定位组件
             const id = this.genId();

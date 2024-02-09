@@ -3,7 +3,7 @@
                    [nzRequired]="config.required">{{ config.label }}
     </nz-form-label>
     <nz-form-control [nzValidateStatus]="status" [nzSpan]="config.span" [nzErrorTip]="config.msg">
-        <textarea nz-input [disabled]="config.readOnly"></textarea>
+        <app-rich-text [(ngModel)]="config.value"></app-rich-text>
     </nz-form-control>
 </nz-form-item>
 
@@ -28,6 +28,10 @@
                 <nz-form-label>隐藏冒号</nz-form-label>
                 <nz-form-control>
                     <nz-switch [(ngModel)]="config.noColon"></nz-switch>
+                </nz-form-control>
+                <nz-form-label>工具栏</nz-form-label>
+                <nz-form-control>
+                    <nz-switch [(ngModel)]="config.tool"></nz-switch>
                 </nz-form-control>
             </nz-form-item>
 

@@ -61,7 +61,7 @@ import {
     QuestionCircleOutline
 } from '@ant-design/icons-angular/icons';
 import {DyInputNumber} from "./components/basic/dy-input-number/dy-input-number";
-import {DyColDirective} from "./dy-col.directive";
+import {DyColDirective} from "./components/layout/dy-col/dy-col.directive";
 
 const icons: any[] = [
     DeleteOutline,

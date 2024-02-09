@@ -10,7 +10,7 @@ import {CdkDragDrop, CdkDropList, DragDrop, moveItemInArray, CdkDrag} from '@ang
 import {timer} from 'rxjs';
 import {DyComponent, DyFormDragItem} from "../../../interface/dy-form-interface";
 import {NzRowDirective, NzGridModule} from "ng-zorro-antd/grid";
-import {DyColDirective} from '../../../dy-col.directive';
+import {DyColDirective} from '../dy-col/dy-col.directive';
 import {NgFor} from '@angular/common';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzDividerComponent} from "ng-zorro-antd/divider";

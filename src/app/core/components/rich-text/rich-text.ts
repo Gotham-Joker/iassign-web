@@ -1,6 +1,6 @@
 import {
     Component,
-    ElementRef, forwardRef,
+    ElementRef, forwardRef, Input,
     OnInit,
     ViewChild,
     ViewEncapsulation
@@ -83,6 +83,7 @@ export class RichText implements OnInit, ControlValueAccessor {
 
     value: any = '<p><br></p>';
     editor: IDomEditor;
+    @Input() tool: boolean = true;
 
 
     constructor(private uploadSvc: UploadService) {
@@ -123,6 +124,9 @@ export class RichText implements OnInit, ControlValueAccessor {
                         return n['type'] == 'image' && n['href'] != 'emo-i';
                     },
                     menuKeys: ['imageWidth30', 'imageWidth50', 'imageWidth100', 'deleteImage']
+                },
+                'table': {
+                    menuKeys: ["tableHeader", "tableFullWidth", "insertTableRow", "deleteTableRow", "insertTableCol", "deleteTableCol", "deleteTable"]
                 }
             }
         }
@@ -137,16 +141,18 @@ export class RichText implements OnInit, ControlValueAccessor {
             this.editor.disable();
         }
 
-        createToolbar({
-            editor,
-            selector: this.toolbarContainer.nativeElement,
-            config: {
-                excludeKeys: ['header1', 'header2', 'header3', 'fullScreen', 'redo', 'undo',
-                    'codeBlock', 'group-video', 'insertVideo', 'todo', 'through', 'clearStyle'],
-                insertKeys: {index: 0, keys: ['headerSelect', 'bEmotion']}
-            },
-            mode: 'simple', // or 'simple'
-        });
+        if (this.tool) {
+            createToolbar({
+                editor,
+                selector: this.toolbarContainer.nativeElement,
+                config: {
+                    excludeKeys: ['header1', 'header2', 'header3', 'redo', 'undo',
+                        'codeBlock', 'group-video', 'insertVideo', 'todo', 'through', 'clearStyle'],
+                    insertKeys: {index: 0, keys: ['headerSelect', 'bEmotion']}
+                },
+                mode: 'simple', // or 'simple'
+            });
+        }
     }
 
     /**

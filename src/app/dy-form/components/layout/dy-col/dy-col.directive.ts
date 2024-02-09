@@ -6,7 +6,7 @@ import {
     SimpleChanges,
     ViewContainerRef
 } from '@angular/core';
-import {DyRow} from "./components/layout/dy-row/dy-row";
+import {DyRow} from "../dy-row/dy-row";
 
 @Directive({
     selector: '[dyCol]',

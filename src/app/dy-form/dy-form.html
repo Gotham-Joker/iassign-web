@@ -72,8 +72,7 @@
                         <div class="remark-p b-1 b-gray-300 b-solid b-rd-t-8px"
                              [innerHTML]="richText[config.field]"></div>
                     } @else {
-                        <app-rich-text [(ngModel)]="config.value"
-                                       [disabled]="readonly||config.readOnly"></app-rich-text>
+                        <app-rich-text [(ngModel)]="config.value" [tool]="config.tool"></app-rich-text>
                     }
                 }
                 @case ("upload") {
