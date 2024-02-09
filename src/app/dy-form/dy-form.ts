@@ -375,6 +375,10 @@ export class DyForm implements OnInit, OnChanges {
         const ctxValues = [];
         ctxKeys.forEach(key => ctxValues.push(val[key]));
         this.formIterate((item) => {
+            if (item.field){
+                ctxKeys.push(item.field);
+                ctxValues.push(null);
+            }
             // 隐藏或展示
             if (item.cascade != null && item.cascade.trim() != '') {
                 item.hidden = new Function(...ctxKeys, "return " + item.cascade)(...ctxValues);
