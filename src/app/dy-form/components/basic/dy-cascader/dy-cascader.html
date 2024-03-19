@@ -138,25 +138,6 @@
                     <input nz-input placeholder="eg: data" [(ngModel)]="config.res"/>
                 </nz-form-control>
             </nz-form-item>
-            <nz-form-item>
-                <nz-form-label>LABEL</nz-form-label>
-                <nz-form-control>
-                    <input nz-input placeholder="eg: label" [(ngModel)]="config.resLabel"/>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-label>VALUE</nz-form-label>
-                <nz-form-control>
-                    <input nz-input placeholder="eg: value" [(ngModel)]="config.resValue"/>
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-label>isLeaf<span nz-icon nzType="question-circle" class="ml-1" nz-tooltip
-                                           nzTooltipTitle="叶子节点字段，数据类型必须是布尔值"></span></nz-form-label>
-                <nz-form-control>
-                    <input nz-input placeholder="eg: value" [(ngModel)]="config.isLeaf"/>
-                </nz-form-control>
-            </nz-form-item>
             <nz-divider nzPlain nzText="联动" nzOrientation="center"></nz-divider>
             <nz-form-item>
                 <nz-form-label>true时隐藏</nz-form-label>
@@ -164,6 +145,13 @@
                     <input nz-input placeholder="eg: field=='123'" [(ngModel)]="config.cascade"/>
                 </nz-form-control>
             </nz-form-item>
+            <nz-divider nzPlain nzText="说明" nzOrientation="center"></nz-divider>
+            <nz-descriptions nzSize="small" nzTitle="响应字段应包含以下结构">
+                <nz-descriptions-item nzTitle="label" [nzSpan]="3">名称</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="value" [nzSpan]="3">值</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="isLeaf" [nzSpan]="3">是否叶子节点,true/false <span nz-icon nzType="question-circle" nz-tooltip nzTooltipTitle="如果isLeaf为false且无children，组件会再次请求(即懒加载)"></span></nz-descriptions-item>
+                <nz-descriptions-item nzTitle="children" [nzSpan]="3">孩子节点,数组</nz-descriptions-item>
+            </nz-descriptions>
         </nz-tab>
     </nz-tabset>
 </ng-template>

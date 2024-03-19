@@ -38,6 +38,7 @@ import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {DyComponent} from "../../../interface/dy-form-interface";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {NzDescriptionsComponent, NzDescriptionsItemComponent} from "ng-zorro-antd/descriptions";
 
 @Component({
     selector: 'dy-cascader',
@@ -59,7 +60,9 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
         NzColDirective,
         NzRowDirective,
         NzIconDirective,
-        NzTooltipDirective
+        NzTooltipDirective,
+        NzDescriptionsComponent,
+        NzDescriptionsItemComponent
     ],
     templateUrl: 'dy-cascader.html'
 })
@@ -73,8 +76,6 @@ export class DyCascader implements OnInit, DyComponent {
         dv: '', // 默认值
         regex: '',
         res: '',
-        resLabel: '',
-        resValue: '',
         required: false,
         cascade: '',
         dyColSpan: 12

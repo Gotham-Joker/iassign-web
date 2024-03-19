@@ -400,7 +400,7 @@ export class DyForm implements OnInit, OnChanges {
         const ctxValues = [];
         ctxKeys.forEach(key => ctxValues.push(val[key]));
         this.formIterate((item) => {
-            if (item.field){
+            if (item.field) {
                 ctxKeys.push(item.field);
                 ctxValues.push(null);
             }
@@ -417,34 +417,16 @@ export class DyForm implements OnInit, OnChanges {
             http = this.httpClient;
         }
         this.cascaders[item.field] = (node: NzCascaderOption, index: number) => {
-            // 访问过的节点做个标记，避免重复加载
-            if (node.isCached) {
-                return of(1);
-            } else {
-                node['isCached'] = true;
-            }
-            if (node.children != null && node.children.length == 0) {
-                return of(1); // don't request anymore
-            }
-            const val = node.value == null ? (item.dv ?? "") : node.value;
-            const url = item.url.replace("$$", val);
-            return http.get(url).pipe(mergeMap(res => {
-                let data = [];
-                if (item.res) {
-                    const resData = res[item.res];
-                    for (let i = 0; i < resData.length; i++) {
-                        const d = resData[i];
-                        data.push({
-                            label: d[item.resLabel],
-                            value: d[item.resValue],
-                            children: d['children'],
-                            isLeaf: d[item.isLeaf??'']
-                        });
-                    }
+            let value = node.value ? node.value : (item.dv ?? "");
+            const url = item.url.replace("$$", value);
+            return http.get(url).pipe(mergeMap((res: any) => {
+                let data = item.res ? res[item.res] : res;
+                if (data == null || data.length == 0) {
+                    return of(1);
                 }
                 node.children = data;
-                return of(data);
-            }));
+                return of(1);
+            }))
         }
     }
 }
