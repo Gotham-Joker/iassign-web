@@ -29,7 +29,7 @@ import presetUno from '@unocss/preset-uno'
 
 /**
  * unocss设置。
- * 它帮忙解析html中你会用到的class名，然后动态生成uno.css文件，所谓on-demand，就是按需生成css。
+ * 它帮忙解析html中你会用到的class名，然后动态生成uno.css文件内容，所谓on-demand，就是按需生成css。
  * 例如 class="pt-1" 即生成 .pt-1{padding-top: 0.25rem;}的代码
  *
  * 此外，还会解析scss文件中的unocss语法：
