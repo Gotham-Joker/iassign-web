@@ -191,7 +191,7 @@ export class RichText implements OnInit, ControlValueAccessor {
         // 用正则表达式处理一下字体色和背景色
         // const polishEx = /style=.*?(background-)?color:\s*rgb\(.*?\);?.*?>/;
         let tmpValue = value;
-        const polishEx = /style=.*?>/g;
+        const polishEx = /style=[^>]*?>/g;
         let match = polishEx.exec(value);
         while (match != null && match.length > 0 && match[0] != null) {
             const classNames: string[] = [];
@@ -239,7 +239,7 @@ export class RichText implements OnInit, ControlValueAccessor {
             .replaceAll(/style="text-align:\s*left;?"/g, "class=\"text-start\"")
             .replaceAll(/style="text-align:\\s*right;?"/g, "class=\"text-end\"")
             .replaceAll(/alt="" data-href="emo-i" style=""/g, "class=\"emo-i\"");
-        const exp = /<img src=.*?style="width: (\d+)%;">/
+        const exp = /<img src=[^>]*?style="width: (\d+)%;">/
         let match = exp.exec(value);
         while (match != null && match.length > 1) {
             const img = match[0];
