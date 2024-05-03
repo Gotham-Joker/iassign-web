@@ -23,7 +23,7 @@
   ~
   -->
 
-<app-sidebar [(collapsed)]="isCollapsed"></app-sidebar>
+<app-sidebar [collapsed]="isCollapsed" (collapsedChange)="collapsedChange()"></app-sidebar>
 
 <div class="app-wrap" [ngClass]="{'app-collapsed':isCollapsed}">
     <nz-header>
