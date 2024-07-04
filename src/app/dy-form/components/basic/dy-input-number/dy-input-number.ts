@@ -43,7 +43,7 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
     standalone: true,
     imports: [NzGridModule, NzFormModule, NzInputNumberModule, FormsModule, NzDividerComponent, NzTabComponent, NzButtonComponent, NzInputDirective, NzSwitchComponent, NzTabSetComponent]
 })
-export class DyInputNumber implements OnInit , DyComponent {
+export class DyInputNumber implements OnInit, DyComponent {
     @ViewChild('cfgTpl', {read: TemplateRef, static: true})
     templateRef;
     // 默认配置
@@ -52,6 +52,7 @@ export class DyInputNumber implements OnInit , DyComponent {
         noColon: false,
         label: '数字',
         required: false,
+        dyColSpan: 12,
         placeholder: '',
         min: -999999999999999,
         max: 999999999999999,
